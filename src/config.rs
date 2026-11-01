@@ -21,7 +21,9 @@ pub struct Config {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct General {
-    /// Substring that must appear in the evdev device name.
+    /// Extra name match: a device whose evdev name contains this is used
+    /// even when its vendor/product ids are not a Magic Mouse's. Real Magic
+    /// Mice are recognised by id, whatever they were renamed to on macOS.
     pub device_match: String,
     /// Scroll-wheel events from the mouse driver are dropped while at least
     /// this many fingers touch the surface (prevents scrolling mid-gesture).
