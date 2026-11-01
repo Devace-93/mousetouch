@@ -10,6 +10,7 @@
 mod bluetooth;
 mod config;
 mod desktop;
+mod discover;
 mod engine;
 mod focus;
 mod hidraw;
@@ -29,7 +30,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
 use std::time::{Duration, Instant};
-use virt::{VirtualKeyboard, VirtualMouse, VirtualTouchpad, VIRTUAL_SUFFIX};
+use virt::{VirtualKeyboard, VirtualMouse, VirtualTouchpad};
 
 const USAGE: &str = "\
 mousetouch [OPTIONS] [COMMAND]
@@ -129,20 +130,6 @@ fn main() -> Result<()> {
     }
 }
 
-/// evdev nodes whose name matches the config and that are not our own.
-fn find_devices(device_match: &str) -> Vec<(PathBuf, Device)> {
-    let mut out: Vec<(PathBuf, Device)> = evdev::enumerate()
-        .filter(|(_, d)| {
-            let name = d.name().unwrap_or("");
-            name.contains(device_match)
-                && !name.contains(VIRTUAL_SUFFIX)
-                && d.supported_absolute_axes().map_or(false, |a| a.contains(AbsoluteAxisCode::ABS_MT_POSITION_X))
-        })
-        .collect();
-    out.sort_by(|a, b| a.0.cmp(&b.0));
-    out
-}
-
 fn axis_info(dev: &Device, code: AbsoluteAxisCode, fallback_res: f64) -> Result<AxisInfo> {
     let abs = dev.get_abs_state()?;
     let a = abs[code.0 as usize];
@@ -168,6 +155,8 @@ fn run(config_path: &Path) -> Result<()> {
 
     let active: Arc<Mutex<HashSet<PathBuf>>> = Arc::new(Mutex::new(HashSet::new()));
     let mut last_mtime = std::fs::metadata(config_path).and_then(|m| m.modified()).ok();
+    // Nodes already reported as unusable, so the warning is logged once.
+    let mut warned: HashSet<PathBuf> = HashSet::new();
 
     loop {
         // Hot-reload the config when the file changes.
@@ -184,7 +173,14 @@ fn run(config_path: &Path) -> Result<()> {
         }
 
         let device_match = cfg.read().unwrap().general.device_match.clone();
-        for (path, dev) in find_devices(&device_match) {
+        let scan = discover::scan(&device_match);
+        warned.retain(|p| scan.unusable.iter().any(|u| &u.path == p));
+        for u in &scan.unusable {
+            if warned.insert(u.path.clone()) {
+                log::warn!("{}", u.describe());
+            }
+        }
+        for (path, dev) in scan.devices {
             if active.lock().unwrap().contains(&path) {
                 continue;
             }
@@ -321,10 +317,16 @@ fn serve_device(
 
 fn probe(config_path: &Path, watch: bool) -> Result<()> {
     let cfg = config::load_or_create(config_path)?;
-    let devices = find_devices(&cfg.general.device_match);
+    let scan = discover::scan(&cfg.general.device_match);
+    for u in &scan.unusable {
+        println!("unusable: {}", u.describe());
+    }
+    let devices = scan.devices;
     if devices.is_empty() {
-        println!("no device matching \"{}\" with multitouch axes found", cfg.general.device_match);
-        println!("(is the mouse connected over Bluetooth, and is the hid-magicmouse driver bound?)");
+        if scan.unusable.is_empty() {
+            println!("no Magic Mouse found (Apple vendor id with product 030d/0269/0323, or a name containing \"{}\")", cfg.general.device_match);
+            println!("(is the mouse connected over Bluetooth and bound to hid-magicmouse? `journalctl -k | grep -i \"magic mouse\"`)");
+        }
         return Ok(());
     }
     for (path, dev) in &devices {

@@ -259,7 +259,12 @@ journalctl --user -fu mousetouch
 ```
 
 - *No device found*: the mouse must be connected over **Bluetooth** (the
-  cable only charges on Linux) and bound to `hid-magicmouse`.
+  cable only charges on Linux) and bound to `hid-magicmouse`. `mousetouch
+  probe` names every node that looks like the mouse and cannot be used, with
+  the reason: *permission denied* (udev rule missing or not applied yet:
+  install it, then re-pair the mouse or `sudo udevadm trigger`) or *no
+  multitouch axes* (bound to `hid-generic`, see the DKMS note). The mouse is
+  recognised by its vendor/product ids, so renaming it on macOS is fine.
 - *Magic Mouse (USB-C, 2024) moves the pointer but has no gestures*: that
   model (product `0323`) is supported by the in-tree driver from Linux 6.16.
   If a DKMS `hid-magicmouse` (e.g. `4.18+magicmouse2`) is installed it shadows
@@ -281,8 +286,9 @@ journalctl --user -fu mousetouch
 - *Nothing happens on swipe*: check the desktop handles 4-finger (or
   3-finger) touchpad swipes and that it does not disable touchpads while a
   mouse is connected.
-- *Permission denied*: make sure the udev rule is installed (`install.sh`) or
-  add yourself to the `input` group.
+- *Permission denied*: make sure the udev rule is installed (`install.sh`) and
+  re-pair the mouse or run `sudo udevadm trigger` so it applies to a mouse
+  that was already connected; the daemon logs this once per node.
 - *Pinch zooms the wrong amount*: adjust `pinch.sensitivity` (1.0 = touchpad
   parity).
 - *`app` rules never fire*: run with `-v` and look for "focus tracking via";
