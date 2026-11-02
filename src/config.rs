@@ -125,8 +125,9 @@ pub enum ScrollMode {
     /// Release movement in whole wheel notches (120 units). Apps treat a
     /// notch as "scroll a few lines"; this is the classic mouse-wheel feel.
     Notches,
-    /// Release every high-resolution step as it arrives (1/10 notch).
-    /// Smoother in browsers; terminals and some toolkits scroll faster.
+    /// Release every high-resolution step as it arrives (1/10 notch). The
+    /// default: smooth in browsers and GTK/Qt apps; terminals and some
+    /// toolkits only understand notches and scroll faster.
     Smooth,
 }
 
@@ -147,11 +148,30 @@ pub struct Scroll {
     /// Multiplier on the scroll distance (1.0 = as the kernel driver
     /// reports it, about one notch per 1.3 mm of finger travel).
     pub speed: f64,
+    /// Extra distance for fast finger movement, on top of `speed`: the gain
+    /// ramps smoothly from 1 at a slow drag (150 mm/s) to `1 + acceleration`
+    /// at a hard flick (1000 mm/s and above). 0 turns it off.
+    pub acceleration: f64,
+    /// Keep scrolling after the finger lifts while moving, slowing down the
+    /// way macOS does; touching the mouse again stops it.
+    pub momentum: bool,
+    /// Fraction of the speed kept every millisecond while coasting. 0.998 is
+    /// Apple's documented deceleration rate (about two seconds from a hard
+    /// flick to a stop); 0.99 is their "fast" rate, stopping in half a second.
+    pub momentum_decay: f64,
 }
 
 impl Default for Scroll {
     fn default() -> Self {
-        Self { direction_debounce: true, debounce_units: 120, mode: ScrollMode::Notches, speed: 1.0 }
+        Self {
+            direction_debounce: true,
+            debounce_units: 40,
+            mode: ScrollMode::Smooth,
+            speed: 1.0,
+            acceleration: 0.5,
+            momentum: true,
+            momentum_decay: 0.998,
+        }
     }
 }
 

@@ -156,7 +156,7 @@ def mm_y(mm):
     return int(round(mm * RES_Y))
 
 
-def scenario_scroll(dev, mm=25.0, backwards=False, bounce_mm=1.0):
+def scenario_scroll(dev, mm=25.0, backwards=False, bounce_mm=1.0, step_mm=0.25):
     """One finger travelling `mm` along Y. Wheel events are produced the way
     hid-magicmouse does it, from two separate counters:
       REL_WHEEL_HI_RES: 1/10 notch per ~0.13 mm, after 1.3 mm of travel
@@ -170,8 +170,8 @@ def scenario_scroll(dev, mm=25.0, backwards=False, bounce_mm=1.0):
     hi_acc = lo_acc = 0.0
     travel = 0.0
     path = [-bounce_mm * (i + 1) / 4 for i in range(4)]        # the bounce
-    steps = int(mm / 0.25)
-    path += [-bounce_mm + 0.25 * (i + 1) for i in range(steps)]   # the real motion
+    steps = int(mm / step_mm)
+    path += [-bounce_mm + step_mm * (i + 1) for i in range(steps)]   # the real motion
     for p in path:
         sleep_report()
         y = y0 - mm_y(p) * sign
@@ -236,6 +236,10 @@ def run_scenario(dev, name):
     print(f"-> {name}")
     if name == "scroll":
         scenario_scroll(dev)
+    elif name == "flick":
+        # 3 mm per report is ~270 mm/s: fast enough for mousetouch's
+        # acceleration and momentum to kick in.
+        scenario_scroll(dev, mm=45.0, step_mm=3.0)
     elif name == "scroll-back":
         scenario_scroll(dev, backwards=True)
     elif name in ("swipe-left", "swipe-right"):
@@ -252,7 +256,7 @@ def run_scenario(dev, name):
         sys.exit(f"unknown scenario {name}")
 
 
-SCENARIOS = ["idle", "scroll", "scroll-back", "swipe-left", "swipe-right", "pinch", "tap", "double-tap", "click", "all"]
+SCENARIOS = ["idle", "scroll", "scroll-back", "flick", "swipe-left", "swipe-right", "pinch", "tap", "double-tap", "click", "all"]
 ALL = ["scroll", "swipe-left", "swipe-right", "pinch", "double-tap"]
 
 

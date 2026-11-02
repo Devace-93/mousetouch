@@ -201,11 +201,18 @@ sensitivity = 1.5       # zoom aggressiveness
 # wheel notches and high-resolution steps from one counter, so scrolling feels
 # the same on every connection (the driver's two counters disagree, and a flick
 # on the first scroll could switch libinput into a different mode for good).
+# Fast movement scrolls further (acceleration) and a finger that lifts while
+# moving leaves the page coasting (momentum), the way macOS does it. Apple
+# publishes neither curve for the Magic Mouse; the decay is their documented
+# scroll-view deceleration rate, the acceleration ramp is ours.
 [scroll]
 direction_debounce = true
-debounce_units = 120    # raise if a scroll still starts backwards, lower if it starts late
-mode = "notches"        # "notches": whole wheel clicks, classic feel; "smooth": every 1/10 step
+debounce_units = 40     # raise if a scroll still starts backwards, lower if it starts late
+mode = "smooth"         # "smooth": every 1/10 step; "notches": whole wheel clicks, classic feel
 speed = 1.0             # multiplier on scroll distance
+acceleration = 0.5      # extra gain at a hard flick (1 m/s): 0 = none, 0.5 = 1.5x, 1 = 2x
+momentum = true         # keep scrolling after the finger lifts while moving; touching stops it
+momentum_decay = 0.998  # speed kept per millisecond (Apple's rate; 0.99 stops in half a second)
 
 # Optional macOS-style smart zoom (off by default: a one-finger double tap is
 # easy to trigger by accident). Each double tap sends the next step, wrapping

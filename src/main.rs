@@ -260,7 +260,7 @@ fn serve_device(
     let mut touches = Vec::with_capacity(8);
     loop {
         let timeout_ms = match engine.next_deadline() {
-            Some(d) => d.saturating_duration_since(Instant::now()).as_millis().min(1000) as i32,
+            Some(d) => d.saturating_duration_since(Instant::now()).as_micros().div_ceil(1000).min(1000) as i32,
             None => 1000,
         };
         let mut pfds = [
