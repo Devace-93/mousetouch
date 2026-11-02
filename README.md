@@ -23,6 +23,11 @@ Extra taps and swipes (3 fingers, vertical swipes, ...) can be mapped to
 shortcuts, mouse buttons or commands from the settings app, optionally only
 for a given application (e.g. 2-finger swipes = back/forward in the browser).
 
+Coming from a Mac? The settings app's **Nearby mice** section lists the mouse
+as soon as it is switched on and pairs it with one click, running the
+Bluetooth repair BlueZ needs after a macOS pairing (the desktop's own pairing
+usually leaves the mouse *paired but not bonded*, and it never connects).
+
 ## How it works
 
 The Magic Mouse reports every finger on its surface in its HID reports, but
@@ -262,8 +267,34 @@ mousetouch events         # the running daemon's event stream as JSON lines
 mousetouch demo-swipe left 40   # replay a synthetic 4-finger swipe
 mousetouch bt-check       # Bluetooth pairing healthy? (3 = stale after a Mac pairing)
 mousetouch bt-repair      # remove the mouse from BlueZ and pair it again
+mousetouch bt-scan        # mice switched on and not connected, as JSON lines
+mousetouch bt-pair ADDR   # what Settings > Nearby mice runs for one of them
 journalctl --user -fu mousetouch
+journalctl -u bluetooth   # what bluetoothd thinks of the mouse
 ```
+
+Known cases, in the order they tend to happen to someone coming from a Mac:
+
+- *The mouse does not show up in the Bluetooth list*: a Magic Mouse only
+  advertises while no other computer holds it. Forget it on the Mac (or turn
+  the Mac's Bluetooth off), unplug the USB-C cable (over the cable it works
+  as a USB mouse and turns Bluetooth off), then switch the mouse off, wait a
+  few seconds and switch it on; the LED blinks while it looks for a host.
+- *The desktop's Bluetooth panel does not list the mouse at all*, though it is
+  switched on: some panels hide devices they cannot classify. **Nearby mice**
+  in the settings app talks to BlueZ directly, lists every mouse that is
+  advertising and pairs it from there (a second Magic Mouse 2 that COSMIC's
+  panel never showed paired fine this way).
+- *The mouse pairs but never connects* (typical right after a Mac, even when
+  it was forgotten on both sides): BlueZ keeps a record that is *paired* but
+  not *bonded* and rejects the mouse (`journalctl -u bluetooth` says
+  "Rejected connection from !bonded device"; `bluetoothctl info` shows
+  `Paired: yes`, `Bonded: no`). Open the settings app, find the mouse under
+  **Nearby mice** and press **Connect**: it removes the stale record, waits
+  for the mouse, pairs, trusts and connects. The same from a terminal:
+  `mousetouch bt-pair <address>` (addresses from `mousetouch bt-scan`) or
+  `mousetouch bt-repair`, which finds the mouse by name; `mousetouch bt-check`
+  reports the state (exit 3 = stale).
 
 - *No device found*: the mouse must be connected over **Bluetooth** (the
   cable only charges on Linux) and bound to `hid-magicmouse`. `mousetouch
@@ -281,13 +312,13 @@ journalctl --user -fu mousetouch
   hid-magicmouse-dkms/4.18+magicmouse2 --all`, then `sudo depmod -a`,
   `sudo modprobe -r hid_magicmouse; sudo modprobe hid_magicmouse`, and switch
   the mouse off and on.
-- *The mouse no longer connects after being paired with a Mac* (even after
-  forgetting it on both sides): BlueZ keeps a record that is *paired* but not
-  *bonded* and rejects the mouse (`journalctl -u bluetooth` says "Rejected
-  connection from !bonded device"). Run `mousetouch bt-repair` and switch
-  the mouse off and on when asked. It
-  removes the stale record, waits for the mouse, pairs, trusts and connects.
-  `mousetouch bt-check` reports the state (exit 3 = stale).
+- *The mouse was renamed on macOS*: fine, the daemon and the udev rule
+  recognise it by vendor/product id, whatever it is called.
+- *Scrolling is choppy, or too fast in terminals*: since 0.1.6 the default is
+  *Smooth steps* with acceleration and momentum (see `[scroll]` above). A
+  config written by an older version keeps `mode = "notches"`; switch it in
+  Settings → Scrolling. Terminals and a few toolkits only understand whole
+  notches and scroll faster in smooth mode: pick *Whole notches* there.
 - *Swipe goes the wrong way*: flip **Direction**, or set *Desktop touchpad
   natural scrolling* explicitly.
 - *Nothing happens on swipe*: check the desktop handles 4-finger (or
@@ -300,6 +331,26 @@ journalctl --user -fu mousetouch
   parity).
 - *`app` rules never fire*: run with `-v` and look for "focus tracking via";
   the compositor must expose one of the toplevel protocols listed above.
+
+## Tested on
+
+Mice and systems MouseTouch has actually been run on; the full table with
+firmware, adapters and install methods is at <https://mouse.3m4.net/tested/>.
+Rows marked *reported* come from users and have not been reproduced yet.
+
+| Mouse                              | Ids         | Driver                          | Status   | Notes |
+|------------------------------------|-------------|---------------------------------|----------|-------|
+| Apple Magic Mouse (USB-C, 2024)    | `004c:0323` | `hid-magicmouse` (Linux 6.16+)  | works    | Renamed on a Mac; paired again from *Nearby mice* after the desktop panel left it half paired |
+| Apple Magic Mouse 2 (Lightning)    | `004c:0269` | `hid-magicmouse` (Linux 5.15+)  | works    | Not listed by the desktop's Bluetooth panel; *Nearby mice* found and paired it. Both mice work at once |
+| Apple Magic Mouse 2 (Lightning)    | `004c:0269` | `hid-magicmouse`                | reported | Zorin OS on a 2017 iMac, issue #20; detection by id shipped in 0.1.5, confirmation pending |
+
+| System                                   | Desktop · session   | Kernel · BlueZ      | Bluetooth · machine                                  | Install                                | Status   |
+|------------------------------------------|---------------------|---------------------|------------------------------------------------------|----------------------------------------|----------|
+| Pop!_OS 24.04 LTS                        | COSMIC · Wayland    | 6.17.9 · 5.72       | Qualcomm QCA61x4 (USB) · Lenovo IdeaPad Gaming 3     | one-line (.deb), Homebrew, `install.sh` | works    |
+| Zorin OS 17                              | GNOME · Wayland     | —                   | built-in · iMac (2017)                               | one-line (.deb)                        | reported |
+
+Tested somewhere else? Open an issue with the mouse ids (`mousetouch probe`),
+distro, desktop, `uname -r`, `bluetoothctl --version` and how you installed.
 
 ## Development
 

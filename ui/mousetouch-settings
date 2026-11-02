@@ -15,6 +15,7 @@ import json
 import locale
 import math
 import os
+import shutil
 import socket
 import subprocess
 import sys
@@ -138,6 +139,7 @@ def apply_theme(theme: str) -> None:
 # Translations: CATALOG["xx"] = {"English source": "translation", ...}
 
 CATALOG["es"] = {
+    "Nearby mice": "Ratones cercanos", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Ratones encendidos que aún no están conectados. Conectar desde aquí elimina cualquier emparejamiento a medias (lo habitual tras una Mac) y empareja, confía y conecta el ratón por sí mismo.", "Scan": "Buscar", "Scanning…": "Buscando…", "Press Scan with the mouse switched on.": "Pulsa Buscar con el ratón encendido.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "No se encontraron ratones. Apaga y encende el ratón para que se anuncie y vuelve a buscar.", "Connect": "Conectar", "Not paired yet": "Aún sin emparejar", "Half paired, no bond: Linux would reject it": "Emparejado a medias, sin vínculo: Linux lo rechazaría", "Paired, not connected": "Emparejado, no conectado", "Connect {name}?": "¿Conectar {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Se elimina cualquier emparejamiento antiguo de este ratón y luego se empareja, se marca como de confianza y se conecta. Tarda unos diez segundos; mantén el ratón encendido.", "Connected: {name}": "Conectado: {name}", "Pairing…": "Emparejando…", "Working…": "Trabajando…", "Keep the mouse switched on; switch it off and on if nothing happens": "Mantén el ratón encendido; apágalo y enciéndelo si no pasa nada", "Connected and bonded": "Conectado y vinculado", "Pairing failed: {error}": "Falló el emparejamiento: {error}", "Could not run mousetouch: {error}": "No se pudo ejecutar mousetouch: {error}", "Close": "Cerrar",
     "Acceleration": "Aceleración", "Extra distance for fast flicks on top of Speed; 0 = off": "Distancia extra en los deslizamientos rápidos, además de Velocidad; 0 = apagada", "Momentum": "Inercia", "Keep scrolling after the finger lifts, slowing down like macOS": "Seguir desplazando al levantar el dedo, frenando como en macOS", "Momentum decay": "Frenado de la inercia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocidad que se conserva cada milisegundo; 0.998 es el valor de Apple, menos para parar antes",
     "Swipe": "Deslizar", "Tap": "Toque", "Double tap": "Doble toque",
     "Left": "Izquierda", "Right": "Derecha", "Up": "Arriba", "Down": "Abajo",
@@ -213,6 +215,7 @@ CATALOG["es"] = {
 }
 
 CATALOG["fr"] = {
+    "Nearby mice": "Souris à proximité", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Souris allumées mais pas encore connectées. Se connecter ici supprime tout appairage inachevé (l'état habituel après un Mac), puis appaire, approuve et connecte la souris.", "Scan": "Rechercher", "Scanning…": "Recherche…", "Press Scan with the mouse switched on.": "Appuyez sur Rechercher avec la souris allumée.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Aucune souris trouvée. Éteignez et rallumez la souris pour qu'elle s'annonce, puis relancez la recherche.", "Connect": "Connecter", "Not paired yet": "Pas encore appairée", "Half paired, no bond: Linux would reject it": "Appairage incomplet, sans liaison : Linux la refuserait", "Paired, not connected": "Appairée, non connectée", "Connect {name}?": "Connecter {name} ?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Tout ancien appairage de cette souris est supprimé, puis elle est appairée, approuvée et connectée. Cela prend une dizaine de secondes ; gardez la souris allumée.", "Connected: {name}": "Connectée : {name}", "Pairing…": "Appairage…", "Working…": "En cours…", "Keep the mouse switched on; switch it off and on if nothing happens": "Gardez la souris allumée ; éteignez-la et rallumez-la s'il ne se passe rien", "Connected and bonded": "Connectée et liée", "Pairing failed: {error}": "Échec de l'appairage : {error}", "Could not run mousetouch: {error}": "Impossible de lancer mousetouch : {error}", "Close": "Fermer",
     "Acceleration": "Accélération", "Extra distance for fast flicks on top of Speed; 0 = off": "Distance supplémentaire pour les gestes rapides, en plus de Vitesse ; 0 = désactivée", "Momentum": "Inertie", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuer à défiler après avoir levé le doigt, en ralentissant comme macOS", "Momentum decay": "Décroissance de l'inertie", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Vitesse conservée chaque milliseconde ; 0.998 est la valeur d'Apple, plus bas s'arrête plus tôt",
     "Swipe": "Balayage", "Tap": "Tapotement", "Double tap": "Double tapotement",
     "Left": "Gauche", "Right": "Droite", "Up": "Haut", "Down": "Bas",
@@ -288,6 +291,7 @@ CATALOG["fr"] = {
 }
 
 CATALOG["de"] = {
+    "Nearby mice": "Mäuse in der Nähe", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Eingeschaltete Mäuse, die noch nicht verbunden sind. Verbinden entfernt hier jede halbfertige Kopplung (der übliche Zustand nach einem Mac) und koppelt, vertraut und verbindet die Maus selbst.", "Scan": "Suchen", "Scanning…": "Suche…", "Press Scan with the mouse switched on.": "Drücke Suchen, während die Maus eingeschaltet ist.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Keine Mäuse gefunden. Schalte die Maus aus und wieder ein, damit sie sich meldet, und suche erneut.", "Connect": "Verbinden", "Not paired yet": "Noch nicht gekoppelt", "Half paired, no bond: Linux would reject it": "Halb gekoppelt, ohne Bindung: Linux würde sie abweisen", "Paired, not connected": "Gekoppelt, nicht verbunden", "Connect {name}?": "{name} verbinden?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Jede alte Kopplung dieser Maus wird entfernt, dann wird sie gekoppelt, als vertrauenswürdig markiert und verbunden. Das dauert etwa zehn Sekunden; lass die Maus eingeschaltet.", "Connected: {name}": "Verbunden: {name}", "Pairing…": "Kopplung…", "Working…": "Arbeite…", "Keep the mouse switched on; switch it off and on if nothing happens": "Lass die Maus eingeschaltet; schalte sie aus und wieder ein, wenn nichts passiert", "Connected and bonded": "Verbunden und gebunden", "Pairing failed: {error}": "Kopplung fehlgeschlagen: {error}", "Could not run mousetouch: {error}": "mousetouch konnte nicht gestartet werden: {error}", "Close": "Schließen",
     "Acceleration": "Beschleunigung", "Extra distance for fast flicks on top of Speed; 0 = off": "Zusätzlicher Weg bei schnellen Wischern, zusätzlich zur Geschwindigkeit; 0 = aus", "Momentum": "Schwung", "Keep scrolling after the finger lifts, slowing down like macOS": "Nach dem Abheben des Fingers weiterscrollen und wie macOS ausrollen", "Momentum decay": "Abklingen des Schwungs", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Pro Millisekunde behaltene Geschwindigkeit; 0.998 ist Apples Wert, niedriger stoppt früher",
     "Swipe": "Wischen", "Tap": "Tipp", "Double tap": "Doppeltipp",
     "Left": "Links", "Right": "Rechts", "Up": "Oben", "Down": "Unten",
@@ -363,6 +367,7 @@ CATALOG["de"] = {
 }
 
 CATALOG["it"] = {
+    "Nearby mice": "Mouse nelle vicinanze", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouse accesi ma non ancora connessi. Connettersi da qui rimuove qualsiasi abbinamento incompleto (lo stato abituale dopo un Mac) e abbina, autorizza e connette il mouse da solo.", "Scan": "Cerca", "Scanning…": "Ricerca…", "Press Scan with the mouse switched on.": "Premi Cerca con il mouse acceso.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nessun mouse trovato. Spegni e riaccendi il mouse perché si annunci, poi cerca di nuovo.", "Connect": "Connetti", "Not paired yet": "Non ancora abbinato", "Half paired, no bond: Linux would reject it": "Abbinato a metà, senza legame: Linux lo rifiuterebbe", "Paired, not connected": "Abbinato, non connesso", "Connect {name}?": "Connettere {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Qualsiasi vecchio abbinamento di questo mouse viene rimosso, poi viene abbinato, autorizzato e connesso. Richiede circa dieci secondi; tieni il mouse acceso.", "Connected: {name}": "Connesso: {name}", "Pairing…": "Abbinamento…", "Working…": "In corso…", "Keep the mouse switched on; switch it off and on if nothing happens": "Tieni il mouse acceso; spegnilo e riaccendilo se non succede nulla", "Connected and bonded": "Connesso e legato", "Pairing failed: {error}": "Abbinamento fallito: {error}", "Could not run mousetouch: {error}": "Impossibile eseguire mousetouch: {error}", "Close": "Chiudi",
     "Acceleration": "Accelerazione", "Extra distance for fast flicks on top of Speed; 0 = off": "Distanza extra per i gesti rapidi, oltre a Velocità; 0 = disattivata", "Momentum": "Inerzia", "Keep scrolling after the finger lifts, slowing down like macOS": "Continua a scorrere quando sollevi il dito, rallentando come macOS", "Momentum decay": "Decadimento dell'inerzia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocità mantenuta ogni millisecondo; 0.998 è il valore di Apple, più basso si ferma prima",
     "Swipe": "Scorrimento", "Tap": "Tocco", "Double tap": "Doppio tocco",
     "Left": "Sinistra", "Right": "Destra", "Up": "Su", "Down": "Giù",
@@ -438,6 +443,7 @@ CATALOG["it"] = {
 }
 
 CATALOG["pt"] = {
+    "Nearby mice": "Mouses próximos", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouses ligados que ainda não estão conectados. Conectar por aqui remove qualquer emparelhamento incompleto (o estado habitual depois de um Mac) e emparelha, confia e conecta o mouse sozinho.", "Scan": "Procurar", "Scanning…": "Procurando…", "Press Scan with the mouse switched on.": "Toque em Procurar com o mouse ligado.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nenhum mouse encontrado. Desligue e ligue o mouse para que ele se anuncie e procure de novo.", "Connect": "Conectar", "Not paired yet": "Ainda não emparelhado", "Half paired, no bond: Linux would reject it": "Emparelhado pela metade, sem vínculo: o Linux o rejeitaria", "Paired, not connected": "Emparelhado, não conectado", "Connect {name}?": "Conectar {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Qualquer emparelhamento antigo deste mouse é removido; depois ele é emparelhado, marcado como confiável e conectado. Leva cerca de dez segundos; mantenha o mouse ligado.", "Connected: {name}": "Conectado: {name}", "Pairing…": "Emparelhando…", "Working…": "Trabalhando…", "Keep the mouse switched on; switch it off and on if nothing happens": "Mantenha o mouse ligado; desligue e ligue se nada acontecer", "Connected and bonded": "Conectado e vinculado", "Pairing failed: {error}": "Falha no emparelhamento: {error}", "Could not run mousetouch: {error}": "Não foi possível executar o mousetouch: {error}", "Close": "Fechar",
     "Acceleration": "Aceleração", "Extra distance for fast flicks on top of Speed; 0 = off": "Distância extra nos deslizes rápidos, além de Velocidade; 0 = desligada", "Momentum": "Inércia", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuar a rolar ao levantar o dedo, desacelerando como no macOS", "Momentum decay": "Decaimento da inércia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocidade mantida a cada milissegundo; 0.998 é o valor da Apple, menor para mais cedo",
     "Swipe": "Deslizar", "Tap": "Toque", "Double tap": "Toque duplo",
     "Left": "Esquerda", "Right": "Direita", "Up": "Cima", "Down": "Baixo",
@@ -513,6 +519,7 @@ CATALOG["pt"] = {
 }
 
 CATALOG["nl"] = {
+    "Nearby mice": "Muizen in de buurt", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Ingeschakelde muizen die nog niet verbonden zijn. Hier verbinden verwijdert elke half afgeronde koppeling (de gewone toestand na een Mac) en koppelt, vertrouwt en verbindt de muis zelf.", "Scan": "Zoeken", "Scanning…": "Zoeken…", "Press Scan with the mouse switched on.": "Druk op Zoeken terwijl de muis aan staat.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Geen muizen gevonden. Zet de muis uit en aan zodat hij zich meldt, en zoek opnieuw.", "Connect": "Verbinden", "Not paired yet": "Nog niet gekoppeld", "Half paired, no bond: Linux would reject it": "Half gekoppeld, zonder binding: Linux zou hem weigeren", "Paired, not connected": "Gekoppeld, niet verbonden", "Connect {name}?": "{name} verbinden?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Elke oude koppeling van deze muis wordt verwijderd; daarna wordt hij gekoppeld, vertrouwd en verbonden. Dit duurt ongeveer tien seconden; houd de muis aan.", "Connected: {name}": "Verbonden: {name}", "Pairing…": "Koppelen…", "Working…": "Bezig…", "Keep the mouse switched on; switch it off and on if nothing happens": "Houd de muis aan; zet hem uit en aan als er niets gebeurt", "Connected and bonded": "Verbonden en gebonden", "Pairing failed: {error}": "Koppelen mislukt: {error}", "Could not run mousetouch: {error}": "Kon mousetouch niet starten: {error}", "Close": "Sluiten",
     "Acceleration": "Versnelling", "Extra distance for fast flicks on top of Speed; 0 = off": "Extra afstand bij snelle veegbewegingen, bovenop Snelheid; 0 = uit", "Momentum": "Uitrollen", "Keep scrolling after the finger lifts, slowing down like macOS": "Blijf scrollen nadat de vinger loskomt, afremmend zoals macOS", "Momentum decay": "Afname van het uitrollen", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Behouden snelheid per milliseconde; 0.998 is Apples waarde, lager stopt eerder",
     "Swipe": "Vegen", "Tap": "Tik", "Double tap": "Dubbele tik",
     "Left": "Links", "Right": "Rechts", "Up": "Omhoog", "Down": "Omlaag",
@@ -588,6 +595,7 @@ CATALOG["nl"] = {
 }
 
 CATALOG["sv"] = {
+    "Nearby mice": "Möss i närheten", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Påslagna möss som inte är anslutna ännu. Att ansluta här tar bort varje halvfärdig parkoppling (det vanliga läget efter en Mac) och parkopplar, litar på och ansluter musen själv.", "Scan": "Sök", "Scanning…": "Söker…", "Press Scan with the mouse switched on.": "Tryck på Sök med musen påslagen.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Inga möss hittades. Stäng av och slå på musen så att den annonserar sig, och sök igen.", "Connect": "Anslut", "Not paired yet": "Inte parkopplad ännu", "Half paired, no bond: Linux would reject it": "Halvt parkopplad, utan bindning: Linux skulle avvisa den", "Paired, not connected": "Parkopplad, inte ansluten", "Connect {name}?": "Anslut {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "All gammal parkoppling av musen tas bort, sedan parkopplas, betros och ansluts den. Det tar ungefär tio sekunder; låt musen vara påslagen.", "Connected: {name}": "Ansluten: {name}", "Pairing…": "Parkopplar…", "Working…": "Arbetar…", "Keep the mouse switched on; switch it off and on if nothing happens": "Låt musen vara på; stäng av och slå på den om ingenting händer", "Connected and bonded": "Ansluten och bunden", "Pairing failed: {error}": "Parkopplingen misslyckades: {error}", "Could not run mousetouch: {error}": "Kunde inte köra mousetouch: {error}", "Close": "Stäng",
     "Acceleration": "Acceleration", "Extra distance for fast flicks on top of Speed; 0 = off": "Extra sträcka vid snabba svep, utöver Hastighet; 0 = av", "Momentum": "Rörelsemängd", "Keep scrolling after the finger lifts, slowing down like macOS": "Fortsätt rulla när fingret lyfts och sakta ner som macOS", "Momentum decay": "Avmattning", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Hastighet som behålls varje millisekund; 0.998 är Apples värde, lägre stannar tidigare",
     "Swipe": "Svep", "Tap": "Tryck", "Double tap": "Dubbeltryck",
     "Left": "Vänster", "Right": "Höger", "Up": "Upp", "Down": "Ner",
@@ -663,6 +671,7 @@ CATALOG["sv"] = {
 }
 
 CATALOG["pl"] = {
+    "Nearby mice": "Myszy w pobliżu", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Włączone myszy, które nie są jeszcze połączone. Połączenie stąd usuwa każde niedokończone parowanie (zwykły stan po Macu) i samo paruje, zaufa i łączy mysz.", "Scan": "Szukaj", "Scanning…": "Szukanie…", "Press Scan with the mouse switched on.": "Naciśnij Szukaj przy włączonej myszy.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nie znaleziono myszy. Wyłącz i włącz mysz, aby się rozgłaszała, i szukaj ponownie.", "Connect": "Połącz", "Not paired yet": "Jeszcze niesparowana", "Half paired, no bond: Linux would reject it": "Sparowana połowicznie, bez powiązania: Linux by ją odrzucił", "Paired, not connected": "Sparowana, niepołączona", "Connect {name}?": "Połączyć {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Stare parowanie tej myszy zostaje usunięte, a potem mysz jest parowana, oznaczana jako zaufana i łączona. Trwa to około dziesięciu sekund; nie wyłączaj myszy.", "Connected: {name}": "Połączono: {name}", "Pairing…": "Parowanie…", "Working…": "Pracuję…", "Keep the mouse switched on; switch it off and on if nothing happens": "Nie wyłączaj myszy; wyłącz ją i włącz, jeśli nic się nie dzieje", "Connected and bonded": "Połączona i powiązana", "Pairing failed: {error}": "Parowanie nie powiodło się: {error}", "Could not run mousetouch: {error}": "Nie można uruchomić mousetouch: {error}", "Close": "Zamknij",
     "Acceleration": "Przyspieszenie", "Extra distance for fast flicks on top of Speed; 0 = off": "Dodatkowa odległość przy szybkich ruchach, oprócz Prędkości; 0 = wył.", "Momentum": "Rozpęd", "Keep scrolling after the finger lifts, slowing down like macOS": "Przewijaj dalej po uniesieniu palca, zwalniając jak w macOS", "Momentum decay": "Wygaszanie rozpędu", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Prędkość zachowana co milisekundę; 0.998 to wartość Apple, mniej zatrzymuje wcześniej",
     "Swipe": "Przesunięcie", "Tap": "Stuknięcie", "Double tap": "Podwójne stuknięcie",
     "Left": "W lewo", "Right": "W prawo", "Up": "W górę", "Down": "W dół",
@@ -738,6 +747,7 @@ CATALOG["pl"] = {
 }
 
 CATALOG["cs"] = {
+    "Nearby mice": "Myši v okolí", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Zapnuté myši, které zatím nejsou připojené. Připojení odsud odstraní každé nedokončené párování (obvyklý stav po Macu) a myš samo spáruje, označí jako důvěryhodnou a připojí.", "Scan": "Hledat", "Scanning…": "Hledání…", "Press Scan with the mouse switched on.": "Stiskněte Hledat se zapnutou myší.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Žádná myš nenalezena. Vypněte a zapněte myš, aby se ohlásila, a hledejte znovu.", "Connect": "Připojit", "Not paired yet": "Zatím nespárovaná", "Half paired, no bond: Linux would reject it": "Spárovaná napůl, bez vazby: Linux by ji odmítl", "Paired, not connected": "Spárovaná, nepřipojená", "Connect {name}?": "Připojit {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Staré párování této myši se odstraní, poté se spáruje, označí jako důvěryhodná a připojí. Trvá to asi deset sekund; nechte myš zapnutou.", "Connected: {name}": "Připojeno: {name}", "Pairing…": "Párování…", "Working…": "Pracuji…", "Keep the mouse switched on; switch it off and on if nothing happens": "Nechte myš zapnutou; pokud se nic neděje, vypněte ji a zapněte", "Connected and bonded": "Připojená a svázaná", "Pairing failed: {error}": "Párování selhalo: {error}", "Could not run mousetouch: {error}": "Nelze spustit mousetouch: {error}", "Close": "Zavřít",
     "Acceleration": "Zrychlení", "Extra distance for fast flicks on top of Speed; 0 = off": "Delší posun při rychlých švihnutích, nad rámec Rychlosti; 0 = vypnuto", "Momentum": "Setrvačnost", "Keep scrolling after the finger lifts, slowing down like macOS": "Po zvednutí prstu dál posouvat a zpomalovat jako macOS", "Momentum decay": "Útlum setrvačnosti", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Rychlost zachovaná každou milisekundu; 0.998 je hodnota Apple, nižší zastaví dřív",
     "Swipe": "Přejetí", "Tap": "Klepnutí", "Double tap": "Dvojité klepnutí",
     "Left": "Vlevo", "Right": "Vpravo", "Up": "Nahoru", "Down": "Dolů",
@@ -813,6 +823,7 @@ CATALOG["cs"] = {
 }
 
 CATALOG["ro"] = {
+    "Nearby mice": "Mouse-uri în apropiere", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouse-uri pornite care nu sunt încă conectate. Conectarea de aici elimină orice împerechere neterminată (starea obișnuită după un Mac) și împerechează, acordă încredere și conectează mouse-ul singură.", "Scan": "Caută", "Scanning…": "Se caută…", "Press Scan with the mouse switched on.": "Apasă Caută cu mouse-ul pornit.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nu s-a găsit niciun mouse. Oprește și pornește mouse-ul ca să se anunțe, apoi caută din nou.", "Connect": "Conectează", "Not paired yet": "Încă neîmperecheat", "Half paired, no bond: Linux would reject it": "Împerecheat pe jumătate, fără legătură: Linux l-ar respinge", "Paired, not connected": "Împerecheat, neconectat", "Connect {name}?": "Conectezi {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Orice împerechere veche a acestui mouse este eliminată, apoi este împerecheat, marcat de încredere și conectat. Durează cam zece secunde; ține mouse-ul pornit.", "Connected: {name}": "Conectat: {name}", "Pairing…": "Împerechere…", "Working…": "Se lucrează…", "Keep the mouse switched on; switch it off and on if nothing happens": "Ține mouse-ul pornit; oprește-l și pornește-l dacă nu se întâmplă nimic", "Connected and bonded": "Conectat și legat", "Pairing failed: {error}": "Împerecherea a eșuat: {error}", "Could not run mousetouch: {error}": "Nu s-a putut rula mousetouch: {error}", "Close": "Închide",
     "Acceleration": "Accelerare", "Extra distance for fast flicks on top of Speed; 0 = off": "Distanță suplimentară la mișcările rapide, peste Viteză; 0 = oprită", "Momentum": "Inerție", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuă derularea după ridicarea degetului, încetinind ca pe macOS", "Momentum decay": "Atenuarea inerției", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Viteza păstrată la fiecare milisecundă; 0.998 este valoarea Apple, mai mic se oprește mai repede",
     "Swipe": "Glisare", "Tap": "Atingere", "Double tap": "Atingere dublă",
     "Left": "Stânga", "Right": "Dreapta", "Up": "Sus", "Down": "Jos",
@@ -888,6 +899,7 @@ CATALOG["ro"] = {
 }
 
 CATALOG["el"] = {
+    "Nearby mice": "Ποντίκια κοντά", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Αναμμένα ποντίκια που δεν έχουν συνδεθεί ακόμη. Η σύνδεση από εδώ αφαιρεί κάθε μισοτελειωμένη σύζευξη (η συνηθισμένη κατάσταση μετά από Mac) και συζευγνύει, εμπιστεύεται και συνδέει το ποντίκι μόνη της.", "Scan": "Αναζήτηση", "Scanning…": "Αναζήτηση…", "Press Scan with the mouse switched on.": "Πάτησε Αναζήτηση με το ποντίκι αναμμένο.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Δεν βρέθηκαν ποντίκια. Σβήσε και άναψε το ποντίκι για να εκπέμψει και ξαναψάξε.", "Connect": "Σύνδεση", "Not paired yet": "Δεν έχει συζευχθεί ακόμη", "Half paired, no bond: Linux would reject it": "Μισοσυζευγμένο, χωρίς δέσμευση: το Linux θα το απέρριπτε", "Paired, not connected": "Συζευγμένο, μη συνδεδεμένο", "Connect {name}?": "Σύνδεση με {name};", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Κάθε παλιά σύζευξη αυτού του ποντικιού αφαιρείται και μετά συζευγνύεται, γίνεται έμπιστο και συνδέεται. Διαρκεί περίπου δέκα δευτερόλεπτα· κράτα το ποντίκι αναμμένο.", "Connected: {name}": "Συνδέθηκε: {name}", "Pairing…": "Σύζευξη…", "Working…": "Σε εξέλιξη…", "Keep the mouse switched on; switch it off and on if nothing happens": "Κράτα το ποντίκι αναμμένο· σβήσε το και άναψέ το αν δεν γίνεται τίποτα", "Connected and bonded": "Συνδεδεμένο και δεσμευμένο", "Pairing failed: {error}": "Η σύζευξη απέτυχε: {error}", "Could not run mousetouch: {error}": "Δεν ήταν δυνατή η εκτέλεση του mousetouch: {error}", "Close": "Κλείσιμο",
     "Acceleration": "Επιτάχυνση", "Extra distance for fast flicks on top of Speed; 0 = off": "Επιπλέον απόσταση στις γρήγορες κινήσεις, πέρα από την Ταχύτητα· 0 = ανενεργή", "Momentum": "Αδράνεια", "Keep scrolling after the finger lifts, slowing down like macOS": "Συνέχεια κύλισης αφού σηκωθεί το δάχτυλο, με επιβράδυνση όπως στο macOS", "Momentum decay": "Απόσβεση αδράνειας", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Ταχύτητα που διατηρείται κάθε χιλιοστό του δευτερολέπτου· 0.998 είναι η τιμή της Apple, μικρότερη σταματά νωρίτερα",
     "Swipe": "Σάρωση", "Tap": "Πάτημα", "Double tap": "Διπλό πάτημα",
     "Left": "Αριστερά", "Right": "Δεξιά", "Up": "Πάνω", "Down": "Κάτω",
@@ -963,6 +975,7 @@ CATALOG["el"] = {
 }
 
 CATALOG["uk"] = {
+    "Nearby mice": "Миші поруч", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Увімкнені миші, які ще не підключені. Підключення звідси видаляє будь-яке незавершене спарювання (звичайний стан після Mac) і сама спарює, довіряє та підключає мишу.", "Scan": "Шукати", "Scanning…": "Пошук…", "Press Scan with the mouse switched on.": "Натисніть Шукати з увімкненою мишею.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Мишей не знайдено. Вимкніть і ввімкніть мишу, щоб вона оголосила себе, і пошукайте знову.", "Connect": "Підключити", "Not paired yet": "Ще не спарована", "Half paired, no bond: Linux would reject it": "Спарована наполовину, без зв'язку: Linux її відхилить", "Paired, not connected": "Спарована, не підключена", "Connect {name}?": "Підключити {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Будь-яке старе спарювання цієї миші видаляється, потім вона спарюється, позначається довіреною та підключається. Це займає близько десяти секунд; тримайте мишу увімкненою.", "Connected: {name}": "Підключено: {name}", "Pairing…": "Спарювання…", "Working…": "Працюю…", "Keep the mouse switched on; switch it off and on if nothing happens": "Тримайте мишу увімкненою; вимкніть і ввімкніть її, якщо нічого не відбувається", "Connected and bonded": "Підключена та зв'язана", "Pairing failed: {error}": "Спарювання не вдалося: {error}", "Could not run mousetouch: {error}": "Не вдалося запустити mousetouch: {error}", "Close": "Закрити",
     "Acceleration": "Прискорення", "Extra distance for fast flicks on top of Speed; 0 = off": "Додаткова відстань для швидких рухів, окрім Швидкості; 0 = вимкнено", "Momentum": "Інерція", "Keep scrolling after the finger lifts, slowing down like macOS": "Продовжувати прокручування після відриву пальця, сповільнюючись як у macOS", "Momentum decay": "Затухання інерції", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Швидкість, що зберігається кожну мілісекунду; 0.998 — значення Apple, менше зупиняється раніше",
     "Swipe": "Гортання", "Tap": "Торкання", "Double tap": "Подвійне торкання",
     "Left": "Вліво", "Right": "Вправо", "Up": "Вгору", "Down": "Вниз",
@@ -1038,6 +1051,7 @@ CATALOG["uk"] = {
 }
 
 CATALOG["ru"] = {
+    "Nearby mice": "Мыши рядом", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Включённые мыши, которые ещё не подключены. Подключение отсюда удаляет любое незавершённое сопряжение (обычное состояние после Mac) и само сопрягает, доверяет и подключает мышь.", "Scan": "Искать", "Scanning…": "Поиск…", "Press Scan with the mouse switched on.": "Нажмите Искать с включённой мышью.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Мыши не найдены. Выключите и включите мышь, чтобы она объявила о себе, и поищите снова.", "Connect": "Подключить", "Not paired yet": "Ещё не сопряжена", "Half paired, no bond: Linux would reject it": "Сопряжена наполовину, без связи: Linux её отклонит", "Paired, not connected": "Сопряжена, не подключена", "Connect {name}?": "Подключить {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Любое старое сопряжение этой мыши удаляется, затем она сопрягается, помечается доверенной и подключается. Это занимает около десяти секунд; не выключайте мышь.", "Connected: {name}": "Подключено: {name}", "Pairing…": "Сопряжение…", "Working…": "Работаю…", "Keep the mouse switched on; switch it off and on if nothing happens": "Не выключайте мышь; выключите и включите её, если ничего не происходит", "Connected and bonded": "Подключена и связана", "Pairing failed: {error}": "Сопряжение не удалось: {error}", "Could not run mousetouch: {error}": "Не удалось запустить mousetouch: {error}", "Close": "Закрыть",
     "Acceleration": "Ускорение", "Extra distance for fast flicks on top of Speed; 0 = off": "Дополнительное расстояние при быстрых движениях, помимо Скорости; 0 = выключено", "Momentum": "Инерция", "Keep scrolling after the finger lifts, slowing down like macOS": "Продолжать прокрутку после отрыва пальца, замедляясь как в macOS", "Momentum decay": "Затухание инерции", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Скорость, сохраняемая каждую миллисекунду; 0.998 — значение Apple, меньше останавливается раньше",
     "Swipe": "Свайп", "Tap": "Касание", "Double tap": "Двойное касание",
     "Left": "Влево", "Right": "Вправо", "Up": "Вверх", "Down": "Вниз",
@@ -1113,6 +1127,7 @@ CATALOG["ru"] = {
 }
 
 CATALOG["tr"] = {
+    "Nearby mice": "Yakındaki fareler", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Açık olup henüz bağlanmamış fareler. Buradan bağlanmak yarım kalmış eşleşmeyi (Mac sonrası olağan durum) kaldırır ve fareyi kendisi eşler, güvenir ve bağlar.", "Scan": "Tara", "Scanning…": "Taranıyor…", "Press Scan with the mouse switched on.": "Fare açıkken Tara'ya bas.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Fare bulunamadı. Farenin kendini duyurması için kapatıp aç, sonra yeniden tara.", "Connect": "Bağlan", "Not paired yet": "Henüz eşlenmedi", "Half paired, no bond: Linux would reject it": "Yarım eşlenmiş, bağ yok: Linux reddederdi", "Paired, not connected": "Eşlenmiş, bağlı değil", "Connect {name}?": "{name} bağlansın mı?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Bu farenin eski eşleşmesi kaldırılır, sonra eşlenir, güvenilir olarak işaretlenir ve bağlanır. Yaklaşık on saniye sürer; fareyi açık tut.", "Connected: {name}": "Bağlandı: {name}", "Pairing…": "Eşleniyor…", "Working…": "Çalışıyor…", "Keep the mouse switched on; switch it off and on if nothing happens": "Fareyi açık tut; hiçbir şey olmuyorsa kapatıp aç", "Connected and bonded": "Bağlı ve bağlanmış", "Pairing failed: {error}": "Eşleme başarısız: {error}", "Could not run mousetouch: {error}": "mousetouch çalıştırılamadı: {error}", "Close": "Kapat",
     "Acceleration": "Hızlanma", "Extra distance for fast flicks on top of Speed; 0 = off": "Hızlı kaydırmalarda Hız'a ek mesafe; 0 = kapalı", "Momentum": "Momentum", "Keep scrolling after the finger lifts, slowing down like macOS": "Parmak kalktıktan sonra macOS gibi yavaşlayarak kaydırmaya devam et", "Momentum decay": "Momentum sönümü", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Her milisaniyede korunan hız; 0.998 Apple'ın değeri, daha düşüğü daha erken durur",
     "Swipe": "Kaydırma", "Tap": "Dokunma", "Double tap": "Çift dokunma",
     "Left": "Sol", "Right": "Sağ", "Up": "Yukarı", "Down": "Aşağı",
@@ -1188,6 +1203,7 @@ CATALOG["tr"] = {
 }
 
 CATALOG["ar"] = {
+    "Nearby mice": "الفئران القريبة", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "فئران مشغّلة ولم تتصل بعد. الاتصال من هنا يزيل أي إقران غير مكتمل (الحالة المعتادة بعد Mac) ثم يقرن الفأرة ويثق بها ويصلها بنفسه.", "Scan": "بحث", "Scanning…": "جارٍ البحث…", "Press Scan with the mouse switched on.": "اضغط بحث والفأرة مشغّلة.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "لم يُعثر على فئران. أطفئ الفأرة وشغّلها لتعلن عن نفسها ثم ابحث مجددًا.", "Connect": "اتصال", "Not paired yet": "غير مقرونة بعد", "Half paired, no bond: Linux would reject it": "مقرونة نصفيًا بلا ارتباط: سيرفضها Linux", "Paired, not connected": "مقرونة وغير متصلة", "Connect {name}?": "الاتصال بـ {name}؟", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "يُزال أي إقران قديم لهذه الفأرة ثم تُقرن وتُعتمد وتُوصل. يستغرق ذلك نحو عشر ثوانٍ؛ أبقِ الفأرة مشغّلة.", "Connected: {name}": "متصلة: {name}", "Pairing…": "جارٍ الإقران…", "Working…": "جارٍ العمل…", "Keep the mouse switched on; switch it off and on if nothing happens": "أبقِ الفأرة مشغّلة؛ أطفئها وشغّلها إن لم يحدث شيء", "Connected and bonded": "متصلة ومرتبطة", "Pairing failed: {error}": "فشل الإقران: {error}", "Could not run mousetouch: {error}": "تعذّر تشغيل mousetouch: {error}", "Close": "إغلاق",
     "Acceleration": "التسارع", "Extra distance for fast flicks on top of Speed; 0 = off": "مسافة إضافية عند التمرير السريع فوق السرعة؛ 0 = متوقف", "Momentum": "القصور الذاتي", "Keep scrolling after the finger lifts, slowing down like macOS": "متابعة التمرير بعد رفع الإصبع مع التباطؤ كما في macOS", "Momentum decay": "تلاشي القصور الذاتي", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "السرعة المحتفظ بها كل مللي ثانية؛ 0.998 هي قيمة Apple، والأقل يتوقف أبكر",
     "Swipe": "تمرير", "Tap": "نقرة", "Double tap": "نقرة مزدوجة",
     "Left": "يسار", "Right": "يمين", "Up": "أعلى", "Down": "أسفل",
@@ -1263,6 +1279,7 @@ CATALOG["ar"] = {
 }
 
 CATALOG["hi"] = {
+    "Nearby mice": "आस-पास के माउस", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "चालू माउस जो अभी कनेक्ट नहीं हुए। यहाँ से कनेक्ट करने पर अधूरी पेयरिंग (Mac के बाद की सामान्य स्थिति) हट जाती है और माउस को खुद पेयर, ट्रस्ट और कनेक्ट किया जाता है।", "Scan": "खोजें", "Scanning…": "खोज रहे हैं…", "Press Scan with the mouse switched on.": "माउस चालू रखकर खोजें दबाएँ।", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "कोई माउस नहीं मिला। माउस बंद करके चालू करें ताकि वह दिखे, फिर दोबारा खोजें।", "Connect": "कनेक्ट करें", "Not paired yet": "अभी पेयर नहीं", "Half paired, no bond: Linux would reject it": "आधा पेयर, बिना बॉन्ड: Linux इसे अस्वीकार करेगा", "Paired, not connected": "पेयर है, कनेक्ट नहीं", "Connect {name}?": "{name} कनेक्ट करें?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "इस माउस की पुरानी पेयरिंग हटाकर उसे पेयर, ट्रस्ट और कनेक्ट किया जाएगा। लगभग दस सेकंड लगते हैं; माउस चालू रखें।", "Connected: {name}": "कनेक्ट हुआ: {name}", "Pairing…": "पेयर हो रहा है…", "Working…": "काम चल रहा है…", "Keep the mouse switched on; switch it off and on if nothing happens": "माउस चालू रखें; कुछ न हो तो उसे बंद करके चालू करें", "Connected and bonded": "कनेक्ट और बॉन्ड हो गया", "Pairing failed: {error}": "पेयरिंग विफल: {error}", "Could not run mousetouch: {error}": "mousetouch चलाया नहीं जा सका: {error}", "Close": "बंद करें",
     "Acceleration": "त्वरण", "Extra distance for fast flicks on top of Speed; 0 = off": "तेज़ फ़्लिक पर गति के ऊपर अतिरिक्त दूरी; 0 = बंद", "Momentum": "गतिबल", "Keep scrolling after the finger lifts, slowing down like macOS": "उंगली उठाने के बाद भी स्क्रॉल जारी रहे, macOS की तरह धीमा होते हुए", "Momentum decay": "गतिबल का क्षय", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "हर मिलीसेकंड में बनी रहने वाली गति; 0.998 Apple का मान है, कम होने पर जल्दी रुकता है",
     "Swipe": "स्वाइप", "Tap": "टैप", "Double tap": "डबल टैप",
     "Left": "बाएँ", "Right": "दाएँ", "Up": "ऊपर", "Down": "नीचे",
@@ -1338,6 +1355,7 @@ CATALOG["hi"] = {
 }
 
 CATALOG["zh"] = {
+    "Nearby mice": "附近的鼠标", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "已开机但尚未连接的鼠标。从这里连接会清除任何未完成的配对（从 Mac 回来后的常见状态），并自行完成配对、信任和连接。", "Scan": "扫描", "Scanning…": "正在扫描…", "Press Scan with the mouse switched on.": "请在鼠标开机时点击扫描。", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "未找到鼠标。请关闭再打开鼠标使其广播，然后重新扫描。", "Connect": "连接", "Not paired yet": "尚未配对", "Half paired, no bond: Linux would reject it": "配对不完整，没有绑定：Linux 会拒绝它", "Paired, not connected": "已配对，未连接", "Connect {name}?": "连接 {name}？", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "将删除此鼠标的旧配对，然后进行配对、信任并连接。大约需要十秒；请保持鼠标开机。", "Connected: {name}": "已连接：{name}", "Pairing…": "正在配对…", "Working…": "处理中…", "Keep the mouse switched on; switch it off and on if nothing happens": "请保持鼠标开机；如果没有反应，请关闭再打开", "Connected and bonded": "已连接并绑定", "Pairing failed: {error}": "配对失败：{error}", "Could not run mousetouch: {error}": "无法运行 mousetouch：{error}", "Close": "关闭",
     "Acceleration": "加速", "Extra distance for fast flicks on top of Speed; 0 = off": "快速滑动时在速度之上额外滚动的距离；0 = 关闭", "Momentum": "惯性", "Keep scrolling after the finger lifts, slowing down like macOS": "手指抬起后继续滚动，像 macOS 一样逐渐减速", "Momentum decay": "惯性衰减", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "每毫秒保留的速度；0.998 为 Apple 的数值，越小停得越快",
     "Swipe": "滑动", "Tap": "轻点", "Double tap": "双击",
     "Left": "左", "Right": "右", "Up": "上", "Down": "下",
@@ -1413,6 +1431,7 @@ CATALOG["zh"] = {
 }
 
 CATALOG["ja"] = {
+    "Nearby mice": "近くのマウス", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "電源が入っていてまだ接続されていないマウスです。ここから接続すると、未完了のペアリング（Mac から戻った直後によくある状態）を削除し、ペアリング・信頼・接続まで自動で行います。", "Scan": "スキャン", "Scanning…": "スキャン中…", "Press Scan with the mouse switched on.": "マウスの電源を入れてスキャンを押してください。", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "マウスが見つかりません。マウスの電源を入れ直してアドバタイズさせ、もう一度スキャンしてください。", "Connect": "接続", "Not paired yet": "まだペアリングされていません", "Half paired, no bond: Linux would reject it": "ペアリングが不完全（ボンドなし）：Linux は拒否します", "Paired, not connected": "ペアリング済み、未接続", "Connect {name}?": "{name} に接続しますか？", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "このマウスの古いペアリングを削除し、ペアリング・信頼・接続を行います。約 10 秒かかります。マウスの電源は入れたままにしてください。", "Connected: {name}": "接続しました：{name}", "Pairing…": "ペアリング中…", "Working…": "処理中…", "Keep the mouse switched on; switch it off and on if nothing happens": "マウスの電源を入れたままにしてください。何も起きなければ電源を入れ直してください", "Connected and bonded": "接続・ボンド完了", "Pairing failed: {error}": "ペアリングに失敗しました：{error}", "Could not run mousetouch: {error}": "mousetouch を実行できません：{error}", "Close": "閉じる",
     "Acceleration": "加速", "Extra distance for fast flicks on top of Speed; 0 = off": "速いフリック時に速度に加えて進む距離。0 = オフ", "Momentum": "慣性", "Keep scrolling after the finger lifts, slowing down like macOS": "指を離した後も macOS のように減速しながらスクロールを続ける", "Momentum decay": "慣性の減衰", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "1 ミリ秒ごとに保たれる速度。0.998 が Apple の値、小さいほど早く止まる",
     "Swipe": "スワイプ", "Tap": "タップ", "Double tap": "ダブルタップ",
     "Left": "左", "Right": "右", "Up": "上", "Down": "下",
@@ -1488,6 +1507,7 @@ CATALOG["ja"] = {
 }
 
 CATALOG["ko"] = {
+    "Nearby mice": "근처의 마우스", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "켜져 있지만 아직 연결되지 않은 마우스입니다. 여기서 연결하면 미완성 페어링(Mac을 거친 뒤의 흔한 상태)을 제거하고 마우스를 직접 페어링, 신뢰, 연결합니다.", "Scan": "검색", "Scanning…": "검색 중…", "Press Scan with the mouse switched on.": "마우스를 켠 상태로 검색을 누르세요.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "마우스를 찾지 못했습니다. 마우스를 끄고 다시 켜서 광고하게 한 뒤 다시 검색하세요.", "Connect": "연결", "Not paired yet": "아직 페어링되지 않음", "Half paired, no bond: Linux would reject it": "절반만 페어링됨, 결합 없음: Linux가 거부합니다", "Paired, not connected": "페어링됨, 연결되지 않음", "Connect {name}?": "{name}에 연결할까요?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "이 마우스의 이전 페어링을 제거한 뒤 페어링, 신뢰, 연결합니다. 약 10초가 걸리며 마우스는 켜 두세요.", "Connected: {name}": "연결됨: {name}", "Pairing…": "페어링 중…", "Working…": "작업 중…", "Keep the mouse switched on; switch it off and on if nothing happens": "마우스를 켜 두세요. 아무 반응이 없으면 끄고 다시 켜세요", "Connected and bonded": "연결 및 결합 완료", "Pairing failed: {error}": "페어링 실패: {error}", "Could not run mousetouch: {error}": "mousetouch를 실행할 수 없음: {error}", "Close": "닫기",
     "Acceleration": "가속", "Extra distance for fast flicks on top of Speed; 0 = off": "빠른 플릭 시 속도에 더해지는 추가 거리; 0 = 끔", "Momentum": "관성", "Keep scrolling after the finger lifts, slowing down like macOS": "손가락을 뗀 뒤에도 macOS처럼 감속하며 계속 스크롤", "Momentum decay": "관성 감쇠", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "매 밀리초마다 유지되는 속도; 0.998이 Apple 값, 낮을수록 빨리 멈춤",
     "Swipe": "스와이프", "Tap": "탭", "Double tap": "두 번 탭",
     "Left": "왼쪽", "Right": "오른쪽", "Up": "위", "Down": "아래",
@@ -1563,6 +1583,7 @@ CATALOG["ko"] = {
 }
 
 CATALOG["vi"] = {
+    "Nearby mice": "Chuột ở gần", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Chuột đang bật nhưng chưa kết nối. Kết nối từ đây sẽ xóa mọi ghép nối dở dang (tình trạng thường gặp sau khi dùng với Mac) rồi tự ghép nối, tin cậy và kết nối chuột.", "Scan": "Quét", "Scanning…": "Đang quét…", "Press Scan with the mouse switched on.": "Nhấn Quét khi chuột đang bật.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Không tìm thấy chuột. Tắt rồi bật lại chuột để nó phát tín hiệu, sau đó quét lại.", "Connect": "Kết nối", "Not paired yet": "Chưa ghép nối", "Half paired, no bond: Linux would reject it": "Ghép nối dở dang, không có liên kết: Linux sẽ từ chối", "Paired, not connected": "Đã ghép nối, chưa kết nối", "Connect {name}?": "Kết nối {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Mọi ghép nối cũ của chuột này sẽ bị xóa, sau đó chuột được ghép nối, tin cậy và kết nối. Mất khoảng mười giây; hãy giữ chuột bật.", "Connected: {name}": "Đã kết nối: {name}", "Pairing…": "Đang ghép nối…", "Working…": "Đang xử lý…", "Keep the mouse switched on; switch it off and on if nothing happens": "Giữ chuột bật; tắt rồi bật lại nếu không có gì xảy ra", "Connected and bonded": "Đã kết nối và liên kết", "Pairing failed: {error}": "Ghép nối thất bại: {error}", "Could not run mousetouch: {error}": "Không chạy được mousetouch: {error}", "Close": "Đóng",
     "Acceleration": "Tăng tốc", "Extra distance for fast flicks on top of Speed; 0 = off": "Quãng cuộn thêm khi vuốt nhanh, ngoài Tốc độ; 0 = tắt", "Momentum": "Quán tính", "Keep scrolling after the finger lifts, slowing down like macOS": "Tiếp tục cuộn sau khi nhấc ngón tay, chậm dần như macOS", "Momentum decay": "Suy giảm quán tính", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Tốc độ giữ lại mỗi mili giây; 0.998 là giá trị của Apple, thấp hơn thì dừng sớm hơn",
     "Swipe": "Vuốt", "Tap": "Chạm", "Double tap": "Chạm đôi",
     "Left": "Trái", "Right": "Phải", "Up": "Lên", "Down": "Xuống",
@@ -1638,6 +1659,7 @@ CATALOG["vi"] = {
 }
 
 CATALOG["id"] = {
+    "Nearby mice": "Mouse di sekitar", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouse yang menyala tetapi belum terhubung. Menghubungkan dari sini menghapus pemasangan yang setengah jadi (keadaan umum setelah dipakai di Mac) lalu memasangkan, mempercayai, dan menghubungkan mouse sendiri.", "Scan": "Pindai", "Scanning…": "Memindai…", "Press Scan with the mouse switched on.": "Tekan Pindai dengan mouse menyala.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Tidak ada mouse ditemukan. Matikan dan nyalakan mouse agar terdeteksi, lalu pindai lagi.", "Connect": "Hubungkan", "Not paired yet": "Belum dipasangkan", "Half paired, no bond: Linux would reject it": "Dipasangkan setengah, tanpa ikatan: Linux akan menolaknya", "Paired, not connected": "Dipasangkan, belum terhubung", "Connect {name}?": "Hubungkan {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Pemasangan lama mouse ini dihapus, lalu mouse dipasangkan, dipercaya, dan dihubungkan. Butuh sekitar sepuluh detik; biarkan mouse menyala.", "Connected: {name}": "Terhubung: {name}", "Pairing…": "Memasangkan…", "Working…": "Memproses…", "Keep the mouse switched on; switch it off and on if nothing happens": "Biarkan mouse menyala; matikan dan nyalakan jika tidak terjadi apa-apa", "Connected and bonded": "Terhubung dan terikat", "Pairing failed: {error}": "Pemasangan gagal: {error}", "Could not run mousetouch: {error}": "Tidak dapat menjalankan mousetouch: {error}", "Close": "Tutup",
     "Acceleration": "Akselerasi", "Extra distance for fast flicks on top of Speed; 0 = off": "Jarak tambahan saat jentikan cepat, di atas Kecepatan; 0 = mati", "Momentum": "Momentum", "Keep scrolling after the finger lifts, slowing down like macOS": "Terus menggulir setelah jari diangkat, melambat seperti macOS", "Momentum decay": "Peluruhan momentum", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Kecepatan yang dipertahankan tiap milidetik; 0.998 nilai Apple, lebih rendah berhenti lebih cepat",
     "Swipe": "Geser", "Tap": "Ketuk", "Double tap": "Ketuk dua kali",
     "Left": "Kiri", "Right": "Kanan", "Up": "Atas", "Down": "Bawah",
@@ -1713,6 +1735,7 @@ CATALOG["id"] = {
 }
 
 CATALOG["th"] = {
+    "Nearby mice": "เมาส์ที่อยู่ใกล้", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "เมาส์ที่เปิดอยู่แต่ยังไม่เชื่อมต่อ การเชื่อมต่อจากตรงนี้จะลบการจับคู่ที่ค้างอยู่ (สถานะปกติหลังใช้กับ Mac) แล้วจับคู่ ไว้วางใจ และเชื่อมต่อเมาส์ให้เอง", "Scan": "สแกน", "Scanning…": "กำลังสแกน…", "Press Scan with the mouse switched on.": "กดสแกนขณะที่เมาส์เปิดอยู่", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "ไม่พบเมาส์ ปิดแล้วเปิดเมาส์ใหม่เพื่อให้มันประกาศตัว แล้วสแกนอีกครั้ง", "Connect": "เชื่อมต่อ", "Not paired yet": "ยังไม่จับคู่", "Half paired, no bond: Linux would reject it": "จับคู่ไม่สมบูรณ์ ไม่มีการผูก: Linux จะปฏิเสธ", "Paired, not connected": "จับคู่แล้ว ยังไม่เชื่อมต่อ", "Connect {name}?": "เชื่อมต่อ {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "การจับคู่เดิมของเมาส์นี้จะถูกลบ แล้วจับคู่ ไว้วางใจ และเชื่อมต่อใหม่ ใช้เวลาประมาณสิบวินาที เปิดเมาส์ไว้", "Connected: {name}": "เชื่อมต่อแล้ว: {name}", "Pairing…": "กำลังจับคู่…", "Working…": "กำลังทำงาน…", "Keep the mouse switched on; switch it off and on if nothing happens": "เปิดเมาส์ไว้ หากไม่มีอะไรเกิดขึ้นให้ปิดแล้วเปิดใหม่", "Connected and bonded": "เชื่อมต่อและผูกแล้ว", "Pairing failed: {error}": "จับคู่ไม่สำเร็จ: {error}", "Could not run mousetouch: {error}": "เรียกใช้ mousetouch ไม่ได้: {error}", "Close": "ปิด",
     "Acceleration": "ความเร่ง", "Extra distance for fast flicks on top of Speed; 0 = off": "ระยะเพิ่มเติมเมื่อปัดเร็ว นอกเหนือจากความเร็ว; 0 = ปิด", "Momentum": "แรงเฉื่อย", "Keep scrolling after the finger lifts, slowing down like macOS": "เลื่อนต่อหลังยกนิ้ว โดยค่อยๆ ช้าลงแบบ macOS", "Momentum decay": "การลดลงของแรงเฉื่อย", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "ความเร็วที่คงไว้ทุกมิลลิวินาที; 0.998 คือค่าของ Apple ยิ่งต่ำยิ่งหยุดเร็ว",
     "Swipe": "ปัด", "Tap": "แตะ", "Double tap": "แตะสองครั้ง",
     "Left": "ซ้าย", "Right": "ขวา", "Up": "ขึ้น", "Down": "ลง",
@@ -2624,6 +2647,241 @@ class EventLog(Gtk.ScrolledWindow):
         self._scroll_row = None
 
 
+def mousetouch_binary() -> str | None:
+    exe = shutil.which("mousetouch")
+    if exe:
+        return exe
+    here = Path(__file__).resolve().parent.parent
+    for p in (here / "target" / "release" / "mousetouch", here / "target" / "debug" / "mousetouch"):
+        if p.is_file() and os.access(p, os.X_OK):
+            return str(p)
+    return None
+
+
+def device_state_text(d: dict) -> str:
+    if d.get("state") == "stale":
+        return _("Half paired, no bond: Linux would reject it")
+    if d.get("state") == "disconnected":
+        return _("Paired, not connected")
+    return _("Not paired yet")
+
+
+class PairDialog(Adw.Dialog):
+    """Runs `mousetouch bt-pair ADDR` for a mouse picked in "Nearby mice" and
+    shows its progress line by line. The daemon's helper drops whatever BlueZ
+    knows about the mouse, waits for it to advertise, then pairs, trusts and
+    connects, so the result is a bonded mouse even when it comes from a Mac."""
+
+    def __init__(self, device: dict, on_done):
+        super().__init__(title=_("Pairing…"), content_width=420, can_close=False)
+        self.device = device
+        self.on_done = on_done
+        tb = Adw.ToolbarView()
+        tb.add_top_bar(Adw.HeaderBar(show_end_title_buttons=False, show_start_title_buttons=False))
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=12, margin_start=24, margin_end=24, margin_top=12, margin_bottom=24)
+        self.spinner = Gtk.Spinner(spinning=True, halign=Gtk.Align.CENTER, width_request=32, height_request=32)
+        box.append(self.spinner)
+        self.icon = Gtk.Image(pixel_size=32, halign=Gtk.Align.CENTER, visible=False)
+        box.append(self.icon)
+        self.headline = Gtk.Label(label=_("Working…"), css_classes=["title-3"], wrap=True, justify=Gtk.Justification.CENTER)
+        box.append(self.headline)
+        self.detail = Gtk.Label(label=device.get("name") or device.get("addr", ""), css_classes=["dim-label"], wrap=True,
+                                justify=Gtk.Justification.CENTER)
+        box.append(self.detail)
+        self.close_btn = Gtk.Button(label=_("Cancel"), halign=Gtk.Align.CENTER)
+        self.close_btn.connect("clicked", self._cancel_or_close)
+        box.append(self.close_btn)
+        tb.set_content(box)
+        self.set_child(tb)
+        self.proc = None
+        self.finished = False
+        self.ok = False
+        self.err_text = ""
+        exe = mousetouch_binary()
+        if not exe:
+            self._finish(False, _("Could not run mousetouch: {error}").format(error="mousetouch not found in PATH"))
+            return
+        try:
+            self.proc = Gio.Subprocess.new([exe, "bt-pair", device["addr"]], Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_PIPE)
+        except GLib.Error as e:
+            self._finish(False, _("Could not run mousetouch: {error}").format(error=e.message))
+            return
+        self.out = Gio.DataInputStream.new(self.proc.get_stdout_pipe())
+        self.err = Gio.DataInputStream.new(self.proc.get_stderr_pipe())
+        self.out.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
+        self.err.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_err_line)
+        self.proc.wait_async(None, self._on_exit)
+
+    def _on_line(self, stream, result):
+        try:
+            line, _len = stream.read_line_finish_utf8(result)
+        except GLib.Error:
+            line = None
+        if line is None:
+            return
+        kind, _sep, text = line.partition(":")
+        text = text.strip()
+        if kind == "hint":
+            self.headline.set_label(_("Keep the mouse switched on; switch it off and on if nothing happens"))
+        elif kind == "step":
+            self.detail.set_label(text)
+        stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_line)
+
+    def _on_err_line(self, stream, result):
+        try:
+            line, _len = stream.read_line_finish_utf8(result)
+        except GLib.Error:
+            line = None
+        if line is None:
+            return
+        self.err_text = line.strip() or self.err_text
+        stream.read_line_async(GLib.PRIORITY_DEFAULT, None, self._on_err_line)
+
+    def _on_exit(self, proc, result):
+        try:
+            proc.wait_finish(result)
+        except GLib.Error:
+            pass
+        ok = proc.get_if_exited() and proc.get_exit_status() == 0
+        err = self.err_text.removeprefix("Error:").strip()
+        self._finish(ok, "" if ok else _("Pairing failed: {error}").format(error=err or f"exit {proc.get_exit_status()}"))
+
+    def _finish(self, ok: bool, message: str):
+        self.finished = True
+        self.ok = ok
+        self.spinner.set_spinning(False)
+        self.spinner.set_visible(False)
+        self.icon.set_from_icon_name("emblem-ok-symbolic" if ok else "dialog-error-symbolic")
+        self.icon.set_visible(True)
+        self.headline.set_label(_("Connected and bonded") if ok else message)
+        if ok:
+            self.detail.set_label(self.device.get("name") or self.device.get("addr", ""))
+        self.close_btn.set_label(_("Close"))
+        self.set_can_close(True)
+
+    def _cancel_or_close(self, *_a):
+        if not self.finished and self.proc is not None:
+            self.proc.force_exit()
+            self.finished = True
+        self.close()
+        self.on_done(self.ok, self.device)
+
+
+class NearbyMice(Adw.PreferencesGroup):
+    """Mice that are switched on and not connected, from `mousetouch
+    bt-scan`. "Connect" runs the daemon's pairing fix instead of the
+    desktop's Bluetooth panel: after a mouse was paired with a Mac the panel
+    usually leaves it paired-but-not-bonded and bluetoothd rejects it."""
+
+    def __init__(self, window):
+        super().__init__(title=_("Nearby mice"),
+                         description=_("Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself."))
+        self.window = window
+        self.proc = None
+        self.rows: list[Gtk.Widget] = []
+        self.spinner = Gtk.Spinner()
+        self.scan_label = Gtk.Label(label=_("Scan"))
+        inner = Gtk.Box(spacing=6)
+        inner.append(self.spinner)
+        inner.append(self.scan_label)
+        self.scan_btn = Gtk.Button(valign=Gtk.Align.CENTER)
+        self.scan_btn.set_child(inner)
+        self.scan_btn.connect("clicked", lambda *_a: self.scan())
+        self.set_header_suffix(self.scan_btn)
+        self.empty = Adw.ActionRow(title=_("Press Scan with the mouse switched on."))
+        self.empty.add_css_class("dim-label")
+        self.add(self.empty)
+        self.rows.append(self.empty)
+        # Look once when the window opens: a mouse coming back from a Mac is
+        # the first thing a new user needs.
+        GLib.idle_add(self.scan)
+
+    def scan(self):
+        if self.proc is not None:
+            return False
+        exe = mousetouch_binary()
+        if not exe:
+            self._show_empty(_("Could not run mousetouch: {error}").format(error="mousetouch not found in PATH"))
+            return False
+        self.spinner.start()
+        self.scan_label.set_label(_("Scanning…"))
+        self.scan_btn.set_sensitive(False)
+        try:
+            self.proc = Gio.Subprocess.new([exe, "bt-scan", "6"], Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_SILENCE)
+        except GLib.Error as e:
+            self._scan_ui_idle()
+            self._show_empty(_("Could not run mousetouch: {error}").format(error=e.message))
+            return False
+        self.proc.communicate_utf8_async(None, None, self._on_scan_done)
+        return False
+
+    def _scan_ui_idle(self):
+        self.proc = None
+        self.spinner.stop()
+        self.scan_label.set_label(_("Scan"))
+        self.scan_btn.set_sensitive(True)
+
+    def _on_scan_done(self, proc, result):
+        try:
+            _ok, out, _err = proc.communicate_utf8_finish(result)
+        except GLib.Error:
+            out = ""
+        self._scan_ui_idle()
+        devices = []
+        for line in (out or "").splitlines():
+            if line.startswith("{"):
+                try:
+                    devices.append(json.loads(line))
+                except ValueError:
+                    pass
+        self._populate(devices)
+
+    def _clear(self):
+        for r in self.rows:
+            self.remove(r)
+        self.rows = []
+
+    def _show_empty(self, text: str):
+        self._clear()
+        self.empty.set_title(text)
+        self.add(self.empty)
+        self.rows.append(self.empty)
+
+    def _populate(self, devices: list[dict]):
+        if not devices:
+            self._show_empty(_("No mice found. Switch the mouse off and on so it advertises, then scan again."))
+            return
+        self._clear()
+        for d in devices:
+            subtitle = device_state_text(d)
+            if d.get("rssi") is not None:
+                subtitle += f" · {d['rssi']} dBm"
+            row = Adw.ActionRow(title=d.get("name") or d.get("addr", "?"), subtitle=subtitle)
+            row.add_prefix(Gtk.Image.new_from_icon_name("input-mouse-symbolic"))
+            btn = Gtk.Button(label=_("Connect"), valign=Gtk.Align.CENTER, css_classes=["suggested-action"])
+            btn.connect("clicked", lambda _b, dev=d: self._confirm(dev))
+            row.add_suffix(btn)
+            self.add(row)
+            self.rows.append(row)
+
+    def _confirm(self, d: dict):
+        name = d.get("name") or d.get("addr", "")
+        dlg = Adw.AlertDialog(heading=_("Connect {name}?").format(name=name),
+                              body=_("Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on."))
+        dlg.add_response("cancel", _("Cancel"))
+        dlg.add_response("connect", _("Connect"))
+        dlg.set_response_appearance("connect", Adw.ResponseAppearance.SUGGESTED)
+        dlg.set_default_response("connect")
+        dlg.set_close_response("cancel")
+        dlg.connect("response", lambda _d, r: r == "connect" and PairDialog(d, self._on_paired).present(self.window))
+        dlg.present(self.window)
+
+    def _on_paired(self, ok: bool, d: dict):
+        if ok:
+            self.window.toast.add_toast(Adw.Toast(title=_("Connected: {name}").format(name=d.get("name") or d.get("addr", ""))))
+        self.scan()
+
+
 class LiveWindow(Adw.Window):
     """The live view on its own, with the event log, so it can sit next to
     whatever you are testing."""
@@ -2671,6 +2929,9 @@ class Window(Adw.ApplicationWindow):
         card.set_child(MouseView(app.events, compact=True))
         grp.add(card)
         page.add(grp)
+
+        self.nearby = NearbyMice(self)
+        page.add(self.nearby)
 
         ws = self.cfg["workspace_swipe"]
         grp = Adw.PreferencesGroup(title=_("Workspace swipe"),
