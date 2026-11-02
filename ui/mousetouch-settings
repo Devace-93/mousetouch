@@ -2170,6 +2170,11 @@ class EventClient:
     def __init__(self):
         self.listeners = []
         self.connected = False
+        # Last "device" event. The daemon replays it only to new socket
+        # connections, and every view shares this one connection, so a view
+        # created later (the detached Live window) has to get it from here;
+        # without the device's size it would draw every finger in a corner.
+        self.device = None
         self._sock = None
         self._buf = b""
         GLib.timeout_add(1500, self._try_connect)
@@ -2178,12 +2183,19 @@ class EventClient:
     def add_listener(self, fn):
         if fn not in self.listeners:
             self.listeners.append(fn)
+            if self.device is not None:
+                fn(self.device)
 
     def remove_listener(self, fn):
         if fn in self.listeners:
             self.listeners.remove(fn)
 
     def _emit(self, ev):
+        t = ev.get("t")
+        if t == "device":
+            self.device = ev
+        elif t in ("device_lost", "disconnected"):
+            self.device = None
         for fn in list(self.listeners):
             fn(ev)
 
