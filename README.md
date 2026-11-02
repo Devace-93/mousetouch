@@ -81,8 +81,8 @@ curl -fsSL https://raw.githubusercontent.com/Devace-93/mousetouch/main/get.sh | 
 
 | Distro | Command |
 |---|---|
-| Debian, Ubuntu, Pop!_OS | `sudo apt install ./mousetouch_<version>_amd64.deb` (or `_arm64`) |
-| Fedora, openSUSE | `sudo dnf install ./mousetouch-<version>.x86_64.rpm` |
+| Debian, Ubuntu, Pop!_OS | `curl -LO https://github.com/Devace-93/mousetouch/releases/download/v0.1.7/mousetouch_0.1.7-1_amd64.deb && sudo apt install ./mousetouch_0.1.7-1_amd64.deb` (latest; `_arm64` for ARM, or any `./mousetouch_<version>_amd64.deb` you downloaded) |
+| Fedora, openSUSE | `curl -LO https://github.com/Devace-93/mousetouch/releases/download/v0.1.7/mousetouch-0.1.7-1.x86_64.rpm && sudo dnf install ./mousetouch-0.1.7-1.x86_64.rpm` (latest; `.aarch64` for ARM, or any `./mousetouch-<version>.x86_64.rpm`) |
 | Arch | not on the AUR yet (registration was closed when 0.1.7 shipped); build the package from the repo: `cd packaging/aur && makepkg -si` |
 | Homebrew on Linux | `brew trust Devace-93/tap` once (recent Homebrew asks this for third-party taps), then `brew install Devace-93/tap/mousetouch` and follow the printed caveats for the udev rule; the daemon adds the settings app to the app menu on its first start |
 | NixOS / Nix | `nix profile install github:Devace-93/mousetouch`, or import `nixosModules.default` and set `services.mousetouch.enable = true` |

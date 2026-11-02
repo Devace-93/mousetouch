@@ -112,6 +112,22 @@ jobs:
           files: artifacts/*
           generate_release_notes: true
 
+      # The landing page and the README carry one copy-pasteable command per
+      # package with the latest version in it; point them at this release and
+      # commit to main (the Pages workflow then redeploys the site).
+      - name: Point the install instructions at this release
+        run: |
+          set -eu
+          version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          git fetch --depth=1 origin main
+          git checkout -B main origin/main
+          python3 scripts/set-release-version.py "$version"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add site/index.html README.md
+          git commit -m "Install instructions: latest release is ${GITHUB_REF_NAME}" || { echo "instructions already current"; exit 0; }
+          git push origin main
+
       - name: Update the Homebrew tap
         if: env.HAS_TAP_TOKEN == 'true'
         env:
