@@ -151,7 +151,9 @@ sudo dnf install ./mousetouch-0.1.9-1.x86_64.rpm
         <p data-i18n="brewP">Homebrew on Linux. The formula ships the binaries; follow the printed caveats to install the udev rule once (needs sudo), then start the service.</p>
         <pre><code>brew trust Devace-93/tap   # once; recent Homebrew asks this for third-party taps
 brew install Devace-93/tap/mousetouch
-brew services start mousetouch</code></pre>
+brew services start mousetouch
+# later upgrades: the old daemon keeps running until you restart it
+brew upgrade mousetouch &amp;&amp; brew services restart mousetouch</code></pre>
       </div>
       <div class="panel-tab" data-tab="nix">
         <p data-i18n="nixP1">Imperative install into your profile:</p>

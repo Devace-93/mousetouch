@@ -41,6 +41,8 @@ class Mousetouch < Formula
         sudo modprobe uinput && sudo udevadm control --reload-rules && sudo udevadm trigger
       Then start it in the background:
         brew services start mousetouch
+      `brew upgrade` leaves the old daemon running; restart it afterwards:
+        brew services restart mousetouch
       The settings app needs python3-gi, python3-gi-cairo, GTK 4 and libadwaita from
       your distribution. Desktops do not look in Homebrew's share directory, so the
       daemon adds the app-menu entry itself the first time the service starts
