@@ -92,6 +92,10 @@ window.MouseTouchI18n = (function () {
       const span = document.querySelector(`${mount} .m4p span:last-child`);
       if (span) span.textContent = supportLabel;
     });
+    // Supporters list (pay.js tag #supporters-pay in the footer): same
+    // data-label mechanism; pay.js re-renders its title on <html lang> changes.
+    const supportersPay = document.getElementById('supporters-pay');
+    if (supportersPay) supportersPay.dataset.label = t('supportersLabel');
     document.documentElement.lang = lang;
     document.documentElement.dir = RTL_LANGS.includes(lang.slice(0, 2)) ? 'rtl' : 'ltr';
     document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
@@ -302,6 +306,7 @@ MouseTouchI18n.CATALOG.en = {
   helpMore: 'More in the <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, or open an <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Made by', source: 'Source',
   supportLabel: 'Buy me a beer 🍺',
+  supportersLabel: 'Thanks to our supporters',
   disclaimer: 'MouseTouch is an independent open-source project. It is not affiliated with, endorsed by or sponsored by Apple Inc. "Magic Mouse" is a trademark of Apple Inc., used here only to describe the hardware this driver works with.',
 };
 
@@ -413,6 +418,7 @@ MouseTouchI18n.CATALOG.es = {
   helpMore: 'Más en el <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, o abre un <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Hecho por', source: 'Código fuente',
   supportLabel: 'Invítame una cerveza 🍺',
+  supportersLabel: 'Gracias a quienes nos apoyan',
   disclaimer: 'MouseTouch es un proyecto independiente de código abierto. No está afiliado, respaldado ni patrocinado por Apple Inc. "Magic Mouse" es una marca de Apple Inc., usada aquí solo para describir el hardware con el que funciona este driver.',
 };
 
@@ -524,6 +530,7 @@ MouseTouchI18n.CATALOG.fr = {
   helpMore: 'Plus de détails dans le <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ou ouvrez un <a href="https://github.com/Devace-93/mousetouch/issues">ticket</a>.',
   madeBy: 'Créé par', source: 'Code source',
   supportLabel: 'Offrez-moi une bière 🍺',
+  supportersLabel: 'Merci à celles et ceux qui nous soutiennent',
   disclaimer: 'MouseTouch est un projet open source indépendant. Il n\'est ni affilié, ni approuvé, ni sponsorisé par Apple Inc. « Magic Mouse » est une marque d\'Apple Inc., utilisée ici uniquement pour décrire le matériel avec lequel ce pilote fonctionne.',
 };
 
@@ -635,6 +642,7 @@ MouseTouchI18n.CATALOG.de = {
   helpMore: 'Mehr im <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, oder eröffne ein <a href="https://github.com/Devace-93/mousetouch/issues">Issue</a>.',
   madeBy: 'Erstellt von', source: 'Quellcode',
   supportLabel: 'Spendier mir ein Bier 🍺',
+  supportersLabel: 'Danke an unsere Unterstützer',
   disclaimer: 'MouseTouch ist ein unabhängiges Open-Source-Projekt. Es ist weder mit Apple Inc. verbunden noch von Apple Inc. unterstützt oder gesponsert. „Magic Mouse“ ist eine Marke von Apple Inc. und wird hier nur zur Beschreibung der Hardware verwendet, mit der dieser Treiber arbeitet.',
 };
 
@@ -746,6 +754,7 @@ MouseTouchI18n.CATALOG.it = {
   helpMore: 'Altro nel <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, oppure apri una <a href="https://github.com/Devace-93/mousetouch/issues">segnalazione</a>.',
   madeBy: 'Creato da', source: 'Codice sorgente',
   supportLabel: 'Offrimi una birra 🍺',
+  supportersLabel: 'Grazie a chi ci sostiene',
   disclaimer: 'MouseTouch è un progetto open source indipendente. Non è affiliato, approvato o sponsorizzato da Apple Inc. "Magic Mouse" è un marchio di Apple Inc., usato qui solo per descrivere l\'hardware con cui funziona questo driver.',
 };
 
@@ -857,6 +866,7 @@ MouseTouchI18n.CATALOG.pt = {
   helpMore: 'Mais no <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ou abra uma <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Feito por', source: 'Código-fonte',
   supportLabel: 'Pague-me uma cerveja 🍺',
+  supportersLabel: 'Obrigado a quem nos apoia',
   disclaimer: 'MouseTouch é um projeto independente de código aberto. Não é afiliado, endossado nem patrocinado pela Apple Inc. "Magic Mouse" é uma marca da Apple Inc., usada aqui apenas para descrever o hardware com o qual este driver funciona.',
 };
 
@@ -968,6 +978,7 @@ MouseTouchI18n.CATALOG.nl = {
   helpMore: 'Meer in de <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, of open een <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Gemaakt door', source: 'Broncode',
   supportLabel: 'Trakteer me op een biertje 🍺',
+  supportersLabel: 'Dank aan onze supporters',
   disclaimer: 'MouseTouch is een onafhankelijk opensourceproject. Het is niet gelieerd aan, goedgekeurd door of gesponsord door Apple Inc. "Magic Mouse" is een handelsmerk van Apple Inc., hier alleen gebruikt om de hardware te beschrijven waarmee deze driver werkt.',
 };
 
@@ -1079,6 +1090,7 @@ MouseTouchI18n.CATALOG.sv = {
   helpMore: 'Mer i <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, eller öppna ett <a href="https://github.com/Devace-93/mousetouch/issues">ärende</a>.',
   madeBy: 'Skapad av', source: 'Källkod',
   supportLabel: 'Bjud mig på en öl 🍺',
+  supportersLabel: 'Tack till våra supportrar',
   disclaimer: 'MouseTouch är ett oberoende projekt med öppen källkod. Det är inte knutet till, godkänt av eller sponsrat av Apple Inc. "Magic Mouse" är ett varumärke som tillhör Apple Inc. och används här bara för att beskriva hårdvaran som drivrutinen fungerar med.',
 };
 
@@ -1190,6 +1202,7 @@ MouseTouchI18n.CATALOG.pl = {
   helpMore: 'Więcej w <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> albo otwórz <a href="https://github.com/Devace-93/mousetouch/issues">zgłoszenie</a>.',
   madeBy: 'Autor', source: 'Kod źródłowy',
   supportLabel: 'Postaw mi piwo 🍺',
+  supportersLabel: 'Dziękujemy naszym wspierającym',
   disclaimer: 'MouseTouch to niezależny projekt open source. Nie jest powiązany z Apple Inc., ani przez nią wspierany czy sponsorowany. „Magic Mouse” to znak towarowy Apple Inc., użyty tu wyłącznie do opisania sprzętu, z którym działa ten sterownik.',
 };
 
@@ -1301,6 +1314,7 @@ MouseTouchI18n.CATALOG.cs = {
   helpMore: 'Více v <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, nebo založte <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Vytvořil', source: 'Zdrojový kód',
   supportLabel: 'Kup mi pivo 🍺',
+  supportersLabel: 'Děkujeme našim podporovatelům',
   disclaimer: 'MouseTouch je nezávislý open source projekt. Není spojen s Apple Inc., ani jí schválen či sponzorován. „Magic Mouse“ je ochranná známka Apple Inc., použitá zde jen k popisu hardwaru, se kterým tento ovladač pracuje.',
 };
 
@@ -1412,6 +1426,7 @@ MouseTouchI18n.CATALOG.ro = {
   helpMore: 'Mai multe în <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, sau deschide un <a href="https://github.com/Devace-93/mousetouch/issues">tichet</a>.',
   madeBy: 'Creat de', source: 'Cod sursă',
   supportLabel: 'Fă-mi cinste cu o bere 🍺',
+  supportersLabel: 'Mulțumim susținătorilor noștri',
   disclaimer: 'MouseTouch este un proiect open source independent. Nu este afiliat, aprobat sau sponsorizat de Apple Inc. „Magic Mouse” este o marcă a Apple Inc., folosită aici doar pentru a descrie hardware-ul cu care funcționează acest driver.',
 };
 
@@ -1523,6 +1538,7 @@ MouseTouchI18n.CATALOG.el = {
   helpMore: 'Περισσότερα στο <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ή ανοίξτε ένα <a href="https://github.com/Devace-93/mousetouch/issues">ζήτημα</a>.',
   madeBy: 'Δημιουργία', source: 'Πηγαίος κώδικας',
   supportLabel: 'Κέρασέ με μια μπίρα 🍺',
+  supportersLabel: 'Ευχαριστούμε όσους μας στηρίζουν',
   disclaimer: 'Το MouseTouch είναι ανεξάρτητο έργο ανοικτού κώδικα. Δεν συνδέεται, δεν εγκρίνεται ούτε χρηματοδοτείται από την Apple Inc. Το «Magic Mouse» είναι εμπορικό σήμα της Apple Inc. και χρησιμοποιείται εδώ μόνο για να περιγράψει το υλικό με το οποίο λειτουργεί ο οδηγός.',
 };
 
@@ -1634,6 +1650,7 @@ MouseTouchI18n.CATALOG.uk = {
   helpMore: 'Більше в <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> або відкрийте <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Автор', source: 'Вихідний код',
   supportLabel: 'Пригости мене пивом 🍺',
+  supportersLabel: 'Дякуємо тим, хто нас підтримує',
   disclaimer: 'MouseTouch — незалежний проєкт із відкритим кодом. Він не пов’язаний з Apple Inc., не схвалений і не спонсорований нею. «Magic Mouse» — торговельна марка Apple Inc., використана тут лише для опису обладнання, з яким працює цей драйвер.',
 };
 
@@ -1745,6 +1762,7 @@ MouseTouchI18n.CATALOG.ru = {
   helpMore: 'Подробнее в <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> или откройте <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Автор', source: 'Исходный код',
   supportLabel: 'Угости меня пивом 🍺',
+  supportersLabel: 'Спасибо тем, кто нас поддерживает',
   disclaimer: 'MouseTouch — независимый проект с открытым исходным кодом. Он не связан с Apple Inc., не одобрен и не спонсируется ею. «Magic Mouse» — товарный знак Apple Inc., используемый здесь только для описания оборудования, с которым работает этот драйвер.',
 };
 
@@ -1856,6 +1874,7 @@ MouseTouchI18n.CATALOG.tr = {
   helpMore: 'Daha fazlası <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>\'de ya da bir <a href="https://github.com/Devace-93/mousetouch/issues">issue</a> açın.',
   madeBy: 'Yapan', source: 'Kaynak kodu',
   supportLabel: 'Bana bir bira ısmarla 🍺',
+  supportersLabel: 'Destekçilerimize teşekkürler',
   disclaimer: 'MouseTouch bağımsız bir açık kaynak projesidir. Apple Inc. ile bağlantılı değildir, onun tarafından onaylanmamış veya desteklenmemiştir. "Magic Mouse", Apple Inc.\'in ticari markasıdır ve burada yalnızca bu sürücünün çalıştığı donanımı tanımlamak için kullanılmıştır.',
 };
 
@@ -1967,6 +1986,7 @@ MouseTouchI18n.CATALOG.ar = {
   helpMore: 'المزيد في <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>، أو افتح <a href="https://github.com/Devace-93/mousetouch/issues">بلاغًا</a>.',
   madeBy: 'من صنع', source: 'الشيفرة المصدرية',
   supportLabel: 'اشترِ لي بيرة 🍺',
+  supportersLabel: 'شكرًا لداعمينا',
   disclaimer: 'MouseTouch مشروع مفتوح المصدر مستقل. ليس تابعًا لشركة Apple Inc. ولا معتمدًا أو مدعومًا منها. "Magic Mouse" علامة تجارية لشركة Apple Inc.، تُستخدم هنا فقط لوصف العتاد الذي يعمل معه برنامج التشغيل.',
 };
 
@@ -2078,6 +2098,7 @@ MouseTouchI18n.CATALOG.hi = {
   helpMore: '<a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> में और पढ़ें, या एक <a href="https://github.com/Devace-93/mousetouch/issues">issue</a> खोलें।',
   madeBy: 'निर्माता', source: 'सोर्स कोड',
   supportLabel: 'मुझे एक बीयर पिलाएँ 🍺',
+  supportersLabel: 'हमारे समर्थकों का धन्यवाद',
   disclaimer: 'MouseTouch एक स्वतंत्र ओपन-सोर्स प्रोजेक्ट है। यह Apple Inc. से संबद्ध, अनुमोदित या प्रायोजित नहीं है। "Magic Mouse" Apple Inc. का ट्रेडमार्क है, जिसका उपयोग यहाँ केवल उस हार्डवेयर का वर्णन करने के लिए किया गया है जिसके साथ यह ड्राइवर काम करता है।',
 };
 
@@ -2189,6 +2210,7 @@ MouseTouchI18n.CATALOG.zh = {
   helpMore: '更多内容见 <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>，或提交一个 <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>。',
   madeBy: '作者', source: '源码',
   supportLabel: '请我喝杯啤酒 🍺',
+  supportersLabel: '感谢我们的支持者',
   disclaimer: 'MouseTouch 是一个独立的开源项目。它与 Apple Inc. 没有关联，也未获其认可或赞助。"Magic Mouse" 是 Apple Inc. 的商标，这里仅用于描述本驱动所支持的硬件。',
 };
 
@@ -2300,6 +2322,7 @@ MouseTouchI18n.CATALOG.ja = {
   helpMore: '詳しくは <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> を参照するか、<a href="https://github.com/Devace-93/mousetouch/issues">issue</a> を開いてください。',
   madeBy: '作者', source: 'ソースコード',
   supportLabel: 'ビールをおごってください 🍺',
+  supportersLabel: 'ご支援いただいている皆さまに感謝します',
   disclaimer: 'MouseTouch は独立したオープンソースプロジェクトです。Apple Inc. と提携、承認、後援の関係はありません。「Magic Mouse」は Apple Inc. の商標であり、ここではこのドライバーが動作するハードウェアを説明するためにのみ使用しています。',
 };
 
@@ -2411,6 +2434,7 @@ MouseTouchI18n.CATALOG.ko = {
   helpMore: '자세한 내용은 <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>를 보거나 <a href="https://github.com/Devace-93/mousetouch/issues">이슈</a>를 열어 주세요.',
   madeBy: '만든 사람', source: '소스 코드',
   supportLabel: '맥주 한 잔 사주세요 🍺',
+  supportersLabel: '후원자 여러분께 감사드립니다',
   disclaimer: 'MouseTouch는 독립적인 오픈 소스 프로젝트입니다. Apple Inc.와 제휴하거나 승인·후원을 받지 않았습니다. "Magic Mouse"는 Apple Inc.의 상표이며, 여기서는 이 드라이버가 동작하는 하드웨어를 설명하기 위해서만 사용됩니다.',
 };
 
@@ -2522,6 +2546,7 @@ MouseTouchI18n.CATALOG.vi = {
   helpMore: 'Xem thêm trong <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, hoặc mở một <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Tạo bởi', source: 'Mã nguồn',
   supportLabel: 'Mời tôi một ly bia 🍺',
+  supportersLabel: 'Cảm ơn những người ủng hộ chúng tôi',
   disclaimer: 'MouseTouch là một dự án mã nguồn mở độc lập. Không liên kết, không được Apple Inc. chứng thực hay tài trợ. "Magic Mouse" là nhãn hiệu của Apple Inc., chỉ dùng ở đây để mô tả phần cứng mà trình điều khiển này hoạt động cùng.',
 };
 
@@ -2633,6 +2658,7 @@ MouseTouchI18n.CATALOG.id = {
   helpMore: 'Selengkapnya di <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, atau buka <a href="https://github.com/Devace-93/mousetouch/issues">isu</a>.',
   madeBy: 'Dibuat oleh', source: 'Kode sumber',
   supportLabel: 'Traktir saya bir 🍺',
+  supportersLabel: 'Terima kasih kepada para pendukung kami',
   disclaimer: 'MouseTouch adalah proyek sumber terbuka independen. Tidak berafiliasi dengan, didukung, atau disponsori oleh Apple Inc. "Magic Mouse" adalah merek dagang Apple Inc., digunakan di sini hanya untuk menjelaskan perangkat keras yang didukung driver ini.',
 };
 
@@ -2744,5 +2770,6 @@ MouseTouchI18n.CATALOG.th = {
   helpMore: 'อ่านเพิ่มใน <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> หรือเปิด <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>',
   madeBy: 'สร้างโดย', source: 'ซอร์สโค้ด',
   supportLabel: 'เลี้ยงเบียร์ผมสักแก้ว 🍺',
+  supportersLabel: 'ขอบคุณผู้สนับสนุนของเรา',
   disclaimer: 'MouseTouch เป็นโครงการโอเพนซอร์สอิสระ ไม่ได้เกี่ยวข้อง รับรอง หรือสนับสนุนโดย Apple Inc. "Magic Mouse" เป็นเครื่องหมายการค้าของ Apple Inc. ซึ่งใช้ที่นี่เพื่ออธิบายฮาร์ดแวร์ที่ไดรเวอร์นี้ทำงานด้วยเท่านั้น',
 };

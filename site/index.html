@@ -41,6 +41,10 @@
      <html lang> changes. pay.js hides itself for viewers who are not allowed to donate, so the mounts may stay empty. -->
 <script id="support-pay" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support" defer></script>
 <script id="support-pay-hero" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support-hero" defer></script>
+<!-- payments supporters list (footer): the opted-in donors of mousetouch plus every public GitHub sponsor, as a row of
+     chips under a title. Public (not gated); pay.js renders nothing while the list is empty, so the mount may stay empty.
+     The title is localized by i18n.js (key supportersLabel) the same way as the donate label. -->
+<script id="supporters-pay" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="supporters" data-limit="24" data-label="Thanks to our supporters" data-mount="#supporters" defer></script>
 </head>
 <body>
 
@@ -272,6 +276,7 @@ journalctl -u bluetooth          # what bluetoothd thinks of the mouse</code></p
 
 <footer>
   <div class="wrap">
+    <div id="supporters"></div>
     <div id="support"></div>
     <p class="links">
       <a href="https://www.linkedin.com/in/enrique-magallon/" target="_blank" rel="noopener noreferrer"><span data-i18n="madeBy">Made by</span> Enrique Magallón</a>
