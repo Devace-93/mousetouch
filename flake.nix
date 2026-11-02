@@ -22,6 +22,9 @@
 
           nativeBuildInputs = [ pkgs.wrapGAppsHook4 pkgs.gobject-introspection ];
           buildInputs = [ pkgs.gtk4 pkgs.libadwaita ];
+          # The hook only wraps programs during fixup, and gappsWrapperArgs
+          # (GI_TYPELIB_PATH, GSETTINGS_SCHEMA_DIR, ...) is empty before
+          # that, so the settings app is wrapped by hand in postFixup.
           dontWrapGApps = true;
 
           postInstall =
@@ -30,12 +33,15 @@
               install -Dm755 ui/mousetouch-settings $out/bin/mousetouch-settings
               substituteInPlace $out/bin/mousetouch-settings \
                 --replace-fail "#!/usr/bin/python3" "#!${python}/bin/python3"
-              wrapProgram $out/bin/mousetouch-settings "''${gappsWrapperArgs[@]}"
               install -Dm644 packaging/io.github.Devace_93.MouseTouch.desktop $out/share/applications/io.github.Devace_93.MouseTouch.desktop
               install -Dm644 packaging/io.github.Devace_93.MouseTouch.svg $out/share/icons/hicolor/scalable/apps/io.github.Devace_93.MouseTouch.svg
               install -Dm644 packaging/60-mousetouch.rules $out/lib/udev/rules.d/60-mousetouch.rules
               install -Dm644 packaging/mousetouch.conf $out/lib/modules-load.d/mousetouch.conf
             '';
+
+          postFixup = ''
+            wrapProgram $out/bin/mousetouch-settings "''${gappsWrapperArgs[@]}"
+          '';
 
           meta = with pkgs.lib; {
             description = "Apple Magic Mouse multitouch gestures (workspace swipes, pinch, taps) for Linux/Wayland";
