@@ -193,6 +193,8 @@ axis = "horizontal"
 kind = "double_tap"     # swipe | tap | double_tap
 fingers = 2
 action = { type = "key", combo = "super+w" }
+# gesture = []          # instead of any [[gesture]]: no gestures at all
+                        # (a file without the key gets the two defaults)
 
 [pinch]
 enabled = true
