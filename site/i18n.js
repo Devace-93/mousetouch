@@ -77,6 +77,21 @@ window.MouseTouchI18n = (function () {
 
   function apply() {
     const lang = getLang();
+    // Support buttons (pay.js tags #support-pay in the footer and
+    // #support-pay-hero in the hero CTA row): each reads data-label from its
+    // own script tag on every render and re-renders whenever <html lang>
+    // changes (it observes that attribute), so updating the attributes before
+    // the lang write below is enough to relabel them. The direct span update
+    // covers the case where lang did not change (first apply) and the buttons
+    // are already up.
+    const supportLabel = t('supportLabel');
+    [['support-pay', '#support'], ['support-pay-hero', '#support-hero']].forEach(([id, mount]) => {
+      const pay = document.getElementById(id);
+      if (!pay) return;
+      pay.dataset.label = supportLabel;
+      const span = document.querySelector(`${mount} .m4p span:last-child`);
+      if (span) span.textContent = supportLabel;
+    });
     document.documentElement.lang = lang;
     document.documentElement.dir = RTL_LANGS.includes(lang.slice(0, 2)) ? 'rtl' : 'ltr';
     document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
@@ -287,6 +302,7 @@ MouseTouchI18n.CATALOG.en = {
   c9: 'Settings → Scrolling: <em>Smooth steps</em> is the default since 0.1.6; pick <em>Whole notches</em> for the classic feel.',
   helpMore: 'More in the <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, or open an <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Made by', source: 'Source',
+  supportLabel: 'Buy me a beer 🍺',
   disclaimer: 'MouseTouch is an independent open-source project. It is not affiliated with, endorsed by or sponsored by Apple Inc. "Magic Mouse" is a trademark of Apple Inc., used here only to describe the hardware this driver works with.',
 };
 
@@ -398,6 +414,7 @@ MouseTouchI18n.CATALOG.es = {
   c9: 'Ajustes → Desplazamiento: <em>Pasos suaves</em> es el valor por defecto desde 0.1.6; elige <em>Muescas enteras</em> para la sensación clásica.',
   helpMore: 'Más en el <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, o abre un <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Hecho por', source: 'Código fuente',
+  supportLabel: 'Invítame una cerveza 🍺',
   disclaimer: 'MouseTouch es un proyecto independiente de código abierto. No está afiliado, respaldado ni patrocinado por Apple Inc. "Magic Mouse" es una marca de Apple Inc., usada aquí solo para describir el hardware con el que funciona este driver.',
 };
 
@@ -509,6 +526,7 @@ MouseTouchI18n.CATALOG.fr = {
   c9: 'Réglages → Défilement : <em>Pas fluides</em> est la valeur par défaut depuis 0.1.6 ; choisissez <em>Crans entiers</em> pour la sensation classique.',
   helpMore: 'Plus de détails dans le <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ou ouvrez un <a href="https://github.com/Devace-93/mousetouch/issues">ticket</a>.',
   madeBy: 'Créé par', source: 'Code source',
+  supportLabel: 'Offrez-moi une bière 🍺',
   disclaimer: 'MouseTouch est un projet open source indépendant. Il n\'est ni affilié, ni approuvé, ni sponsorisé par Apple Inc. « Magic Mouse » est une marque d\'Apple Inc., utilisée ici uniquement pour décrire le matériel avec lequel ce pilote fonctionne.',
 };
 
@@ -620,6 +638,7 @@ MouseTouchI18n.CATALOG.de = {
   c9: 'Einstellungen → Scrollen: <em>Fließende Schritte</em> ist seit 0.1.6 Standard; <em>Ganze Rasten</em> für das klassische Gefühl.',
   helpMore: 'Mehr im <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, oder eröffne ein <a href="https://github.com/Devace-93/mousetouch/issues">Issue</a>.',
   madeBy: 'Erstellt von', source: 'Quellcode',
+  supportLabel: 'Spendier mir ein Bier 🍺',
   disclaimer: 'MouseTouch ist ein unabhängiges Open-Source-Projekt. Es ist weder mit Apple Inc. verbunden noch von Apple Inc. unterstützt oder gesponsert. „Magic Mouse“ ist eine Marke von Apple Inc. und wird hier nur zur Beschreibung der Hardware verwendet, mit der dieser Treiber arbeitet.',
 };
 
@@ -731,6 +750,7 @@ MouseTouchI18n.CATALOG.it = {
   c9: 'Impostazioni → Scorrimento: <em>Passi fluidi</em> è il predefinito dalla 0.1.6; scegli <em>Scatti interi</em> per la sensazione classica.',
   helpMore: 'Altro nel <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, oppure apri una <a href="https://github.com/Devace-93/mousetouch/issues">segnalazione</a>.',
   madeBy: 'Creato da', source: 'Codice sorgente',
+  supportLabel: 'Offrimi una birra 🍺',
   disclaimer: 'MouseTouch è un progetto open source indipendente. Non è affiliato, approvato o sponsorizzato da Apple Inc. "Magic Mouse" è un marchio di Apple Inc., usato qui solo per descrivere l\'hardware con cui funziona questo driver.',
 };
 
@@ -842,6 +862,7 @@ MouseTouchI18n.CATALOG.pt = {
   c9: 'Ajustes → Rolagem: <em>Passos suaves</em> é o padrão desde a 0.1.6; escolha <em>Cliques inteiros</em> para a sensação clássica.',
   helpMore: 'Mais no <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ou abra uma <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Feito por', source: 'Código-fonte',
+  supportLabel: 'Pague-me uma cerveja 🍺',
   disclaimer: 'MouseTouch é um projeto independente de código aberto. Não é afiliado, endossado nem patrocinado pela Apple Inc. "Magic Mouse" é uma marca da Apple Inc., usada aqui apenas para descrever o hardware com o qual este driver funciona.',
 };
 
@@ -953,6 +974,7 @@ MouseTouchI18n.CATALOG.nl = {
   c9: 'Instellingen → Scrollen: <em>Vloeiende stappen</em> is sinds 0.1.6 standaard; kies <em>Hele klikken</em> voor het klassieke gevoel.',
   helpMore: 'Meer in de <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, of open een <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Gemaakt door', source: 'Broncode',
+  supportLabel: 'Trakteer me op een biertje 🍺',
   disclaimer: 'MouseTouch is een onafhankelijk opensourceproject. Het is niet gelieerd aan, goedgekeurd door of gesponsord door Apple Inc. "Magic Mouse" is een handelsmerk van Apple Inc., hier alleen gebruikt om de hardware te beschrijven waarmee deze driver werkt.',
 };
 
@@ -1064,6 +1086,7 @@ MouseTouchI18n.CATALOG.sv = {
   c9: 'Inställningar → Rullning: <em>Mjuka steg</em> är standard sedan 0.1.6; välj <em>Hela hack</em> för den klassiska känslan.',
   helpMore: 'Mer i <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, eller öppna ett <a href="https://github.com/Devace-93/mousetouch/issues">ärende</a>.',
   madeBy: 'Skapad av', source: 'Källkod',
+  supportLabel: 'Bjud mig på en öl 🍺',
   disclaimer: 'MouseTouch är ett oberoende projekt med öppen källkod. Det är inte knutet till, godkänt av eller sponsrat av Apple Inc. "Magic Mouse" är ett varumärke som tillhör Apple Inc. och används här bara för att beskriva hårdvaran som drivrutinen fungerar med.',
 };
 
@@ -1175,6 +1198,7 @@ MouseTouchI18n.CATALOG.pl = {
   c9: 'Ustawienia → Przewijanie: <em>Płynne kroki</em> są domyślne od 0.1.6; wybierz <em>Pełne skoki</em> dla klasycznego odczucia.',
   helpMore: 'Więcej w <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> albo otwórz <a href="https://github.com/Devace-93/mousetouch/issues">zgłoszenie</a>.',
   madeBy: 'Autor', source: 'Kod źródłowy',
+  supportLabel: 'Postaw mi piwo 🍺',
   disclaimer: 'MouseTouch to niezależny projekt open source. Nie jest powiązany z Apple Inc., ani przez nią wspierany czy sponsorowany. „Magic Mouse” to znak towarowy Apple Inc., użyty tu wyłącznie do opisania sprzętu, z którym działa ten sterownik.',
 };
 
@@ -1286,6 +1310,7 @@ MouseTouchI18n.CATALOG.cs = {
   c9: 'Nastavení → Posouvání: <em>Plynulé kroky</em> jsou od 0.1.6 výchozí; pro klasický pocit zvolte <em>Celé kroky</em>.',
   helpMore: 'Více v <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, nebo založte <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Vytvořil', source: 'Zdrojový kód',
+  supportLabel: 'Kup mi pivo 🍺',
   disclaimer: 'MouseTouch je nezávislý open source projekt. Není spojen s Apple Inc., ani jí schválen či sponzorován. „Magic Mouse“ je ochranná známka Apple Inc., použitá zde jen k popisu hardwaru, se kterým tento ovladač pracuje.',
 };
 
@@ -1397,6 +1422,7 @@ MouseTouchI18n.CATALOG.ro = {
   c9: 'Setări → Derulare: <em>Pași fluizi</em> este implicit din 0.1.6; alege <em>Trepte întregi</em> pentru senzația clasică.',
   helpMore: 'Mai multe în <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, sau deschide un <a href="https://github.com/Devace-93/mousetouch/issues">tichet</a>.',
   madeBy: 'Creat de', source: 'Cod sursă',
+  supportLabel: 'Fă-mi cinste cu o bere 🍺',
   disclaimer: 'MouseTouch este un proiect open source independent. Nu este afiliat, aprobat sau sponsorizat de Apple Inc. „Magic Mouse” este o marcă a Apple Inc., folosită aici doar pentru a descrie hardware-ul cu care funcționează acest driver.',
 };
 
@@ -1508,6 +1534,7 @@ MouseTouchI18n.CATALOG.el = {
   c9: 'Ρυθμίσεις → Κύλιση: τα <em>Ομαλά βήματα</em> είναι προεπιλογή από την 0.1.6· διάλεξε <em>Ολόκληρα βήματα</em> για την κλασική αίσθηση.',
   helpMore: 'Περισσότερα στο <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ή ανοίξτε ένα <a href="https://github.com/Devace-93/mousetouch/issues">ζήτημα</a>.',
   madeBy: 'Δημιουργία', source: 'Πηγαίος κώδικας',
+  supportLabel: 'Κέρασέ με μια μπίρα 🍺',
   disclaimer: 'Το MouseTouch είναι ανεξάρτητο έργο ανοικτού κώδικα. Δεν συνδέεται, δεν εγκρίνεται ούτε χρηματοδοτείται από την Apple Inc. Το «Magic Mouse» είναι εμπορικό σήμα της Apple Inc. και χρησιμοποιείται εδώ μόνο για να περιγράψει το υλικό με το οποίο λειτουργεί ο οδηγός.',
 };
 
@@ -1619,6 +1646,7 @@ MouseTouchI18n.CATALOG.uk = {
   c9: 'Налаштування → Прокручування: <em>Плавні кроки</em> типові з 0.1.6; виберіть <em>Цілі кроки</em> для класичного відчуття.',
   helpMore: 'Більше в <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> або відкрийте <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Автор', source: 'Вихідний код',
+  supportLabel: 'Пригости мене пивом 🍺',
   disclaimer: 'MouseTouch — незалежний проєкт із відкритим кодом. Він не пов’язаний з Apple Inc., не схвалений і не спонсорований нею. «Magic Mouse» — торговельна марка Apple Inc., використана тут лише для опису обладнання, з яким працює цей драйвер.',
 };
 
@@ -1730,6 +1758,7 @@ MouseTouchI18n.CATALOG.ru = {
   c9: 'Настройки → Прокрутка: <em>Плавные шаги</em> по умолчанию с 0.1.6; выберите <em>Целые щелчки</em> для классического ощущения.',
   helpMore: 'Подробнее в <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> или откройте <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Автор', source: 'Исходный код',
+  supportLabel: 'Угости меня пивом 🍺',
   disclaimer: 'MouseTouch — независимый проект с открытым исходным кодом. Он не связан с Apple Inc., не одобрен и не спонсируется ею. «Magic Mouse» — товарный знак Apple Inc., используемый здесь только для описания оборудования, с которым работает этот драйвер.',
 };
 
@@ -1841,6 +1870,7 @@ MouseTouchI18n.CATALOG.tr = {
   c9: 'Ayarlar → Kaydırma: <em>Akıcı adımlar</em> 0.1.6\'dan beri varsayılan; klasik his için <em>Tam kademeler</em>\'i seç.',
   helpMore: 'Daha fazlası <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>\'de ya da bir <a href="https://github.com/Devace-93/mousetouch/issues">issue</a> açın.',
   madeBy: 'Yapan', source: 'Kaynak kodu',
+  supportLabel: 'Bana bir bira ısmarla 🍺',
   disclaimer: 'MouseTouch bağımsız bir açık kaynak projesidir. Apple Inc. ile bağlantılı değildir, onun tarafından onaylanmamış veya desteklenmemiştir. "Magic Mouse", Apple Inc.\'in ticari markasıdır ve burada yalnızca bu sürücünün çalıştığı donanımı tanımlamak için kullanılmıştır.',
 };
 
@@ -1952,6 +1982,7 @@ MouseTouchI18n.CATALOG.ar = {
   c9: 'الإعدادات → التمرير: <em>خطوات سلسة</em> هو الافتراضي منذ 0.1.6؛ اختر <em>درجات كاملة</em> للإحساس الكلاسيكي.',
   helpMore: 'المزيد في <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>، أو افتح <a href="https://github.com/Devace-93/mousetouch/issues">بلاغًا</a>.',
   madeBy: 'من صنع', source: 'الشيفرة المصدرية',
+  supportLabel: 'اشترِ لي بيرة 🍺',
   disclaimer: 'MouseTouch مشروع مفتوح المصدر مستقل. ليس تابعًا لشركة Apple Inc. ولا معتمدًا أو مدعومًا منها. "Magic Mouse" علامة تجارية لشركة Apple Inc.، تُستخدم هنا فقط لوصف العتاد الذي يعمل معه برنامج التشغيل.',
 };
 
@@ -2063,6 +2094,7 @@ MouseTouchI18n.CATALOG.hi = {
   c9: 'सेटिंग्स → स्क्रॉलिंग: 0.1.6 से <em>स्मूद चरण</em> डिफ़ॉल्ट है; क्लासिक अनुभव के लिए <em>पूरे नॉच</em> चुनें।',
   helpMore: '<a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> में और पढ़ें, या एक <a href="https://github.com/Devace-93/mousetouch/issues">issue</a> खोलें।',
   madeBy: 'निर्माता', source: 'सोर्स कोड',
+  supportLabel: 'मुझे एक बीयर पिलाएँ 🍺',
   disclaimer: 'MouseTouch एक स्वतंत्र ओपन-सोर्स प्रोजेक्ट है। यह Apple Inc. से संबद्ध, अनुमोदित या प्रायोजित नहीं है। "Magic Mouse" Apple Inc. का ट्रेडमार्क है, जिसका उपयोग यहाँ केवल उस हार्डवेयर का वर्णन करने के लिए किया गया है जिसके साथ यह ड्राइवर काम करता है।',
 };
 
@@ -2174,6 +2206,7 @@ MouseTouchI18n.CATALOG.zh = {
   c9: '设置 → 滚动：自 0.1.6 起默认<em>平滑步进</em>；想要经典手感请选<em>整格</em>。',
   helpMore: '更多内容见 <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>，或提交一个 <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>。',
   madeBy: '作者', source: '源码',
+  supportLabel: '请我喝杯啤酒 🍺',
   disclaimer: 'MouseTouch 是一个独立的开源项目。它与 Apple Inc. 没有关联，也未获其认可或赞助。"Magic Mouse" 是 Apple Inc. 的商标，这里仅用于描述本驱动所支持的硬件。',
 };
 
@@ -2285,6 +2318,7 @@ MouseTouchI18n.CATALOG.ja = {
   c9: '設定 → スクロール：0.1.6 から<em>スムーズ</em>が既定です。従来の感触には<em>ノッチ単位</em>を選んでください。',
   helpMore: '詳しくは <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> を参照するか、<a href="https://github.com/Devace-93/mousetouch/issues">issue</a> を開いてください。',
   madeBy: '作者', source: 'ソースコード',
+  supportLabel: 'ビールをおごってください 🍺',
   disclaimer: 'MouseTouch は独立したオープンソースプロジェクトです。Apple Inc. と提携、承認、後援の関係はありません。「Magic Mouse」は Apple Inc. の商標であり、ここではこのドライバーが動作するハードウェアを説明するためにのみ使用しています。',
 };
 
@@ -2396,6 +2430,7 @@ MouseTouchI18n.CATALOG.ko = {
   c9: '설정 → 스크롤: 0.1.6부터 <em>부드럽게</em>가 기본값입니다. 클래식한 느낌은 <em>칸 단위</em>를 선택하세요.',
   helpMore: '자세한 내용은 <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>를 보거나 <a href="https://github.com/Devace-93/mousetouch/issues">이슈</a>를 열어 주세요.',
   madeBy: '만든 사람', source: '소스 코드',
+  supportLabel: '맥주 한 잔 사주세요 🍺',
   disclaimer: 'MouseTouch는 독립적인 오픈 소스 프로젝트입니다. Apple Inc.와 제휴하거나 승인·후원을 받지 않았습니다. "Magic Mouse"는 Apple Inc.의 상표이며, 여기서는 이 드라이버가 동작하는 하드웨어를 설명하기 위해서만 사용됩니다.',
 };
 
@@ -2507,6 +2542,7 @@ MouseTouchI18n.CATALOG.vi = {
   c9: 'Cài đặt → Cuộn: <em>Bước mượt</em> là mặc định từ 0.1.6; chọn <em>Nấc nguyên</em> để có cảm giác cổ điển.',
   helpMore: 'Xem thêm trong <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, hoặc mở một <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Tạo bởi', source: 'Mã nguồn',
+  supportLabel: 'Mời tôi một ly bia 🍺',
   disclaimer: 'MouseTouch là một dự án mã nguồn mở độc lập. Không liên kết, không được Apple Inc. chứng thực hay tài trợ. "Magic Mouse" là nhãn hiệu của Apple Inc., chỉ dùng ở đây để mô tả phần cứng mà trình điều khiển này hoạt động cùng.',
 };
 
@@ -2618,6 +2654,7 @@ MouseTouchI18n.CATALOG.id = {
   c9: 'Pengaturan → Menggulir: <em>Langkah halus</em> jadi bawaan sejak 0.1.6; pilih <em>Takik penuh</em> untuk rasa klasik.',
   helpMore: 'Selengkapnya di <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, atau buka <a href="https://github.com/Devace-93/mousetouch/issues">isu</a>.',
   madeBy: 'Dibuat oleh', source: 'Kode sumber',
+  supportLabel: 'Traktir saya bir 🍺',
   disclaimer: 'MouseTouch adalah proyek sumber terbuka independen. Tidak berafiliasi dengan, didukung, atau disponsori oleh Apple Inc. "Magic Mouse" adalah merek dagang Apple Inc., digunakan di sini hanya untuk menjelaskan perangkat keras yang didukung driver ini.',
 };
 
@@ -2729,5 +2766,6 @@ MouseTouchI18n.CATALOG.th = {
   c9: 'ตั้งค่า → การเลื่อน: <em>ขั้นแบบลื่น</em> เป็นค่าเริ่มต้นตั้งแต่ 0.1.6; เลือก<em>เป็นขั้น</em>เพื่อความรู้สึกแบบคลาสสิก',
   helpMore: 'อ่านเพิ่มใน <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> หรือเปิด <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>',
   madeBy: 'สร้างโดย', source: 'ซอร์สโค้ด',
+  supportLabel: 'เลี้ยงเบียร์ผมสักแก้ว 🍺',
   disclaimer: 'MouseTouch เป็นโครงการโอเพนซอร์สอิสระ ไม่ได้เกี่ยวข้อง รับรอง หรือสนับสนุนโดย Apple Inc. "Magic Mouse" เป็นเครื่องหมายการค้าของ Apple Inc. ซึ่งใช้ที่นี่เพื่ออธิบายฮาร์ดแวร์ที่ไดรเวอร์นี้ทำงานด้วยเท่านั้น',
 };

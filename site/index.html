@@ -36,6 +36,11 @@
 <script src="https://metrics.3m4.net/m.js" data-key="metrics_pub_12BoDCD2Qlo4XTn1Y_fKn8Qm8ycbJyP_" defer></script>
 <!-- oops error tracking (uncaught errors, rejected promises, breadcrumbs). The project key is public by design. -->
 <script src="https://oops.3m4.net/o.js" data-key="oops_pub_iqQkFWQnudT9AQR_cQNMelOzR3VH_7hh" data-env="production" defer></script>
+<!-- payments "Buy me a beer" buttons (pay.js renders one button per tag into its data-mount; both share window.m4pay).
+     The label is localized by i18n.js (key supportLabel): it rewrites data-label on these tags and pay.js re-renders on
+     <html lang> changes. pay.js hides itself for viewers who are not allowed to donate, so the mounts may stay empty. -->
+<script id="support-pay" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support" defer></script>
+<script id="support-pay-hero" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support-hero" defer></script>
 </head>
 <body>
 
@@ -72,6 +77,7 @@
       <a class="btn primary" href="#install" data-i18n="ctaInstall">Install</a>
       <a class="btn" href="https://github.com/Devace-93/mousetouch" data-i18n="ctaSource">Source on GitHub</a>
       <a class="btn" href="https://github.com/Devace-93/mousetouch/releases" data-i18n="ctaReleases">Releases</a>
+      <span id="support-hero"></span>
     </div>
     <div class="pills">
       <span class="pill">Wayland</span>
@@ -264,6 +270,7 @@ journalctl -u bluetooth          # what bluetoothd thinks of the mouse</code></p
 
 <footer>
   <div class="wrap">
+    <div id="support"></div>
     <p class="links">
       <a href="https://www.linkedin.com/in/enrique-magallon/" target="_blank" rel="noopener noreferrer"><span data-i18n="madeBy">Made by</span> Enrique Magallón</a>
       <a href="https://github.com/Devace-93/mousetouch" data-i18n="source">Source</a>

@@ -170,3 +170,12 @@
   footer .links a { color: var(--fg-muted); text-decoration: underline; }
   footer .links a:hover { color: var(--fg); }
   footer p { margin: 6px 0; }
+
+/* payments "Buy me a beer" mounts (pay.js). Empty until the button renders (and when pay.js hides it), so they take no space then. */
+#support { margin: 0 0 16px; }
+#support:empty { display: none; }
+#support .m4p { --m4p-fg: var(--accent-fg); }
+/* Hero CTA row: rendered, it matches the .btn size next to it. */
+#support-hero:empty { display: none; }
+#support-hero .m4p { --m4p-fg: var(--accent-fg); padding: 11px 18px; border: 1px solid transparent; border-radius: 10px; font-size: 16px; line-height: 1.55; }
+
