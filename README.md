@@ -1,4 +1,4 @@
-# mousetouch
+# <img src="https://raw.githubusercontent.com/Devace-93/mousetouch/main/packaging/io.github.Devace_93.MouseTouch.svg" alt="" width="40" align="top"> mousetouch
 
 Native-feeling multitouch gestures for the Apple Magic Mouse on Linux
 (Wayland), implemented as a small userspace driver.
