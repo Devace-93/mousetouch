@@ -36,7 +36,7 @@ The `Release` workflow (`.github/workflows/release.yml`) then:
 | AUR (`mousetouch-git`) | nothing after the first push: it builds from `main` | an AUR account with an SSH key; push `packaging/aur/*` to `ssh://aur@aur.archlinux.org/mousetouch-git.git` (regenerate `.SRCINFO` with `makepkg --printsrcinfo > .SRCINFO` after editing the PKGBUILD) |
 | Fedora COPR | rebuild the project from `packaging/rpm/mousetouch.spec` on each tag (COPR can watch the repository's tags via its "custom" or "SCM" source) | a COPR project with *internet access during builds* enabled, since `cargo build` downloads crates |
 | Nix flake | nothing: `flake.nix` builds from the repository (keep `flake.lock` committed, `nix build github:...` refuses to run without it) | none |
-| Install instructions (site + README) | nothing: the Release workflow runs `scripts/set-release-version.py` and commits the new version to `main` | none (run it by hand if the push to `main` is rejected) |
+| Install instructions (site + README) | the Release workflow runs `scripts/set-release-version.py` on a branch and opens a pull request against `main` (merge it) | the repository setting *Allow GitHub Actions to create and approve pull requests* (Settings → Actions → General); without it the branch is pushed and the step prints the compare link |
 | Landing page (`site/`, <https://mouse.3m4.net>) | the `Pages` workflow on every push to `main` that touches `site/` (or run it by hand from any branch) | GitHub Pages source set to *GitHub Actions* with custom domain `mouse.3m4.net`; a DNS `CNAME mouse -> devace-93.github.io` at the registrar |
 
 ## Checking a release locally
