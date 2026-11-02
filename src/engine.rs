@@ -195,7 +195,12 @@ impl Engine {
 
     /// Earliest instant at which `tick` needs to run, if any.
     pub fn next_deadline(&self) -> Option<Instant> {
-        self.pending_tap.as_ref().map(|p| p.deadline)
+        let tap = self.pending_tap.as_ref().map(|p| p.deadline);
+        let scroll = self.scroll.next_deadline();
+        match (tap, scroll) {
+            (Some(a), Some(b)) => Some(a.min(b)),
+            (a, b) => a.or(b),
+        }
     }
 
     /// Time-based work: fire single taps whose double-tap window expired.
@@ -207,7 +212,37 @@ impl Engine {
                 self.fire_rule(GestureKind::Tap, fingers, None)?;
             }
         }
+        if self.scroll.next_deadline().is_some_and(|d| now >= d) {
+            let scroll_cfg = self.cfg.read().unwrap().scroll.clone();
+            self.scroll_out.clear();
+            self.scroll.tick(now, &scroll_cfg, &mut self.scroll_out);
+            if !self.scroll_out.is_empty() {
+                self.forward_scroll_out();
+                // Momentum frames are not tied to a device frame.
+                self.mouse.flush()?;
+            }
+        }
         Ok(())
+    }
+
+    /// Report and queue the wheel events the gate released.
+    fn forward_scroll_out(&mut self) {
+        if self.monitor.active() {
+            let (mut dx, mut dy) = (0, 0);
+            for e in &self.scroll_out {
+                match RelativeAxisCode(e.code()) {
+                    RelativeAxisCode::REL_WHEEL_HI_RES => dy += e.value(),
+                    RelativeAxisCode::REL_HWHEEL_HI_RES => dx += e.value(),
+                    _ => {}
+                }
+            }
+            if dx != 0 || dy != 0 {
+                self.monitor.send(&Mon::Scroll { ms: self.monitor.now_ms(), dx, dy });
+            }
+        }
+        for e in self.scroll_out.drain(..) {
+            self.mouse.push(e);
+        }
     }
 
     pub fn handle(&mut self, ev: InputEvent) -> Result<()> {
@@ -232,24 +267,11 @@ impl Engine {
                     if limit > 0 && self.finger_count >= limit {
                         return Ok(());
                     }
+                    let scroll_cfg = cfg.scroll.clone();
+                    drop(cfg);
                     self.scroll_out.clear();
-                    self.scroll.feed(ev, &cfg.scroll, &mut self.scroll_out);
-                    if self.monitor.active() {
-                        let (mut dx, mut dy) = (0, 0);
-                        for e in &self.scroll_out {
-                            match RelativeAxisCode(e.code()) {
-                                RelativeAxisCode::REL_WHEEL_HI_RES => dy += e.value(),
-                                RelativeAxisCode::REL_HWHEEL_HI_RES => dx += e.value(),
-                                _ => {}
-                            }
-                        }
-                        if dx != 0 || dy != 0 {
-                            self.monitor.send(&Mon::Scroll { ms: self.monitor.now_ms(), dx, dy });
-                        }
-                    }
-                    for e in self.scroll_out.drain(..) {
-                        self.mouse.push(e);
-                    }
+                    self.scroll.feed(ev, Instant::now(), &scroll_cfg, &mut self.scroll_out);
+                    self.forward_scroll_out();
                     return Ok(());
                 }
                 self.mouse.push(ev);
@@ -402,7 +424,12 @@ impl Engine {
                         self.last_speed = ((c_last.0 - c0.0).powi(2) + (c_last.1 - c0.1).powi(2)).sqrt() / dt;
                     }
                 }
-                let taps = self.cfg.read().unwrap().taps.clone();
+                let (taps, scroll_cfg) = {
+                    let cfg = self.cfg.read().unwrap();
+                    (cfg.taps.clone(), cfg.scroll.clone())
+                };
+                // A finger that lifts while scrolling leaves the page coasting.
+                self.scroll.lift(now, &scroll_cfg);
                 let dur = now.duration_since(s.start);
                 let reason = if s.gestured {
                     Some("a gesture ran")

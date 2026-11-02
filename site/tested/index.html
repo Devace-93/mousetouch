@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MouseTouch — Tested mice and systems</title>
+<meta name="description" content="Magic Mouse models and Linux systems MouseTouch has been tested on: product ids, kernel, desktop, BlueZ, install method and result.">
+<link rel="canonical" href="https://mouse.3m4.net/tested/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1f6fe0">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MouseTouch">
+<meta property="og:title" content="MouseTouch — Tested mice and systems">
+<meta property="og:description" content="Magic Mouse models and Linux systems MouseTouch has been tested on.">
+<meta property="og:url" content="https://mouse.3m4.net/tested/">
+<meta property="og:image" content="https://mouse.3m4.net/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../icon.svg">
+<script>
+  // Apply the saved theme override before first paint to avoid a flash.
+  try {
+    const theme = localStorage.getItem('3m4.theme');
+    if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
+  } catch (e) {}
+</script>
+<link rel="stylesheet" href="../style.css">
+<style>
+  .page { padding-top: 56px; padding-bottom: 24px; }
+  .page h1 { font-size: clamp(28px, 4.5vw, 42px); line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.02em; }
+  .ok { color: var(--ok); font-weight: 600; white-space: nowrap; }
+  .rep { color: var(--fg-muted); font-weight: 600; white-space: nowrap; }
+  td.mono, th.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 13.5px; white-space: nowrap; }
+  .meta { color: var(--fg-muted); font-size: 14px; }
+</style>
+<script src="https://metrics.3m4.net/m.js" data-key="metrics_pub_12BoDCD2Qlo4XTn1Y_fKn8Qm8ycbJyP_" defer></script>
+<script src="https://oops.3m4.net/o.js" data-key="oops_pub_iqQkFWQnudT9AQR_cQNMelOzR3VH_7hh" data-env="production" defer></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="../">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="14" y="4" width="36" height="56" rx="18" fill="none" stroke="currentColor" stroke-width="4"/><path d="M22 30c4-6 16-6 20 0M24 40c3-4 13-4 16 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+      MouseTouch
+    </a>
+    <nav>
+      <a href="../#gestures" class="hide-sm" data-i18n="navGestures">Gestures</a>
+      <a href="../#install" class="hide-sm" data-i18n="navInstall">Install</a>
+      <a href="../#settings" class="hide-sm" data-i18n="navSettings">Settings app</a>
+      <a href="../#help" class="hide-sm" data-i18n="navHelp">Help</a>
+      <a href="https://github.com/Devace-93/mousetouch" class="hide-sm">GitHub</a>
+      <div class="top-controls">
+        <button id="theme-toggle" type="button" aria-label="Theme">🌙</button>
+        <div id="lang-sel"></div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page">
+    <h1 data-i18n="testedTitle">Tested mice and systems</h1>
+    <p class="sub" data-i18n="testedLede">Every mouse and Linux system MouseTouch has actually been run on, with the details that matter when something does not work: product id, kernel, desktop, BlueZ, how it was installed. Rows marked "reported" come from users and have not been reproduced here yet.</p>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <h2 data-i18n="testedMice">Mice</h2>
+      <div class="tbl">
+        <table>
+          <tr>
+            <th data-i18n="thModel">Model</th>
+            <th class="mono" data-i18n="thIds">Vendor:product</th>
+            <th data-i18n="thFirmware">Firmware</th>
+            <th data-i18n="thDriver">Driver</th>
+            <th data-i18n="thStatus">Status</th>
+            <th data-i18n="thNotes">Notes</th>
+          </tr>
+          <tr>
+            <td>Apple Magic Mouse (USB-C, 2024)</td>
+            <td class="mono">004c:0323</td>
+            <td class="mono">3.14</td>
+            <td><code>hid-magicmouse</code> (Linux 6.16+)</td>
+            <td><span class="ok" data-i18n="stWorks">Works</span></td>
+            <td data-i18n-html="mNote1">Renamed on a Mac ("Black raton") and paired again from <em>Settings → Nearby mice</em> after the desktop panel left it half paired. Gestures, scroll with momentum and the live view all work.</td>
+          </tr>
+          <tr>
+            <td>Apple Magic Mouse 2 (Lightning)</td>
+            <td class="mono">004c:0269</td>
+            <td class="mono">3.11</td>
+            <td><code>hid-magicmouse</code> (Linux 5.15+)</td>
+            <td><span class="ok" data-i18n="stWorks">Works</span></td>
+            <td data-i18n-html="mNote2">Renamed "Mm v2". The desktop's Bluetooth panel did not list it at all; <em>Nearby mice</em> found it and paired it. Both mice work at the same time, each with its own touch stream.</td>
+          </tr>
+          <tr>
+            <td>Apple Magic Mouse 2 (Lightning)</td>
+            <td class="mono">004c:0269</td>
+            <td class="mono">—</td>
+            <td><code>hid-magicmouse</code></td>
+            <td><span class="rep" data-i18n="stReported">Reported</span></td>
+            <td data-i18n-html="mNote3">Zorin OS on a 2017 iMac, reported in <a href="https://github.com/Devace-93/mousetouch/issues/20">issue #20</a>: the mouse was only found after running the settings app with sudo. Detection by vendor/product id and the permission hints shipped in 0.1.5; confirmation pending.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 data-i18n="testedSystems">Systems</h2>
+      <div class="tbl">
+        <table>
+          <tr>
+            <th data-i18n="thDistro">Distribution</th>
+            <th data-i18n="thDesktop">Desktop · session</th>
+            <th data-i18n="thKernel">Kernel</th>
+            <th>BlueZ</th>
+            <th data-i18n="thAdapter">Bluetooth adapter · machine</th>
+            <th data-i18n="thInstall">Install method</th>
+            <th data-i18n="thStatus">Status</th>
+          </tr>
+          <tr>
+            <td>Pop!_OS 24.04 LTS</td>
+            <td>COSMIC (cosmic-comp 0.1, 2025-12 build) · Wayland</td>
+            <td class="mono">6.17.9 (System76)</td>
+            <td class="mono">5.72</td>
+            <td>Qualcomm Atheros QCA61x4 (USB) · Lenovo IdeaPad Gaming 3 15ARH05</td>
+            <td data-i18n="inAll">One-line installer (.deb), Homebrew tap, source (<code>install.sh</code>)</td>
+            <td><span class="ok" data-i18n="stWorks">Works</span></td>
+          </tr>
+          <tr>
+            <td>Zorin OS 17</td>
+            <td>GNOME · Wayland</td>
+            <td class="mono">—</td>
+            <td class="mono">—</td>
+            <td data-i18n="adIMac">Built-in · iMac (2017)</td>
+            <td data-i18n="inOneLine">One-line installer (.deb)</td>
+            <td><span class="rep" data-i18n="stReported">Reported</span></td>
+          </tr>
+        </table>
+      </div>
+      <p class="sub" style="margin-top:18px" data-i18n-html="testedMore">Tested on something else? <a href="https://github.com/Devace-93/mousetouch/issues/new">Open an issue</a> with the mouse model and ids (<code>mousetouch probe</code>), distro, desktop, kernel (<code>uname -r</code>), BlueZ version (<code>bluetoothctl --version</code>) and how you installed, and it will be added here.</p>
+      <p class="meta" data-i18n="testedUpdated">Last updated: 2 November 2026 · MouseTouch 0.1.6</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="links">
+      <a href="https://www.linkedin.com/in/enrique-magallon/" target="_blank" rel="noopener noreferrer"><span data-i18n="madeBy">Made by</span> Enrique Magallón</a>
+      <a href="https://github.com/Devace-93/mousetouch" data-i18n="source">Source</a>
+      <a href="https://info.3m4.net">info.3m4.net</a>
+    </p>
+    <p data-i18n="disclaimer">MouseTouch is an independent open-source project. It is not affiliated with, endorsed by or sponsored by Apple Inc. "Magic Mouse" is a trademark of Apple Inc., used here only to describe the hardware the driver works with.</p>
+    <p>MouseTouch · MIT</p>
+  </div>
+</footer>
+
+<script src="../i18n.js"></script>
+<script>
+  MouseTouchI18n.init();
+  // The shared init() sets the landing page's title; this page has its own.
+  const setTitle = () => { document.title = MouseTouchI18n.t('testedMetaTitle'); };
+  setTitle();
+  document.addEventListener('click', () => setTimeout(setTitle, 0));
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 [package]
 name = "mousetouch"
-version = "0.1.4"
+version = "0.1.7"
 edition = "2021"
 description = "Apple Magic Mouse multitouch gestures (workspace swipes, pinch, taps) for Linux/Wayland"
 license = "MIT"
