@@ -47,6 +47,12 @@ Commands:
                       Remove the mouse from BlueZ and pair it again (asks you
                       to switch it off and on). NAME = part of its Bluetooth
                       name, default the config's device_match
+  bt-scan [SECONDS]   Discover for SECONDS (default 6) and list the mice that
+                      are switched on and not connected, one JSON object per
+                      line (addr, name, paired, bonded, rssi, state)
+  bt-pair ADDR [SECONDS]
+                      Remove whatever BlueZ knows about that mouse, then pair,
+                      trust and connect it (what Settings > Nearby mice runs)
   demo-swipe DIR [MM] Replay a synthetic swipe on the virtual touchpad
                       (DIR = left|right|up|down, MM = travel, default 40)
   print-config        Print the effective configuration as TOML
@@ -107,6 +113,12 @@ fn main() -> Result<()> {
                 let secs = rest.get(1).and_then(|s| s.parse().ok()).unwrap_or(90);
                 bluetooth::repair(&name, Duration::from_secs(secs))
             }
+        }
+        "bt-scan" => bluetooth::scan_cmd(rest.first().and_then(|s| s.parse().ok()).unwrap_or(6)),
+        "bt-pair" => {
+            let Some(addr) = rest.first() else { anyhow::bail!("bt-pair needs the mouse's Bluetooth address (see bt-scan)") };
+            let secs = rest.get(1).and_then(|s| s.parse().ok()).unwrap_or(60);
+            bluetooth::pair(addr, Duration::from_secs(secs))
         }
         "demo-swipe" => demo_swipe(&rest),
         "fake-mouse" => fake_mouse(

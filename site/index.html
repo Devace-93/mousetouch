@@ -381,6 +381,7 @@ cd mousetouch
             <li data-i18n="w4">Tap timing and lift-speed detection.</li>
             <li data-i18n="w5">Rules: tap / double tap / swipe × fingers → key combo, mouse button, command, toggle or cycle, optionally only for one application.</li>
             <li data-i18n="w6">Appearance and language: follow the desktop, or pick a theme and a language by hand.</li>
+            <li data-i18n="w7">Nearby mice: one click pairs a mouse coming back from a Mac; the app removes the stale pairing and bonds it properly.</li>
           </ul>
           <div class="note" data-i18n-html="settingsNote">Prefer a text editor? The config file is plain TOML with comments. See the <a href="https://github.com/Devace-93/mousetouch#configure">configuration reference</a>.</div>
         </div>
@@ -407,7 +408,10 @@ cd mousetouch
       <pre><code>mousetouch probe                 # is the mouse seen, with touch axes?
 mousetouch watch                 # live finger positions
 mousetouch demo-swipe left 40    # replay a synthetic 4-finger swipe
-journalctl --user -fu mousetouch</code></pre>
+mousetouch bt-scan               # mice switched on and not connected
+mousetouch bt-pair ADDR          # pair one of them the way BlueZ needs after a Mac
+journalctl --user -fu mousetouch
+journalctl -u bluetooth          # what bluetoothd thinks of the mouse</code></pre>
       <div class="tbl" style="margin-top:18px">
         <table>
           <tr><th data-i18n="thSymptom">Symptom</th><th data-i18n="thCheck">Check</th></tr>
@@ -416,6 +420,10 @@ journalctl --user -fu mousetouch</code></pre>
           <tr><td data-i18n="s3">Nothing happens on swipe</td><td data-i18n="c3">The desktop must handle 4-finger (or 3-finger) touchpad swipes and not disable touchpads while a mouse is connected.</td></tr>
           <tr><td data-i18n="s4">Permission denied</td><td data-i18n-html="c4">Make sure the udev rule is installed, or add yourself to the <code>input</code> group.</td></tr>
           <tr><td data-i18n-html="s5"><code>app</code> rules never fire</td><td data-i18n-html="c5">Run with <code>-v</code> and look for "focus tracking via". GNOME exposes no toplevel protocol, so app rules never match there.</td></tr>
+          <tr><td data-i18n="s6">Paired but never connects (after a Mac)</td><td data-i18n-html="c6">BlueZ keeps a <em>paired but not bonded</em> record and rejects the mouse. Settings → Nearby mice → Connect, or <code>mousetouch bt-pair</code>.</td></tr>
+          <tr><td data-i18n="s7">Mouse missing from the Bluetooth list</td><td data-i18n-html="c7">It only advertises when no other computer holds it: forget it on the Mac, unplug the cable, switch it off and on.</td></tr>
+          <tr><td data-i18n="s8">USB-C mouse moves the pointer, no gestures</td><td data-i18n-html="c8">That model needs the in-tree driver of Linux 6.16+; a DKMS <code>hid-magicmouse</code> shadows it. Remove it (see the DKMS note).</td></tr>
+          <tr><td data-i18n="s9">Scroll choppy, or too fast in terminals</td><td data-i18n-html="c9">Settings → Scrolling: <em>Smooth steps</em> is the default since 0.1.6; pick <em>Whole notches</em> for the classic feel.</td></tr>
         </table>
       </div>
       <p class="sub" style="margin-top:18px" data-i18n-html="helpMore">More in the <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, or open an <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.</p>
