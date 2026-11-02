@@ -30,6 +30,8 @@ pub struct Finger {
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "t", rename_all = "snake_case")]
 pub enum Event {
+    /// First line every client gets: which daemon it is talking to.
+    Hello { version: &'static str },
     /// A mouse was attached (also replayed to every new client). Every event
     /// of a mouse carries `dev`, a small number identifying it while it stays
     /// attached, so a client can tell two mice apart.
@@ -156,6 +158,9 @@ impl Monitor {
                                 continue;
                             }
                             let mut stream = stream;
+                            if let Ok(hello) = serde_json::to_string(&Event::Hello { version: env!("CARGO_PKG_VERSION") }) {
+                                let _ = stream.write_all((hello + "\n").as_bytes());
+                            }
                             for (_, line) in inner.devices.lock().unwrap().iter() {
                                 let _ = stream.write_all(line.as_bytes());
                             }
@@ -279,6 +284,8 @@ mod tests {
         m.send(&Event::Rule { ms: 43, kind: "tap", fingers: 3, dir: None, matched: true, action: Some("super+a".into()), app: None });
 
         let mut lines = BufReader::new(client).lines();
+        let hello: serde_json::Value = serde_json::from_str(&lines.next().unwrap().unwrap()).unwrap();
+        assert_eq!((hello["t"].as_str(), hello["version"].as_str()), (Some("hello"), Some(env!("CARGO_PKG_VERSION"))));
         let dev: serde_json::Value = serde_json::from_str(&lines.next().unwrap().unwrap()).unwrap();
         assert_eq!(dev["t"], "device");
         assert_eq!(dev["w_mm"], 90.0);
@@ -325,6 +332,7 @@ mod tests {
 
         let mut lines = BufReader::new(client).lines();
         let mut next = || -> serde_json::Value { serde_json::from_str(&lines.next().unwrap().unwrap()).unwrap() };
+        assert_eq!(next()["t"], "hello");
         let first = next();
         assert_eq!((first["t"].as_str(), first["dev"].as_u64(), first["name"].as_str()), (Some("device"), Some(1), Some("Black  raton")));
         let second = next();

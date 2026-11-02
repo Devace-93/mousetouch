@@ -142,6 +142,10 @@ def apply_theme(theme: str) -> None:
 # Translations: CATALOG["xx"] = {"English source": "translation", ...}
 
 CATALOG["es"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} está instalado; esta ventana aún corre {old}.",
+    "Reopen": "Reabrir",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} está instalado pero el daemon aún corre {old}.",
+    "Restart daemon": "Reiniciar daemon",
     "All mice": "Todos los ratones",
     "Reset to defaults": "Restablecer valores predeterminados",
     "Put every setting back to the values MouseTouch ships with": "Devuelve cada ajuste al valor con el que viene MouseTouch",
@@ -231,6 +235,10 @@ CATALOG["es"] = {
 }
 
 CATALOG["fr"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} est installé ; cette fenêtre exécute encore {old}.",
+    "Reopen": "Rouvrir",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} est installé mais le démon exécute encore {old}.",
+    "Restart daemon": "Redémarrer le démon",
     "All mice": "Toutes les souris",
     "Reset to defaults": "Rétablir les valeurs par défaut",
     "Put every setting back to the values MouseTouch ships with": "Remet chaque réglage à la valeur livrée avec MouseTouch",
@@ -320,6 +328,10 @@ CATALOG["fr"] = {
 }
 
 CATALOG["de"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} ist installiert; dieses Fenster läuft noch mit {old}.",
+    "Reopen": "Neu öffnen",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} ist installiert, aber der Dienst läuft noch mit {old}.",
+    "Restart daemon": "Dienst neu starten",
     "All mice": "Alle Mäuse",
     "Reset to defaults": "Auf Standard zurücksetzen",
     "Put every setting back to the values MouseTouch ships with": "Setzt jede Einstellung auf den mit MouseTouch gelieferten Wert zurück",
@@ -409,6 +421,10 @@ CATALOG["de"] = {
 }
 
 CATALOG["it"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} è installato; questa finestra usa ancora {old}.",
+    "Reopen": "Riapri",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} è installato ma il demone usa ancora {old}.",
+    "Restart daemon": "Riavvia demone",
     "All mice": "Tutti i mouse",
     "Reset to defaults": "Ripristina predefiniti",
     "Put every setting back to the values MouseTouch ships with": "Riporta ogni impostazione al valore con cui viene fornito MouseTouch",
@@ -498,6 +514,10 @@ CATALOG["it"] = {
 }
 
 CATALOG["pt"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} está instalado; esta janela ainda usa {old}.",
+    "Reopen": "Reabrir",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} está instalado mas o daemon ainda usa {old}.",
+    "Restart daemon": "Reiniciar daemon",
     "All mice": "Todos os mouses",
     "Reset to defaults": "Restaurar padrões",
     "Put every setting back to the values MouseTouch ships with": "Devolve cada ajuste ao valor com que o MouseTouch é distribuído",
@@ -587,6 +607,10 @@ CATALOG["pt"] = {
 }
 
 CATALOG["nl"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} is geïnstalleerd; dit venster draait nog {old}.",
+    "Reopen": "Opnieuw openen",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} is geïnstalleerd, maar de daemon draait nog {old}.",
+    "Restart daemon": "Daemon herstarten",
     "All mice": "Alle muizen",
     "Reset to defaults": "Standaardwaarden herstellen",
     "Put every setting back to the values MouseTouch ships with": "Zet elke instelling terug op de waarde waarmee MouseTouch wordt geleverd",
@@ -676,6 +700,10 @@ CATALOG["nl"] = {
 }
 
 CATALOG["sv"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} är installerat; det här fönstret kör fortfarande {old}.",
+    "Reopen": "Öppna igen",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} är installerat men demonen kör fortfarande {old}.",
+    "Restart daemon": "Starta om demonen",
     "All mice": "Alla möss",
     "Reset to defaults": "Återställ standardvärden",
     "Put every setting back to the values MouseTouch ships with": "Återställer varje inställning till värdet MouseTouch levereras med",
@@ -765,6 +793,10 @@ CATALOG["sv"] = {
 }
 
 CATALOG["pl"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "Zainstalowano MouseTouch {new}; to okno nadal działa w wersji {old}.",
+    "Reopen": "Otwórz ponownie",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "Zainstalowano MouseTouch {new}, ale demon nadal działa w wersji {old}.",
+    "Restart daemon": "Uruchom demona ponownie",
     "All mice": "Wszystkie myszy",
     "Reset to defaults": "Przywróć domyślne",
     "Put every setting back to the values MouseTouch ships with": "Przywraca każdemu ustawieniu wartość, z którą dostarczany jest MouseTouch",
@@ -854,6 +886,10 @@ CATALOG["pl"] = {
 }
 
 CATALOG["cs"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "Je nainstalován MouseTouch {new}; toto okno stále běží ve verzi {old}.",
+    "Reopen": "Znovu otevřít",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "Je nainstalován MouseTouch {new}, ale démon stále běží ve verzi {old}.",
+    "Restart daemon": "Restartovat démona",
     "All mice": "Všechny myši",
     "Reset to defaults": "Obnovit výchozí",
     "Put every setting back to the values MouseTouch ships with": "Vrátí každé nastavení na hodnotu, se kterou se MouseTouch dodává",
@@ -943,6 +979,10 @@ CATALOG["cs"] = {
 }
 
 CATALOG["ro"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} este instalat; această fereastră rulează încă {old}.",
+    "Reopen": "Redeschide",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} este instalat, dar daemonul rulează încă {old}.",
+    "Restart daemon": "Repornește daemonul",
     "All mice": "Toate mouse-urile",
     "Reset to defaults": "Restabilește valorile implicite",
     "Put every setting back to the values MouseTouch ships with": "Readuce fiecare setare la valoarea cu care vine MouseTouch",
@@ -1032,6 +1072,10 @@ CATALOG["ro"] = {
 }
 
 CATALOG["el"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "Το MouseTouch {new} είναι εγκατεστημένο· αυτό το παράθυρο τρέχει ακόμη {old}.",
+    "Reopen": "Άνοιγμα ξανά",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "Το MouseTouch {new} είναι εγκατεστημένο, αλλά ο δαίμονας τρέχει ακόμη {old}.",
+    "Restart daemon": "Επανεκκίνηση δαίμονα",
     "All mice": "Όλα τα ποντίκια",
     "Reset to defaults": "Επαναφορά προεπιλογών",
     "Put every setting back to the values MouseTouch ships with": "Επιστρέφει κάθε ρύθμιση στην τιμή με την οποία διατίθεται το MouseTouch",
@@ -1121,6 +1165,10 @@ CATALOG["el"] = {
 }
 
 CATALOG["uk"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "Встановлено MouseTouch {new}; це вікно ще працює на {old}.",
+    "Reopen": "Відкрити знову",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "Встановлено MouseTouch {new}, але демон ще працює на {old}.",
+    "Restart daemon": "Перезапустити демон",
     "All mice": "Усі миші",
     "Reset to defaults": "Скинути до типових",
     "Put every setting back to the values MouseTouch ships with": "Повертає кожному параметру значення, з яким постачається MouseTouch",
@@ -1210,6 +1258,10 @@ CATALOG["uk"] = {
 }
 
 CATALOG["ru"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "Установлен MouseTouch {new}; это окно ещё работает на {old}.",
+    "Reopen": "Открыть заново",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "Установлен MouseTouch {new}, но демон ещё работает на {old}.",
+    "Restart daemon": "Перезапустить демон",
     "All mice": "Все мыши",
     "Reset to defaults": "Сбросить к значениям по умолчанию",
     "Put every setting back to the values MouseTouch ships with": "Возвращает каждому параметру значение, с которым поставляется MouseTouch",
@@ -1299,6 +1351,10 @@ CATALOG["ru"] = {
 }
 
 CATALOG["tr"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} kurulu; bu pencere hâlâ {old} çalıştırıyor.",
+    "Reopen": "Yeniden aç",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} kurulu ama arka plan hizmeti hâlâ {old} çalıştırıyor.",
+    "Restart daemon": "Hizmeti yeniden başlat",
     "All mice": "Tüm fareler",
     "Reset to defaults": "Varsayılanlara sıfırla",
     "Put every setting back to the values MouseTouch ships with": "Her ayarı MouseTouch ile gelen değerine döndürür",
@@ -1388,6 +1444,10 @@ CATALOG["tr"] = {
 }
 
 CATALOG["ar"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} مثبّت؛ هذه النافذة لا تزال تعمل بـ {old}.",
+    "Reopen": "إعادة الفتح",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} مثبّت لكن الخدمة لا تزال تعمل بـ {old}.",
+    "Restart daemon": "إعادة تشغيل الخدمة",
     "All mice": "كل الفئران",
     "Reset to defaults": "إعادة الضبط إلى الافتراضي",
     "Put every setting back to the values MouseTouch ships with": "يعيد كل إعداد إلى القيمة التي يأتي بها MouseTouch",
@@ -1477,6 +1537,10 @@ CATALOG["ar"] = {
 }
 
 CATALOG["hi"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} इंस्टॉल है; यह विंडो अभी भी {old} चला रही है।",
+    "Reopen": "फिर से खोलें",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} इंस्टॉल है लेकिन डेमन अभी भी {old} चला रहा है।",
+    "Restart daemon": "डेमन पुनः आरंभ करें",
     "All mice": "सभी माउस",
     "Reset to defaults": "डिफ़ॉल्ट पर रीसेट करें",
     "Put every setting back to the values MouseTouch ships with": "हर सेटिंग को उस मान पर वापस लाता है जिसके साथ MouseTouch आता है",
@@ -1566,6 +1630,10 @@ CATALOG["hi"] = {
 }
 
 CATALOG["zh"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "已安装 MouseTouch {new}，此窗口仍在运行 {old}。",
+    "Reopen": "重新打开",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "已安装 MouseTouch {new}，但后台服务仍在运行 {old}。",
+    "Restart daemon": "重启后台服务",
     "All mice": "所有鼠标",
     "Reset to defaults": "恢复默认设置",
     "Put every setting back to the values MouseTouch ships with": "将每项设置恢复为 MouseTouch 自带的值",
@@ -1655,6 +1723,10 @@ CATALOG["zh"] = {
 }
 
 CATALOG["ja"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} がインストール済みです。このウィンドウはまだ {old} で動いています。",
+    "Reopen": "再度開く",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} がインストール済みですが、デーモンはまだ {old} で動いています。",
+    "Restart daemon": "デーモンを再起動",
     "All mice": "すべてのマウス",
     "Reset to defaults": "デフォルトに戻す",
     "Put every setting back to the values MouseTouch ships with": "すべての設定を MouseTouch 標準の値に戻します",
@@ -1744,6 +1816,10 @@ CATALOG["ja"] = {
 }
 
 CATALOG["ko"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new}이(가) 설치되었지만 이 창은 아직 {old}로 실행 중입니다.",
+    "Reopen": "다시 열기",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new}이(가) 설치되었지만 데몬은 아직 {old}로 실행 중입니다.",
+    "Restart daemon": "데몬 다시 시작",
     "All mice": "모든 마우스",
     "Reset to defaults": "기본값으로 재설정",
     "Put every setting back to the values MouseTouch ships with": "모든 설정을 MouseTouch 기본값으로 되돌립니다",
@@ -1833,6 +1909,10 @@ CATALOG["ko"] = {
 }
 
 CATALOG["vi"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} đã được cài; cửa sổ này vẫn chạy {old}.",
+    "Reopen": "Mở lại",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} đã được cài nhưng daemon vẫn chạy {old}.",
+    "Restart daemon": "Khởi động lại daemon",
     "All mice": "Tất cả chuột",
     "Reset to defaults": "Đặt lại mặc định",
     "Put every setting back to the values MouseTouch ships with": "Đưa mọi cài đặt về giá trị đi kèm MouseTouch",
@@ -1922,6 +2002,10 @@ CATALOG["vi"] = {
 }
 
 CATALOG["id"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} terpasang; jendela ini masih menjalankan {old}.",
+    "Reopen": "Buka ulang",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} terpasang tetapi daemon masih menjalankan {old}.",
+    "Restart daemon": "Mulai ulang daemon",
     "All mice": "Semua mouse",
     "Reset to defaults": "Setel ulang ke bawaan",
     "Put every setting back to the values MouseTouch ships with": "Mengembalikan setiap pengaturan ke nilai bawaan MouseTouch",
@@ -2011,6 +2095,10 @@ CATALOG["id"] = {
 }
 
 CATALOG["th"] = {
+    "MouseTouch {new} is installed; this window still runs {old}.": "ติดตั้ง MouseTouch {new} แล้ว หน้าต่างนี้ยังใช้ {old} อยู่",
+    "Reopen": "เปิดใหม่",
+    "MouseTouch {new} is installed but the daemon still runs {old}.": "ติดตั้ง MouseTouch {new} แล้ว แต่เดมอนยังใช้ {old} อยู่",
+    "Restart daemon": "รีสตาร์ตเดมอน",
     "All mice": "เมาส์ทั้งหมด",
     "Reset to defaults": "รีเซ็ตเป็นค่าเริ่มต้น",
     "Put every setting back to the values MouseTouch ships with": "คืนทุกการตั้งค่ากลับเป็นค่าที่มากับ MouseTouch",
@@ -2813,7 +2901,7 @@ class MouseView(Gtk.DrawingArea):
             self.devs.setdefault(dev, DevState())
         elif t == "device_lost":
             self.devs.pop(dev, None)
-        else:
+        elif t in ("frame", "gesture_begin", "rule", "touch_end", "scroll", "button"):
             st = self.devs.setdefault(dev, DevState())
             # A hidden mouse is still tracked, so switching to it shows its
             # fingers right away; only its badges are skipped.
@@ -3188,6 +3276,35 @@ def mousetouch_binary() -> str | None:
     return None
 
 
+_VERSION_CACHE: dict = {}
+
+
+def installed_version() -> str | None:
+    """Version of the mousetouch binary on disk right now (`mousetouch
+    --version`), re-read only when the file changes."""
+    exe = mousetouch_binary()
+    if not exe:
+        return None
+    try:
+        st = os.stat(exe)
+        key = (exe, st.st_dev, st.st_ino, st.st_mtime_ns, st.st_size)
+    except OSError:
+        return None
+    if _VERSION_CACHE.get("key") != key:
+        try:
+            out = subprocess.run([exe, "--version"], capture_output=True, text=True, timeout=3).stdout
+            _VERSION_CACHE["version"] = out.strip().split()[-1] if out.strip() else None
+        except Exception:  # noqa: BLE001
+            _VERSION_CACHE["version"] = None
+        _VERSION_CACHE["key"] = key
+    return _VERSION_CACHE.get("version")
+
+
+# The version installed when this process started: once the binary on disk
+# reports another one, an upgrade happened under us.
+STARTUP_VERSION = None
+
+
 def device_state_text(d: dict) -> str:
     if d.get("state") == "stale":
         return _("Half paired, no bond: Linux would reject it")
@@ -3449,6 +3566,13 @@ class Window(Adw.ApplicationWindow):
 
         tb = Adw.ToolbarView()
         tb.add_top_bar(Adw.HeaderBar())
+        # Shown when the install on disk is newer than this window or than
+        # the daemon it talks to (see _check_versions).
+        self.banner = Adw.Banner(revealed=False)
+        self.banner.connect("button-clicked", self._banner_clicked)
+        self._banner_action = None
+        self.daemon_version = None
+        tb.add_top_bar(self.banner)
         self.toast = Adw.ToastOverlay()
         page = Adw.PreferencesPage()
         self.toast.set_child(page)
@@ -3592,7 +3716,47 @@ class Window(Adw.ApplicationWindow):
         page.add(grp)
         self._refresh_status()
         self._status_timer = GLib.timeout_add_seconds(5, self._refresh_status)
-        self.connect("close-request", lambda *_a: GLib.source_remove(self._status_timer) and False)
+        app.events.add_listener(self._on_daemon_event)
+        self.connect("close-request", self._on_close)
+
+    def _on_close(self, *_a):
+        GLib.source_remove(self._status_timer)
+        self.app.events.remove_listener(self._on_daemon_event)
+        return False
+
+    # -- upgrades --------------------------------------------------------
+    def _on_daemon_event(self, ev: dict):
+        if ev.get("t") == "hello":
+            self.daemon_version = ev.get("version")
+            self._check_versions()
+        elif ev.get("t") == "disconnected":
+            self.daemon_version = None
+
+    def _check_versions(self):
+        """Point out a newer install than this window (reopen it) or than
+        the running daemon (restart it; it does so by itself under systemd)."""
+        disk = installed_version()
+        if disk and STARTUP_VERSION and disk != STARTUP_VERSION:
+            self.banner.set_title(_("MouseTouch {new} is installed; this window still runs {old}.").format(new=disk, old=STARTUP_VERSION))
+            self.banner.set_button_label(_("Reopen"))
+            self._banner_action = "reopen"
+        elif disk and self.daemon_version and self.daemon_version != disk:
+            self.banner.set_title(_("MouseTouch {new} is installed but the daemon still runs {old}.").format(new=disk, old=self.daemon_version))
+            self.banner.set_button_label(_("Restart daemon"))
+            self._banner_action = "restart"
+        else:
+            self._banner_action = None
+        self.banner.set_revealed(self._banner_action is not None)
+
+    def _banner_clicked(self, *_a):
+        if self._banner_action == "restart":
+            self._restart()
+        elif self._banner_action == "reopen":
+            # Replace this process with a fresh one from the file on disk; a
+            # second process would only activate this instance (single
+            # instance app), so exec rather than spawn.
+            script = os.path.abspath(sys.argv[0])
+            os.execv(sys.executable, [sys.executable, script, *sys.argv[1:]])
 
     # -- reset -----------------------------------------------------------
     def _reset_defaults(self, *_a):
@@ -3737,6 +3901,7 @@ class Window(Adw.ApplicationWindow):
         unit, state, ok = service_status()
         self.status_row.set_subtitle(f"{unit}: {state}")
         self.status_icon.set_from_icon_name("emblem-ok-symbolic" if ok else "dialog-warning-symbolic")
+        self._check_versions()
         return True
 
     def _restart(self, *_a):
@@ -3780,4 +3945,5 @@ class App(Adw.Application):
 
 
 if __name__ == "__main__":
+    STARTUP_VERSION = installed_version()
     sys.exit(App().run(sys.argv))
