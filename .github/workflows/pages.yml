@@ -1,6 +1,9 @@
 # Publishes site/ (the landing page at https://mouse.3m4.net) to GitHub Pages.
-# Runs on every push to main that touches the site, and on demand from any
-# branch (Actions tab -> "Pages" -> Run workflow) to publish a preview branch.
+# Runs on every push to main that touches the site, on demand from any branch
+# (Actions tab -> "Pages" -> Run workflow) to publish a preview branch, and
+# from the Release workflow after each release. The install snippets get the
+# latest release's version at build time, so the committed site never needs a
+# version bump (what is committed is only the fallback).
 name: Pages
 
 on:
@@ -27,8 +30,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Point the install snippets at the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          cp -r site _site
+          tag=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName || true)
+          case "$tag" in
+            v[0-9]*) python3 scripts/set-release-version.py "${tag#v}" _site/index.html ;;
+            *) echo "::warning::no release found; keeping the committed version" ;;
+          esac
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
