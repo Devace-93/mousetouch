@@ -11,7 +11,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MouseTouch">
 <meta property="og:title" content="MouseTouch — Magic Mouse gestures for Linux">
-<meta property="og:description" content="Workspace swipes, pinch zoom and configurable taps for the Apple Magic Mouse on Linux/Wayland. One-line install, .deb/.rpm, AUR, Homebrew, Nix, crates.io.">
+<meta property="og:description" content="Workspace swipes, pinch zoom and configurable taps for the Apple Magic Mouse on Linux/Wayland. One-line install, .deb/.rpm, Homebrew, Nix, crates.io.">
 <meta property="og:url" content="https://mouse.3m4.net/">
 <meta property="og:image" content="https://mouse.3m4.net/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -119,7 +119,6 @@
       <div class="tabs" role="tablist">
         <button class="tab" role="tab" aria-selected="true" data-tab="deb">Debian · Ubuntu · Pop!_OS</button>
         <button class="tab" role="tab" data-tab="rpm">Fedora · openSUSE</button>
-        <button class="tab" role="tab" data-tab="arch">Arch (AUR)</button>
         <button class="tab" role="tab" data-tab="brew">Homebrew</button>
         <button class="tab" role="tab" data-tab="nix">NixOS / Nix</button>
         <button class="tab" role="tab" data-tab="cargo">crates.io</button>
@@ -143,11 +142,6 @@ sudo dnf install ./mousetouch-0.1.7-1.x86_64.rpm
 # any release you downloaded by hand:
 # sudo dnf install ./mousetouch-&lt;version&gt;.x86_64.rpm</code></pre>
         <p data-i18n-html="rpmDeps">Settings app dependencies on Fedora: <code>python3-gobject gtk4 libadwaita</code>.</p>
-      </div>
-      <div class="panel-tab" data-tab="arch">
-        <p data-i18n-html="archP">Builds from the <code>main</code> branch. Settings app dependencies are optional: <code>python-gobject gtk4 libadwaita</code>.</p>
-        <pre><code>yay -S mousetouch-git
-systemctl --user enable --now mousetouch</code></pre>
       </div>
       <div class="panel-tab" data-tab="brew">
         <p data-i18n="brewP">Homebrew on Linux. The formula ships the binaries; follow the printed caveats to install the udev rule once (needs sudo), then start the service.</p>
