@@ -205,6 +205,9 @@
   #support { margin: 0 0 16px; }
   #support:empty { display: none; }
   #support .m4p { --m4p-fg: var(--accent-fg); }
+  /* Second mount in the hero CTA row: empty takes no space, rendered it matches the .btn size next to it. */
+  #support-hero:empty { display: none; }
+  #support-hero .m4p { --m4p-fg: var(--accent-fg); padding: 11px 18px; border: 1px solid transparent; border-radius: 10px; font-size: 16px; line-height: 1.55; }
 </style>
 <!-- retro feedback widget (bug reports, feedback, feature requests). The project key is public by design; it follows 3m4.theme / 3m4.lang. -->
 <script src="https://retro.3m4.net/widget.js" data-project-key="retro_pub_xw11No-PwNCvsempoEy8k9b8d0dMfvbA" defer></script>
@@ -216,6 +219,8 @@
      (key supportLabel): it rewrites data-label on this tag and pay.js re-renders on <html lang> changes.
      pay.js hides itself for viewers who are not allowed to donate yet, so #support may stay empty. -->
 <script id="support-pay" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support" defer></script>
+<!-- Same button a second time, in the hero CTA row next to Install (one tag per button; both share window.m4pay). -->
+<script id="support-pay-hero" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support-hero" defer></script>
 </head>
 <body>
 
@@ -251,6 +256,7 @@
       <a class="btn primary" href="#install" data-i18n="ctaInstall">Install</a>
       <a class="btn" href="https://github.com/Devace-93/mousetouch" data-i18n="ctaSource">Source on GitHub</a>
       <a class="btn" href="https://github.com/Devace-93/mousetouch/releases" data-i18n="ctaReleases">Releases</a>
+      <span id="support-hero"></span>
     </div>
     <div class="pills">
       <span class="pill">Wayland</span>

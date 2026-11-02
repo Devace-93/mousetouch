@@ -77,17 +77,21 @@ window.MouseTouchI18n = (function () {
 
   function apply() {
     const lang = getLang();
-    // Support button (pay.js, #support-pay): it reads data-label from its own
-    // script tag on every render and re-renders whenever <html lang> changes
-    // (it observes that attribute), so updating the attribute before the lang
-    // write below is enough to relabel it. The direct span update covers the
-    // case where lang did not change (first apply) and the button is already up.
-    const pay = document.getElementById('support-pay');
-    if (pay) {
-      pay.dataset.label = t('supportLabel');
-      const span = document.querySelector('#support .m4p span:last-child');
-      if (span) span.textContent = pay.dataset.label;
-    }
+    // Support buttons (pay.js tags #support-pay in the footer and
+    // #support-pay-hero in the hero CTA row): each reads data-label from its
+    // own script tag on every render and re-renders whenever <html lang>
+    // changes (it observes that attribute), so updating the attributes before
+    // the lang write below is enough to relabel them. The direct span update
+    // covers the case where lang did not change (first apply) and the buttons
+    // are already up.
+    const supportLabel = t('supportLabel');
+    [['support-pay', '#support'], ['support-pay-hero', '#support-hero']].forEach(([id, mount]) => {
+      const pay = document.getElementById(id);
+      if (!pay) return;
+      pay.dataset.label = supportLabel;
+      const span = document.querySelector(`${mount} .m4p span:last-child`);
+      if (span) span.textContent = supportLabel;
+    });
     document.documentElement.lang = lang;
     document.documentElement.dir = RTL_LANGS.includes(lang.slice(0, 2)) ? 'rtl' : 'ltr';
     document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
