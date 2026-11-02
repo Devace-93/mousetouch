@@ -84,7 +84,7 @@ curl -fsSL https://raw.githubusercontent.com/Devace-93/mousetouch/main/get.sh | 
 | Debian, Ubuntu, Pop!_OS | `curl -LO https://github.com/Devace-93/mousetouch/releases/download/v0.1.9/mousetouch_0.1.9-1_amd64.deb && sudo apt install ./mousetouch_0.1.9-1_amd64.deb` (latest; `_arm64` for ARM, or any `./mousetouch_<version>_amd64.deb` you downloaded) |
 | Fedora, openSUSE | `curl -LO https://github.com/Devace-93/mousetouch/releases/download/v0.1.9/mousetouch-0.1.9-1.x86_64.rpm && sudo dnf install ./mousetouch-0.1.9-1.x86_64.rpm` (latest; `.aarch64` for ARM, or any `./mousetouch-<version>.x86_64.rpm`) |
 | Arch | not on the AUR yet (registration was closed when 0.1.7 shipped); build the package from the repo: `cd packaging/aur && makepkg -si` |
-| Homebrew on Linux | `brew trust Devace-93/tap` once (recent Homebrew asks this for third-party taps), then `brew install Devace-93/tap/mousetouch` and follow the printed caveats for the udev rule; the daemon adds the settings app to the app menu on its first start. After `brew upgrade`, `brew services restart mousetouch` (the old daemon keeps running otherwise) |
+| Homebrew on Linux | `brew trust Devace-93/tap` once (recent Homebrew asks this for third-party taps), then `brew install Devace-93/tap/mousetouch` and follow the printed caveats for the udev rule; the daemon adds the settings app to the app menu on its first start. After `brew upgrade` the running daemon notices the new binary and restarts itself (0.1.10 and later; before that, `brew services restart mousetouch`) |
 | NixOS / Nix | `nix profile install github:Devace-93/mousetouch`, or import `nixosModules.default` and set `services.mousetouch.enable = true` |
 | Rust toolchain | `cargo install mousetouch` (binary only; install the udev rule from `packaging/` by hand) |
 | Any, static tarball | `mousetouch-<version>-<arch>-linux.tar.gz` contains the binary, the settings app and the files `get.sh` installs |
@@ -173,6 +173,14 @@ its name. Every event in the stream has a `dev` number for this.
 The data comes from the daemon's event stream on
 `$XDG_RUNTIME_DIR/mousetouch.sock` (newline-delimited JSON, see
 `src/monitor.rs`); `mousetouch events` prints it in a terminal.
+
+### Upgrading
+
+When the daemon runs as a service and the `mousetouch` binary on disk is
+replaced (a package upgrade, `brew upgrade`, `install.sh`), it exits so the
+service starts the new version; nothing to restart by hand. An open
+settings window notices too and shows a banner to reopen it (or to restart
+a daemon that is still on the old version when it is not run as a service).
 
 The same options exist in the TOML file:
 

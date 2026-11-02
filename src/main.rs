@@ -25,7 +25,7 @@ use evdev::{AbsoluteAxisCode, Device};
 use std::collections::{HashMap, HashSet};
 use std::io::Read;
 use std::os::fd::AsRawFd;
-use std::os::unix::fs::OpenOptionsExt;
+use std::os::unix::fs::{MetadataExt, OpenOptionsExt};
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
@@ -169,11 +169,19 @@ fn run(config_path: &Path) -> Result<()> {
     // Device number stamped on the event stream, so the settings app can
     // tell two mice apart; never reused while the daemon runs.
     let mut next_dev: u32 = 0;
+    let binary = BinaryWatch::under_service_manager();
     let mut last_mtime = std::fs::metadata(config_path).and_then(|m| m.modified()).ok();
     // Nodes already reported as unusable, so the warning is logged once.
     let mut warned: HashSet<PathBuf> = HashSet::new();
 
     loop {
+        // A package upgrade replaced the binary: leave with a failure code so
+        // the unit (Restart=on-failure, brew's keep_alive) starts the new one.
+        if binary.as_ref().is_some_and(BinaryWatch::replaced) {
+            log::info!("mousetouch was updated on disk; exiting so the service restarts the new version");
+            std::process::exit(75);
+        }
+
         // Hot-reload the config when the file changes.
         let mtime = std::fs::metadata(config_path).and_then(|m| m.modified()).ok();
         if mtime != last_mtime {
@@ -219,6 +227,84 @@ fn run(config_path: &Path) -> Result<()> {
             });
         }
         thread::sleep(Duration::from_secs(1));
+    }
+}
+
+/// The executable as it was on disk at startup, to notice an upgrade.
+/// Looks at the path the daemon was started with (through symlinks, so a
+/// Homebrew `opt/` link that moves to a new Cellar version counts), falling
+/// back to the resolved executable.
+struct BinaryWatch {
+    path: PathBuf,
+    id: (u64, u64, i64, u64),
+}
+
+impl BinaryWatch {
+    /// Only under systemd (`INVOCATION_ID`), where something restarts us; a
+    /// daemon run by hand in a terminal keeps going.
+    fn under_service_manager() -> Option<Self> {
+        if std::env::var_os("INVOCATION_ID").is_none() {
+            return None;
+        }
+        let argv0 = std::env::args_os().next().map(PathBuf::from).filter(|p| p.components().count() > 1);
+        let path = argv0.or_else(|| std::env::current_exe().ok())?;
+        Self::at(path)
+    }
+
+    fn at(path: PathBuf) -> Option<Self> {
+        let id = Self::file_id(&path)?;
+        Some(Self { path, id })
+    }
+
+    /// Device, inode, mtime and size: a new file (dpkg, rpm, install(1),
+    /// a Homebrew symlink pointing elsewhere) or one rewritten in place.
+    fn file_id(path: &Path) -> Option<(u64, u64, i64, u64)> {
+        let m = std::fs::metadata(path).ok()?;
+        Some((m.dev(), m.ino(), m.mtime(), m.size()))
+    }
+
+    /// True once the file at the startup path differs from the one that is
+    /// running. A missing file (mid-upgrade) is not yet a replacement.
+    fn replaced(&self) -> bool {
+        Self::file_id(&self.path).is_some_and(|id| id != self.id)
+    }
+}
+
+#[cfg(test)]
+mod binary_watch_tests {
+    use super::BinaryWatch;
+
+    #[test]
+    fn notices_a_replaced_or_rewritten_file_but_not_a_missing_one() {
+        let dir = std::env::temp_dir().join(format!("mousetouch-bw-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let exe = dir.join("mousetouch");
+        std::fs::write(&exe, b"v1").unwrap();
+        let watch = BinaryWatch::at(exe.clone()).unwrap();
+        assert!(!watch.replaced());
+
+        // Gone for a moment, as during a package upgrade.
+        std::fs::remove_file(&exe).unwrap();
+        assert!(!watch.replaced());
+
+        // Installed anew (a different inode and size).
+        let staged = dir.join("mousetouch.new");
+        std::fs::write(&staged, b"version 2").unwrap();
+        std::fs::rename(&staged, &exe).unwrap();
+        assert!(watch.replaced());
+
+        // A symlink that moves to another target, like Homebrew's opt/ link.
+        let a = dir.join("a");
+        let b = dir.join("b");
+        std::fs::write(&a, b"a").unwrap();
+        std::fs::write(&b, b"bb").unwrap();
+        let link = dir.join("opt");
+        std::os::unix::fs::symlink(&a, &link).unwrap();
+        let watch = BinaryWatch::at(link.clone()).unwrap();
+        std::fs::remove_file(&link).unwrap();
+        std::os::unix::fs::symlink(&b, &link).unwrap();
+        assert!(watch.replaced());
+        let _ = std::fs::remove_dir_all(&dir);
     }
 }
 
