@@ -77,6 +77,17 @@ window.MouseTouchI18n = (function () {
 
   function apply() {
     const lang = getLang();
+    // Support button (pay.js, #support-pay): it reads data-label from its own
+    // script tag on every render and re-renders whenever <html lang> changes
+    // (it observes that attribute), so updating the attribute before the lang
+    // write below is enough to relabel it. The direct span update covers the
+    // case where lang did not change (first apply) and the button is already up.
+    const pay = document.getElementById('support-pay');
+    if (pay) {
+      pay.dataset.label = t('supportLabel');
+      const span = document.querySelector('#support .m4p span:last-child');
+      if (span) span.textContent = pay.dataset.label;
+    }
     document.documentElement.lang = lang;
     document.documentElement.dir = RTL_LANGS.includes(lang.slice(0, 2)) ? 'rtl' : 'ltr';
     document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
@@ -248,6 +259,7 @@ MouseTouchI18n.CATALOG.en = {
   s5: '<code>app</code> rules never fire', c5: 'Run with <code>-v</code> and look for "focus tracking via". GNOME exposes no toplevel protocol, so app rules never match there.',
   helpMore: 'More in the <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, or open an <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Made by', source: 'Source',
+  supportLabel: 'Buy me a beer 🍺',
   disclaimer: 'MouseTouch is an independent open-source project. It is not affiliated with, endorsed by or sponsored by Apple Inc. "Magic Mouse" is a trademark of Apple Inc., used here only to describe the hardware this driver works with.',
 };
 
@@ -320,6 +332,7 @@ MouseTouchI18n.CATALOG.es = {
   s5: 'Las reglas por <code>app</code> nunca se disparan', c5: 'Ejecuta con <code>-v</code> y busca "focus tracking via". GNOME no expone ningún protocolo de toplevel, así que ahí las reglas por app nunca coinciden.',
   helpMore: 'Más en el <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, o abre un <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Hecho por', source: 'Código fuente',
+  supportLabel: 'Invítame una cerveza 🍺',
   disclaimer: 'MouseTouch es un proyecto independiente de código abierto. No está afiliado, respaldado ni patrocinado por Apple Inc. "Magic Mouse" es una marca de Apple Inc., usada aquí solo para describir el hardware con el que funciona este driver.',
 };
 
@@ -392,6 +405,7 @@ MouseTouchI18n.CATALOG.fr = {
   s5: 'Les règles <code>app</code> ne se déclenchent jamais', c5: 'Lancez avec <code>-v</code> et cherchez « focus tracking via ». GNOME n\'expose aucun protocole toplevel, donc les règles par app n\'y correspondent jamais.',
   helpMore: 'Plus de détails dans le <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ou ouvrez un <a href="https://github.com/Devace-93/mousetouch/issues">ticket</a>.',
   madeBy: 'Créé par', source: 'Code source',
+  supportLabel: 'Offrez-moi une bière 🍺',
   disclaimer: 'MouseTouch est un projet open source indépendant. Il n\'est ni affilié, ni approuvé, ni sponsorisé par Apple Inc. « Magic Mouse » est une marque d\'Apple Inc., utilisée ici uniquement pour décrire le matériel avec lequel ce pilote fonctionne.',
 };
 
@@ -464,6 +478,7 @@ MouseTouchI18n.CATALOG.de = {
   s5: '<code>app</code>-Regeln greifen nie', c5: 'Mit <code>-v</code> starten und nach „focus tracking via“ suchen. GNOME stellt kein Toplevel-Protokoll bereit, dort greifen App-Regeln nie.',
   helpMore: 'Mehr im <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, oder eröffne ein <a href="https://github.com/Devace-93/mousetouch/issues">Issue</a>.',
   madeBy: 'Erstellt von', source: 'Quellcode',
+  supportLabel: 'Spendier mir ein Bier 🍺',
   disclaimer: 'MouseTouch ist ein unabhängiges Open-Source-Projekt. Es ist weder mit Apple Inc. verbunden noch von Apple Inc. unterstützt oder gesponsert. „Magic Mouse“ ist eine Marke von Apple Inc. und wird hier nur zur Beschreibung der Hardware verwendet, mit der dieser Treiber arbeitet.',
 };
 
@@ -536,6 +551,7 @@ MouseTouchI18n.CATALOG.it = {
   s5: 'Le regole <code>app</code> non scattano mai', c5: 'Esegui con <code>-v</code> e cerca "focus tracking via". GNOME non espone alcun protocollo toplevel, quindi lì le regole per app non corrispondono mai.',
   helpMore: 'Altro nel <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, oppure apri una <a href="https://github.com/Devace-93/mousetouch/issues">segnalazione</a>.',
   madeBy: 'Creato da', source: 'Codice sorgente',
+  supportLabel: 'Offrimi una birra 🍺',
   disclaimer: 'MouseTouch è un progetto open source indipendente. Non è affiliato, approvato o sponsorizzato da Apple Inc. "Magic Mouse" è un marchio di Apple Inc., usato qui solo per descrivere l\'hardware con cui funziona questo driver.',
 };
 
@@ -608,6 +624,7 @@ MouseTouchI18n.CATALOG.pt = {
   s5: 'Regras por <code>app</code> nunca disparam', c5: 'Rode com <code>-v</code> e procure "focus tracking via". O GNOME não expõe nenhum protocolo toplevel, então lá as regras por app nunca casam.',
   helpMore: 'Mais no <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ou abra uma <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Feito por', source: 'Código-fonte',
+  supportLabel: 'Pague-me uma cerveja 🍺',
   disclaimer: 'MouseTouch é um projeto independente de código aberto. Não é afiliado, endossado nem patrocinado pela Apple Inc. "Magic Mouse" é uma marca da Apple Inc., usada aqui apenas para descrever o hardware com o qual este driver funciona.',
 };
 
@@ -680,6 +697,7 @@ MouseTouchI18n.CATALOG.nl = {
   s5: '<code>app</code>-regels gaan nooit af', c5: 'Start met <code>-v</code> en zoek naar "focus tracking via". GNOME biedt geen toplevel-protocol, dus daar matchen app-regels nooit.',
   helpMore: 'Meer in de <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, of open een <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Gemaakt door', source: 'Broncode',
+  supportLabel: 'Trakteer me op een biertje 🍺',
   disclaimer: 'MouseTouch is een onafhankelijk opensourceproject. Het is niet gelieerd aan, goedgekeurd door of gesponsord door Apple Inc. "Magic Mouse" is een handelsmerk van Apple Inc., hier alleen gebruikt om de hardware te beschrijven waarmee deze driver werkt.',
 };
 
@@ -752,6 +770,7 @@ MouseTouchI18n.CATALOG.sv = {
   s5: '<code>app</code>-regler utlöses aldrig', c5: 'Kör med <code>-v</code> och leta efter "focus tracking via". GNOME exponerar inget toplevel-protokoll, så där matchar appregler aldrig.',
   helpMore: 'Mer i <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, eller öppna ett <a href="https://github.com/Devace-93/mousetouch/issues">ärende</a>.',
   madeBy: 'Skapad av', source: 'Källkod',
+  supportLabel: 'Bjud mig på en öl 🍺',
   disclaimer: 'MouseTouch är ett oberoende projekt med öppen källkod. Det är inte knutet till, godkänt av eller sponsrat av Apple Inc. "Magic Mouse" är ett varumärke som tillhör Apple Inc. och används här bara för att beskriva hårdvaran som drivrutinen fungerar med.',
 };
 
@@ -824,6 +843,7 @@ MouseTouchI18n.CATALOG.pl = {
   s5: 'Reguły <code>app</code> nigdy nie działają', c5: 'Uruchom z <code>-v</code> i szukaj "focus tracking via". GNOME nie udostępnia protokołu toplevel, więc tam reguły aplikacji nigdy nie pasują.',
   helpMore: 'Więcej w <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> albo otwórz <a href="https://github.com/Devace-93/mousetouch/issues">zgłoszenie</a>.',
   madeBy: 'Autor', source: 'Kod źródłowy',
+  supportLabel: 'Postaw mi piwo 🍺',
   disclaimer: 'MouseTouch to niezależny projekt open source. Nie jest powiązany z Apple Inc., ani przez nią wspierany czy sponsorowany. „Magic Mouse” to znak towarowy Apple Inc., użyty tu wyłącznie do opisania sprzętu, z którym działa ten sterownik.',
 };
 
@@ -896,6 +916,7 @@ MouseTouchI18n.CATALOG.cs = {
   s5: 'Pravidla <code>app</code> se nikdy nespustí', c5: 'Spusťte s <code>-v</code> a hledejte "focus tracking via". GNOME nenabízí žádný toplevel protokol, takže tam pravidla aplikací nikdy nesedí.',
   helpMore: 'Více v <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, nebo založte <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Vytvořil', source: 'Zdrojový kód',
+  supportLabel: 'Kup mi pivo 🍺',
   disclaimer: 'MouseTouch je nezávislý open source projekt. Není spojen s Apple Inc., ani jí schválen či sponzorován. „Magic Mouse“ je ochranná známka Apple Inc., použitá zde jen k popisu hardwaru, se kterým tento ovladač pracuje.',
 };
 
@@ -968,6 +989,7 @@ MouseTouchI18n.CATALOG.ro = {
   s5: 'Regulile <code>app</code> nu se declanșează niciodată', c5: 'Rulează cu <code>-v</code> și caută "focus tracking via". GNOME nu expune niciun protocol toplevel, deci acolo regulile per aplicație nu se potrivesc niciodată.',
   helpMore: 'Mai multe în <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, sau deschide un <a href="https://github.com/Devace-93/mousetouch/issues">tichet</a>.',
   madeBy: 'Creat de', source: 'Cod sursă',
+  supportLabel: 'Fă-mi cinste cu o bere 🍺',
   disclaimer: 'MouseTouch este un proiect open source independent. Nu este afiliat, aprobat sau sponsorizat de Apple Inc. „Magic Mouse” este o marcă a Apple Inc., folosită aici doar pentru a descrie hardware-ul cu care funcționează acest driver.',
 };
 
@@ -1040,6 +1062,7 @@ MouseTouchI18n.CATALOG.el = {
   s5: 'Οι κανόνες <code>app</code> δεν ενεργοποιούνται ποτέ', c5: 'Εκτελέστε με <code>-v</code> και αναζητήστε "focus tracking via". Το GNOME δεν εκθέτει πρωτόκολλο toplevel, οπότε εκεί οι κανόνες ανά εφαρμογή δεν ταιριάζουν ποτέ.',
   helpMore: 'Περισσότερα στο <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, ή ανοίξτε ένα <a href="https://github.com/Devace-93/mousetouch/issues">ζήτημα</a>.',
   madeBy: 'Δημιουργία', source: 'Πηγαίος κώδικας',
+  supportLabel: 'Κέρασέ με μια μπίρα 🍺',
   disclaimer: 'Το MouseTouch είναι ανεξάρτητο έργο ανοικτού κώδικα. Δεν συνδέεται, δεν εγκρίνεται ούτε χρηματοδοτείται από την Apple Inc. Το «Magic Mouse» είναι εμπορικό σήμα της Apple Inc. και χρησιμοποιείται εδώ μόνο για να περιγράψει το υλικό με το οποίο λειτουργεί ο οδηγός.',
 };
 
@@ -1112,6 +1135,7 @@ MouseTouchI18n.CATALOG.uk = {
   s5: 'Правила <code>app</code> ніколи не спрацьовують', c5: 'Запустіть із <code>-v</code> і шукайте "focus tracking via". GNOME не надає протоколу toplevel, тому там правила для застосунків ніколи не збігаються.',
   helpMore: 'Більше в <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> або відкрийте <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Автор', source: 'Вихідний код',
+  supportLabel: 'Пригости мене пивом 🍺',
   disclaimer: 'MouseTouch — незалежний проєкт із відкритим кодом. Він не пов’язаний з Apple Inc., не схвалений і не спонсорований нею. «Magic Mouse» — торговельна марка Apple Inc., використана тут лише для опису обладнання, з яким працює цей драйвер.',
 };
 
@@ -1184,6 +1208,7 @@ MouseTouchI18n.CATALOG.ru = {
   s5: 'Правила <code>app</code> никогда не срабатывают', c5: 'Запустите с <code>-v</code> и ищите "focus tracking via". GNOME не предоставляет протокол toplevel, поэтому там правила для приложений никогда не совпадают.',
   helpMore: 'Подробнее в <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> или откройте <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Автор', source: 'Исходный код',
+  supportLabel: 'Угости меня пивом 🍺',
   disclaimer: 'MouseTouch — независимый проект с открытым исходным кодом. Он не связан с Apple Inc., не одобрен и не спонсируется ею. «Magic Mouse» — товарный знак Apple Inc., используемый здесь только для описания оборудования, с которым работает этот драйвер.',
 };
 
@@ -1256,6 +1281,7 @@ MouseTouchI18n.CATALOG.tr = {
   s5: '<code>app</code> kuralları hiç tetiklenmiyor', c5: '<code>-v</code> ile çalıştırın ve "focus tracking via" ifadesini arayın. GNOME toplevel protokolü sunmaz, bu yüzden orada uygulama kuralları hiç eşleşmez.',
   helpMore: 'Daha fazlası <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>\'de ya da bir <a href="https://github.com/Devace-93/mousetouch/issues">issue</a> açın.',
   madeBy: 'Yapan', source: 'Kaynak kodu',
+  supportLabel: 'Bana bir bira ısmarla 🍺',
   disclaimer: 'MouseTouch bağımsız bir açık kaynak projesidir. Apple Inc. ile bağlantılı değildir, onun tarafından onaylanmamış veya desteklenmemiştir. "Magic Mouse", Apple Inc.\'in ticari markasıdır ve burada yalnızca bu sürücünün çalıştığı donanımı tanımlamak için kullanılmıştır.',
 };
 
@@ -1328,6 +1354,7 @@ MouseTouchI18n.CATALOG.ar = {
   s5: 'قواعد <code>app</code> لا تعمل أبدًا', c5: 'شغّل مع <code>-v</code> وابحث عن "focus tracking via". لا يوفر GNOME بروتوكول toplevel، لذا لا تتطابق قواعد التطبيقات هناك أبدًا.',
   helpMore: 'المزيد في <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>، أو افتح <a href="https://github.com/Devace-93/mousetouch/issues">بلاغًا</a>.',
   madeBy: 'من صنع', source: 'الشيفرة المصدرية',
+  supportLabel: 'اشترِ لي بيرة 🍺',
   disclaimer: 'MouseTouch مشروع مفتوح المصدر مستقل. ليس تابعًا لشركة Apple Inc. ولا معتمدًا أو مدعومًا منها. "Magic Mouse" علامة تجارية لشركة Apple Inc.، تُستخدم هنا فقط لوصف العتاد الذي يعمل معه برنامج التشغيل.',
 };
 
@@ -1400,6 +1427,7 @@ MouseTouchI18n.CATALOG.hi = {
   s5: '<code>app</code> नियम कभी नहीं चलते', c5: '<code>-v</code> के साथ चलाएँ और "focus tracking via" खोजें। GNOME कोई toplevel प्रोटोकॉल नहीं देता, इसलिए वहाँ ऐप नियम कभी मेल नहीं खाते।',
   helpMore: '<a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> में और पढ़ें, या एक <a href="https://github.com/Devace-93/mousetouch/issues">issue</a> खोलें।',
   madeBy: 'निर्माता', source: 'सोर्स कोड',
+  supportLabel: 'मुझे एक बीयर पिलाएँ 🍺',
   disclaimer: 'MouseTouch एक स्वतंत्र ओपन-सोर्स प्रोजेक्ट है। यह Apple Inc. से संबद्ध, अनुमोदित या प्रायोजित नहीं है। "Magic Mouse" Apple Inc. का ट्रेडमार्क है, जिसका उपयोग यहाँ केवल उस हार्डवेयर का वर्णन करने के लिए किया गया है जिसके साथ यह ड्राइवर काम करता है।',
 };
 
@@ -1472,6 +1500,7 @@ MouseTouchI18n.CATALOG.zh = {
   s5: '<code>app</code> 规则从不触发', c5: '用 <code>-v</code> 运行并查找 "focus tracking via"。GNOME 不提供 toplevel 协议，因此那里的应用规则永远不会匹配。',
   helpMore: '更多内容见 <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>，或提交一个 <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>。',
   madeBy: '作者', source: '源码',
+  supportLabel: '请我喝杯啤酒 🍺',
   disclaimer: 'MouseTouch 是一个独立的开源项目。它与 Apple Inc. 没有关联，也未获其认可或赞助。"Magic Mouse" 是 Apple Inc. 的商标，这里仅用于描述本驱动所支持的硬件。',
 };
 
@@ -1544,6 +1573,7 @@ MouseTouchI18n.CATALOG.ja = {
   s5: '<code>app</code> ルールが発火しない', c5: '<code>-v</code> 付きで実行し "focus tracking via" を探してください。GNOME は toplevel プロトコルを公開しないため、そこではアプリルールは一致しません。',
   helpMore: '詳しくは <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> を参照するか、<a href="https://github.com/Devace-93/mousetouch/issues">issue</a> を開いてください。',
   madeBy: '作者', source: 'ソースコード',
+  supportLabel: 'ビールをおごってください 🍺',
   disclaimer: 'MouseTouch は独立したオープンソースプロジェクトです。Apple Inc. と提携、承認、後援の関係はありません。「Magic Mouse」は Apple Inc. の商標であり、ここではこのドライバーが動作するハードウェアを説明するためにのみ使用しています。',
 };
 
@@ -1616,6 +1646,7 @@ MouseTouchI18n.CATALOG.ko = {
   s5: '<code>app</code> 규칙이 작동하지 않음', c5: '<code>-v</code>로 실행하고 "focus tracking via"를 찾으세요. GNOME은 toplevel 프로토콜을 제공하지 않으므로 거기서는 앱 규칙이 절대 일치하지 않습니다.',
   helpMore: '자세한 내용은 <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>를 보거나 <a href="https://github.com/Devace-93/mousetouch/issues">이슈</a>를 열어 주세요.',
   madeBy: '만든 사람', source: '소스 코드',
+  supportLabel: '맥주 한 잔 사주세요 🍺',
   disclaimer: 'MouseTouch는 독립적인 오픈 소스 프로젝트입니다. Apple Inc.와 제휴하거나 승인·후원을 받지 않았습니다. "Magic Mouse"는 Apple Inc.의 상표이며, 여기서는 이 드라이버가 동작하는 하드웨어를 설명하기 위해서만 사용됩니다.',
 };
 
@@ -1688,6 +1719,7 @@ MouseTouchI18n.CATALOG.vi = {
   s5: 'Quy tắc <code>app</code> không bao giờ kích hoạt', c5: 'Chạy với <code>-v</code> và tìm "focus tracking via". GNOME không cung cấp giao thức toplevel nên ở đó quy tắc ứng dụng không bao giờ khớp.',
   helpMore: 'Xem thêm trong <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, hoặc mở một <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.',
   madeBy: 'Tạo bởi', source: 'Mã nguồn',
+  supportLabel: 'Mời tôi một ly bia 🍺',
   disclaimer: 'MouseTouch là một dự án mã nguồn mở độc lập. Không liên kết, không được Apple Inc. chứng thực hay tài trợ. "Magic Mouse" là nhãn hiệu của Apple Inc., chỉ dùng ở đây để mô tả phần cứng mà trình điều khiển này hoạt động cùng.',
 };
 
@@ -1760,6 +1792,7 @@ MouseTouchI18n.CATALOG.id = {
   s5: 'Aturan <code>app</code> tidak pernah aktif', c5: 'Jalankan dengan <code>-v</code> dan cari "focus tracking via". GNOME tidak menyediakan protokol toplevel, jadi di sana aturan aplikasi tidak pernah cocok.',
   helpMore: 'Selengkapnya di <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, atau buka <a href="https://github.com/Devace-93/mousetouch/issues">isu</a>.',
   madeBy: 'Dibuat oleh', source: 'Kode sumber',
+  supportLabel: 'Traktir saya bir 🍺',
   disclaimer: 'MouseTouch adalah proyek sumber terbuka independen. Tidak berafiliasi dengan, didukung, atau disponsori oleh Apple Inc. "Magic Mouse" adalah merek dagang Apple Inc., digunakan di sini hanya untuk menjelaskan perangkat keras yang didukung driver ini.',
 };
 
@@ -1832,5 +1865,6 @@ MouseTouchI18n.CATALOG.th = {
   s5: 'กฎ <code>app</code> ไม่ทำงานเลย', c5: 'รันด้วย <code>-v</code> แล้วมองหา "focus tracking via" GNOME ไม่มีโปรโตคอล toplevel จึงไม่มีทางจับคู่กฎแอปได้',
   helpMore: 'อ่านเพิ่มใน <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a> หรือเปิด <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>',
   madeBy: 'สร้างโดย', source: 'ซอร์สโค้ด',
+  supportLabel: 'เลี้ยงเบียร์ผมสักแก้ว 🍺',
   disclaimer: 'MouseTouch เป็นโครงการโอเพนซอร์สอิสระ ไม่ได้เกี่ยวข้อง รับรอง หรือสนับสนุนโดย Apple Inc. "Magic Mouse" เป็นเครื่องหมายการค้าของ Apple Inc. ซึ่งใช้ที่นี่เพื่ออธิบายฮาร์ดแวร์ที่ไดรเวอร์นี้ทำงานด้วยเท่านั้น',
 };

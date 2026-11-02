@@ -201,6 +201,10 @@
   footer .links a { color: var(--fg-muted); text-decoration: underline; }
   footer .links a:hover { color: var(--fg); }
   footer p { margin: 6px 0; }
+  /* pay.js mount. Empty until the button renders (and stays empty when pay.js hides it), so it takes no space then. */
+  #support { margin: 0 0 16px; }
+  #support:empty { display: none; }
+  #support .m4p { --m4p-fg: var(--accent-fg); }
 </style>
 <!-- retro feedback widget (bug reports, feedback, feature requests). The project key is public by design; it follows 3m4.theme / 3m4.lang. -->
 <script src="https://retro.3m4.net/widget.js" data-project-key="retro_pub_xw11No-PwNCvsempoEy8k9b8d0dMfvbA" defer></script>
@@ -208,6 +212,10 @@
 <script src="https://metrics.3m4.net/m.js" data-key="metrics_pub_12BoDCD2Qlo4XTn1Y_fKn8Qm8ycbJyP_" defer></script>
 <!-- oops error tracking (uncaught errors, rejected promises, breadcrumbs). The project key is public by design. -->
 <script src="https://oops.3m4.net/o.js" data-key="oops_pub_iqQkFWQnudT9AQR_cQNMelOzR3VH_7hh" data-env="production" defer></script>
+<!-- payments "Buy me a beer" button, rendered into #support in the footer. The label is localized by i18n.js
+     (key supportLabel): it rewrites data-label on this tag and pay.js re-renders on <html lang> changes.
+     pay.js hides itself for viewers who are not allowed to donate yet, so #support may stay empty. -->
+<script id="support-pay" src="https://payments.3m4.net/pay.js" data-app="mousetouch" data-kind="donate" data-currency="usd" data-amount="500" data-label="Buy me a beer 🍺" data-mount="#support" defer></script>
 </head>
 <body>
 
@@ -425,6 +433,7 @@ journalctl --user -fu mousetouch</code></pre>
 
 <footer>
   <div class="wrap">
+    <div id="support"></div>
     <p class="links">
       <a href="https://www.linkedin.com/in/enrique-magallon/" target="_blank" rel="noopener noreferrer"><span data-i18n="madeBy">Made by</span> Enrique Magallón</a>
       <a href="https://github.com/Devace-93/mousetouch" data-i18n="source">Source</a>
