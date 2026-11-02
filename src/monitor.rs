@@ -30,7 +30,9 @@ pub struct Finger {
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "t", rename_all = "snake_case")]
 pub enum Event {
-    /// A mouse was attached (also replayed to every new client).
+    /// A mouse was attached (also replayed to every new client). Every event
+    /// of a mouse carries `dev`, a small number identifying it while it stays
+    /// attached, so a client can tell two mice apart.
     Device { name: String, w_mm: f64, h_mm: f64, source: &'static str },
     /// The mouse went away.
     DeviceLost,
@@ -88,14 +90,19 @@ pub enum Event {
 struct Inner {
     clients: Mutex<Vec<UnixStream>>,
     has_clients: AtomicBool,
-    /// Last `Device` event, replayed to clients that connect later.
-    device: Mutex<Option<String>>,
+    /// The `Device` line of every attached mouse, by `dev`, replayed to
+    /// clients that connect later.
+    devices: Mutex<Vec<(u32, String)>>,
     epoch: Instant,
 }
 
-/// Cheap handle; cloning shares the client list.
+/// Cheap handle; cloning shares the client list. `for_device` gives the
+/// handle a device number that is stamped on everything it sends.
 #[derive(Clone)]
-pub struct Monitor(Arc<Inner>);
+pub struct Monitor {
+    inner: Arc<Inner>,
+    dev: u32,
+}
 
 pub fn socket_path() -> PathBuf {
     match std::env::var_os("XDG_RUNTIME_DIR").map(PathBuf::from).filter(|p| p.is_absolute()) {
@@ -106,12 +113,20 @@ pub fn socket_path() -> PathBuf {
 
 impl Monitor {
     fn new() -> Self {
-        Self(Arc::new(Inner {
-            clients: Mutex::new(Vec::new()),
-            has_clients: AtomicBool::new(false),
-            device: Mutex::new(None),
-            epoch: Instant::now(),
-        }))
+        Self {
+            inner: Arc::new(Inner {
+                clients: Mutex::new(Vec::new()),
+                has_clients: AtomicBool::new(false),
+                devices: Mutex::new(Vec::new()),
+                epoch: Instant::now(),
+            }),
+            dev: 0,
+        }
+    }
+
+    /// A handle for one attached mouse: its events carry `"dev": id`.
+    pub fn for_device(&self, id: u32) -> Self {
+        Self { inner: Arc::clone(&self.inner), dev: id }
     }
 
     /// A monitor nobody can connect to (tests, one-off commands).
@@ -132,7 +147,7 @@ impl Monitor {
         match UnixListener::bind(path) {
             Ok(listener) => {
                 log::info!("event stream on {}", path.display());
-                let inner = Arc::clone(&m.0);
+                let inner = Arc::clone(&m.inner);
                 std::thread::Builder::new()
                     .name("monitor-accept".into())
                     .spawn(move || {
@@ -141,8 +156,8 @@ impl Monitor {
                                 continue;
                             }
                             let mut stream = stream;
-                            if let Some(dev) = inner.device.lock().unwrap().as_deref() {
-                                let _ = stream.write_all(dev.as_bytes());
+                            for (_, line) in inner.devices.lock().unwrap().iter() {
+                                let _ = stream.write_all(line.as_bytes());
                             }
                             inner.clients.lock().unwrap().push(stream);
                             inner.has_clients.store(true, Ordering::Relaxed);
@@ -158,20 +173,35 @@ impl Monitor {
 
     /// Milliseconds since the daemon started (the `ms` field of every event).
     pub fn now_ms(&self) -> u64 {
-        self.0.epoch.elapsed().as_millis() as u64
+        self.inner.epoch.elapsed().as_millis() as u64
     }
 
     /// True while at least one client is connected. Callers skip building
     /// events otherwise, so the stream costs nothing when unused.
     pub fn active(&self) -> bool {
-        self.0.has_clients.load(Ordering::Relaxed)
+        self.inner.has_clients.load(Ordering::Relaxed)
     }
 
-    /// Remember the attached device (sent to clients that connect later)
-    /// and announce it to the current ones.
+    /// One JSON line for `ev`, with this handle's device number added.
+    fn line(&self, ev: &Event) -> Option<String> {
+        let mut value = serde_json::to_value(ev).ok()?;
+        if self.dev != 0 {
+            value["dev"] = self.dev.into();
+        }
+        let mut line = serde_json::to_string(&value).ok()?;
+        line.push('\n');
+        Some(line)
+    }
+
+    /// Remember this handle's device (sent to clients that connect later)
+    /// and announce it to the current ones; `None` means it went away.
     pub fn set_device(&self, ev: Option<Event>) {
-        let line = ev.as_ref().and_then(|e| serde_json::to_string(e).ok()).map(|s| s + "\n");
-        *self.0.device.lock().unwrap() = line;
+        let mut devices = self.inner.devices.lock().unwrap();
+        devices.retain(|(id, _)| *id != self.dev);
+        if let Some(line) = ev.as_ref().and_then(|e| self.line(e)) {
+            devices.push((self.dev, line));
+        }
+        drop(devices);
         match ev {
             Some(ev) => self.send(&ev),
             None => self.send(&Event::DeviceLost),
@@ -182,9 +212,8 @@ impl Monitor {
         if !self.active() {
             return;
         }
-        let Ok(mut line) = serde_json::to_string(ev) else { return };
-        line.push('\n');
-        let mut clients = self.0.clients.lock().unwrap();
+        let Some(line) = self.line(ev) else { return };
+        let mut clients = self.inner.clients.lock().unwrap();
         clients.retain_mut(|c| match c.write_all(line.as_bytes()) {
             Ok(()) => true,
             Err(e) => {
@@ -193,7 +222,7 @@ impl Monitor {
             }
         });
         if clients.is_empty() {
-            self.0.has_clients.store(false, Ordering::Relaxed);
+            self.inner.has_clients.store(false, Ordering::Relaxed);
         }
     }
 }
@@ -270,6 +299,42 @@ mod tests {
             std::thread::sleep(std::time::Duration::from_millis(5));
         }
         assert!(!m.active());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn two_mice_are_replayed_and_stamped() {
+        let dir = std::env::temp_dir().join(format!("mousetouch-test2-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("events.sock");
+        let m = Monitor::start_at(&path);
+        let a = m.for_device(1);
+        let b = m.for_device(2);
+        a.set_device(Some(Event::Device { name: "Black  raton".into(), w_mm: 90.0, h_mm: 52.0, source: "hidraw" }));
+        b.set_device(Some(Event::Device { name: "Mm v2".into(), w_mm: 90.0, h_mm: 52.0, source: "hidraw" }));
+
+        let client = UnixStream::connect(&path).unwrap();
+        for _ in 0..200 {
+            if m.active() {
+                break;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(5));
+        }
+        b.send(&Event::Scroll { ms: 5, dx: 0, dy: 120 });
+        a.set_device(None);
+
+        let mut lines = BufReader::new(client).lines();
+        let mut next = || -> serde_json::Value { serde_json::from_str(&lines.next().unwrap().unwrap()).unwrap() };
+        let first = next();
+        assert_eq!((first["t"].as_str(), first["dev"].as_u64(), first["name"].as_str()), (Some("device"), Some(1), Some("Black  raton")));
+        let second = next();
+        assert_eq!((second["t"].as_str(), second["dev"].as_u64()), (Some("device"), Some(2)));
+        let scroll = next();
+        assert_eq!((scroll["t"].as_str(), scroll["dev"].as_u64(), scroll["dy"].as_i64()), (Some("scroll"), Some(2), Some(120)));
+        let lost = next();
+        assert_eq!((lost["t"].as_str(), lost["dev"].as_u64()), (Some("device_lost"), Some(1)));
+        // Only the second mouse is replayed from now on.
+        assert_eq!(m.inner.devices.lock().unwrap().iter().map(|(id, _)| *id).collect::<Vec<_>>(), vec![2]);
         let _ = std::fs::remove_dir_all(&dir);
     }
 }

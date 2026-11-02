@@ -11,6 +11,7 @@ config so the daemon never sees them.
 The live view at the top draws what the daemon sees on the mouse (fingers,
 taps, swipes, pinch, scrolling, clicks) from the daemon's event stream.
 """
+import copy
 import json
 import locale
 import math
@@ -141,6 +142,17 @@ def apply_theme(theme: str) -> None:
 # Translations: CATALOG["xx"] = {"English source": "translation", ...}
 
 CATALOG["es"] = {
+    "All mice": "Todos los ratones",
+    "Reset to defaults": "Restablecer valores predeterminados",
+    "Put every setting back to the values MouseTouch ships with": "Devuelve cada ajuste al valor con el que viene MouseTouch",
+    "Reset…": "Restablecer…",
+    "Reset to defaults?": "¿Restablecer valores predeterminados?",
+    "These settings will change:": "Estos ajustes cambiarán:",
+    "This setting will change:": "Este ajuste cambiará:",
+    "Reset": "Restablecer",
+    "Already at the defaults": "Ya están los valores predeterminados",
+    "Every setting already has the value MouseTouch ships with.": "Todos los ajustes ya tienen el valor con el que viene MouseTouch.",
+    "Settings reset to defaults": "Ajustes restablecidos a los predeterminados",
     "Nearby mice": "Ratones cercanos", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Ratones encendidos que aún no están conectados. Conectar desde aquí elimina cualquier emparejamiento a medias (lo habitual tras una Mac) y empareja, confía y conecta el ratón por sí mismo.", "Scan": "Buscar", "Scanning…": "Buscando…", "Press Scan with the mouse switched on.": "Pulsa Buscar con el ratón encendido.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "No se encontraron ratones. Apaga y encende el ratón para que se anuncie y vuelve a buscar.", "Connect": "Conectar", "Not paired yet": "Aún sin emparejar", "Half paired, no bond: Linux would reject it": "Emparejado a medias, sin vínculo: Linux lo rechazaría", "Paired, not connected": "Emparejado, no conectado", "Connect {name}?": "¿Conectar {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Se elimina cualquier emparejamiento antiguo de este ratón y luego se empareja, se marca como de confianza y se conecta. Tarda unos diez segundos; mantén el ratón encendido.", "Connected: {name}": "Conectado: {name}", "Pairing…": "Emparejando…", "Working…": "Trabajando…", "Keep the mouse switched on; switch it off and on if nothing happens": "Mantén el ratón encendido; apágalo y enciéndelo si no pasa nada", "Connected and bonded": "Conectado y vinculado", "Pairing failed: {error}": "Falló el emparejamiento: {error}", "Could not run mousetouch: {error}": "No se pudo ejecutar mousetouch: {error}", "Close": "Cerrar",
     "Acceleration": "Aceleración", "Extra distance for fast flicks on top of Speed; 0 = off": "Distancia extra en los deslizamientos rápidos, además de Velocidad; 0 = apagada", "Momentum": "Inercia", "Keep scrolling after the finger lifts, slowing down like macOS": "Seguir desplazando al levantar el dedo, frenando como en macOS", "Momentum decay": "Frenado de la inercia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocidad que se conserva cada milisegundo; 0.998 es el valor de Apple, menos para parar antes",
     "Swipe": "Deslizar", "Tap": "Toque", "Double tap": "Doble toque",
@@ -219,6 +231,17 @@ CATALOG["es"] = {
 }
 
 CATALOG["fr"] = {
+    "All mice": "Toutes les souris",
+    "Reset to defaults": "Rétablir les valeurs par défaut",
+    "Put every setting back to the values MouseTouch ships with": "Remet chaque réglage à la valeur livrée avec MouseTouch",
+    "Reset…": "Rétablir…",
+    "Reset to defaults?": "Rétablir les valeurs par défaut ?",
+    "These settings will change:": "Ces réglages vont changer :",
+    "This setting will change:": "Ce réglage va changer :",
+    "Reset": "Rétablir",
+    "Already at the defaults": "Déjà aux valeurs par défaut",
+    "Every setting already has the value MouseTouch ships with.": "Chaque réglage a déjà la valeur livrée avec MouseTouch.",
+    "Settings reset to defaults": "Réglages rétablis par défaut",
     "Nearby mice": "Souris à proximité", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Souris allumées mais pas encore connectées. Se connecter ici supprime tout appairage inachevé (l'état habituel après un Mac), puis appaire, approuve et connecte la souris.", "Scan": "Rechercher", "Scanning…": "Recherche…", "Press Scan with the mouse switched on.": "Appuyez sur Rechercher avec la souris allumée.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Aucune souris trouvée. Éteignez et rallumez la souris pour qu'elle s'annonce, puis relancez la recherche.", "Connect": "Connecter", "Not paired yet": "Pas encore appairée", "Half paired, no bond: Linux would reject it": "Appairage incomplet, sans liaison : Linux la refuserait", "Paired, not connected": "Appairée, non connectée", "Connect {name}?": "Connecter {name} ?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Tout ancien appairage de cette souris est supprimé, puis elle est appairée, approuvée et connectée. Cela prend une dizaine de secondes ; gardez la souris allumée.", "Connected: {name}": "Connectée : {name}", "Pairing…": "Appairage…", "Working…": "En cours…", "Keep the mouse switched on; switch it off and on if nothing happens": "Gardez la souris allumée ; éteignez-la et rallumez-la s'il ne se passe rien", "Connected and bonded": "Connectée et liée", "Pairing failed: {error}": "Échec de l'appairage : {error}", "Could not run mousetouch: {error}": "Impossible de lancer mousetouch : {error}", "Close": "Fermer",
     "Acceleration": "Accélération", "Extra distance for fast flicks on top of Speed; 0 = off": "Distance supplémentaire pour les gestes rapides, en plus de Vitesse ; 0 = désactivée", "Momentum": "Inertie", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuer à défiler après avoir levé le doigt, en ralentissant comme macOS", "Momentum decay": "Décroissance de l'inertie", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Vitesse conservée chaque milliseconde ; 0.998 est la valeur d'Apple, plus bas s'arrête plus tôt",
     "Swipe": "Balayage", "Tap": "Tapotement", "Double tap": "Double tapotement",
@@ -297,6 +320,17 @@ CATALOG["fr"] = {
 }
 
 CATALOG["de"] = {
+    "All mice": "Alle Mäuse",
+    "Reset to defaults": "Auf Standard zurücksetzen",
+    "Put every setting back to the values MouseTouch ships with": "Setzt jede Einstellung auf den mit MouseTouch gelieferten Wert zurück",
+    "Reset…": "Zurücksetzen…",
+    "Reset to defaults?": "Auf Standard zurücksetzen?",
+    "These settings will change:": "Diese Einstellungen ändern sich:",
+    "This setting will change:": "Diese Einstellung ändert sich:",
+    "Reset": "Zurücksetzen",
+    "Already at the defaults": "Bereits auf Standard",
+    "Every setting already has the value MouseTouch ships with.": "Jede Einstellung hat bereits den mit MouseTouch gelieferten Wert.",
+    "Settings reset to defaults": "Einstellungen auf Standard zurückgesetzt",
     "Nearby mice": "Mäuse in der Nähe", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Eingeschaltete Mäuse, die noch nicht verbunden sind. Verbinden entfernt hier jede halbfertige Kopplung (der übliche Zustand nach einem Mac) und koppelt, vertraut und verbindet die Maus selbst.", "Scan": "Suchen", "Scanning…": "Suche…", "Press Scan with the mouse switched on.": "Drücke Suchen, während die Maus eingeschaltet ist.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Keine Mäuse gefunden. Schalte die Maus aus und wieder ein, damit sie sich meldet, und suche erneut.", "Connect": "Verbinden", "Not paired yet": "Noch nicht gekoppelt", "Half paired, no bond: Linux would reject it": "Halb gekoppelt, ohne Bindung: Linux würde sie abweisen", "Paired, not connected": "Gekoppelt, nicht verbunden", "Connect {name}?": "{name} verbinden?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Jede alte Kopplung dieser Maus wird entfernt, dann wird sie gekoppelt, als vertrauenswürdig markiert und verbunden. Das dauert etwa zehn Sekunden; lass die Maus eingeschaltet.", "Connected: {name}": "Verbunden: {name}", "Pairing…": "Kopplung…", "Working…": "Arbeite…", "Keep the mouse switched on; switch it off and on if nothing happens": "Lass die Maus eingeschaltet; schalte sie aus und wieder ein, wenn nichts passiert", "Connected and bonded": "Verbunden und gebunden", "Pairing failed: {error}": "Kopplung fehlgeschlagen: {error}", "Could not run mousetouch: {error}": "mousetouch konnte nicht gestartet werden: {error}", "Close": "Schließen",
     "Acceleration": "Beschleunigung", "Extra distance for fast flicks on top of Speed; 0 = off": "Zusätzlicher Weg bei schnellen Wischern, zusätzlich zur Geschwindigkeit; 0 = aus", "Momentum": "Schwung", "Keep scrolling after the finger lifts, slowing down like macOS": "Nach dem Abheben des Fingers weiterscrollen und wie macOS ausrollen", "Momentum decay": "Abklingen des Schwungs", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Pro Millisekunde behaltene Geschwindigkeit; 0.998 ist Apples Wert, niedriger stoppt früher",
     "Swipe": "Wischen", "Tap": "Tipp", "Double tap": "Doppeltipp",
@@ -375,6 +409,17 @@ CATALOG["de"] = {
 }
 
 CATALOG["it"] = {
+    "All mice": "Tutti i mouse",
+    "Reset to defaults": "Ripristina predefiniti",
+    "Put every setting back to the values MouseTouch ships with": "Riporta ogni impostazione al valore con cui viene fornito MouseTouch",
+    "Reset…": "Ripristina…",
+    "Reset to defaults?": "Ripristinare i predefiniti?",
+    "These settings will change:": "Queste impostazioni cambieranno:",
+    "This setting will change:": "Questa impostazione cambierà:",
+    "Reset": "Ripristina",
+    "Already at the defaults": "Già ai valori predefiniti",
+    "Every setting already has the value MouseTouch ships with.": "Ogni impostazione ha già il valore con cui viene fornito MouseTouch.",
+    "Settings reset to defaults": "Impostazioni ripristinate ai predefiniti",
     "Nearby mice": "Mouse nelle vicinanze", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouse accesi ma non ancora connessi. Connettersi da qui rimuove qualsiasi abbinamento incompleto (lo stato abituale dopo un Mac) e abbina, autorizza e connette il mouse da solo.", "Scan": "Cerca", "Scanning…": "Ricerca…", "Press Scan with the mouse switched on.": "Premi Cerca con il mouse acceso.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nessun mouse trovato. Spegni e riaccendi il mouse perché si annunci, poi cerca di nuovo.", "Connect": "Connetti", "Not paired yet": "Non ancora abbinato", "Half paired, no bond: Linux would reject it": "Abbinato a metà, senza legame: Linux lo rifiuterebbe", "Paired, not connected": "Abbinato, non connesso", "Connect {name}?": "Connettere {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Qualsiasi vecchio abbinamento di questo mouse viene rimosso, poi viene abbinato, autorizzato e connesso. Richiede circa dieci secondi; tieni il mouse acceso.", "Connected: {name}": "Connesso: {name}", "Pairing…": "Abbinamento…", "Working…": "In corso…", "Keep the mouse switched on; switch it off and on if nothing happens": "Tieni il mouse acceso; spegnilo e riaccendilo se non succede nulla", "Connected and bonded": "Connesso e legato", "Pairing failed: {error}": "Abbinamento fallito: {error}", "Could not run mousetouch: {error}": "Impossibile eseguire mousetouch: {error}", "Close": "Chiudi",
     "Acceleration": "Accelerazione", "Extra distance for fast flicks on top of Speed; 0 = off": "Distanza extra per i gesti rapidi, oltre a Velocità; 0 = disattivata", "Momentum": "Inerzia", "Keep scrolling after the finger lifts, slowing down like macOS": "Continua a scorrere quando sollevi il dito, rallentando come macOS", "Momentum decay": "Decadimento dell'inerzia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocità mantenuta ogni millisecondo; 0.998 è il valore di Apple, più basso si ferma prima",
     "Swipe": "Scorrimento", "Tap": "Tocco", "Double tap": "Doppio tocco",
@@ -453,6 +498,17 @@ CATALOG["it"] = {
 }
 
 CATALOG["pt"] = {
+    "All mice": "Todos os mouses",
+    "Reset to defaults": "Restaurar padrões",
+    "Put every setting back to the values MouseTouch ships with": "Devolve cada ajuste ao valor com que o MouseTouch é distribuído",
+    "Reset…": "Restaurar…",
+    "Reset to defaults?": "Restaurar os padrões?",
+    "These settings will change:": "Estes ajustes vão mudar:",
+    "This setting will change:": "Este ajuste vai mudar:",
+    "Reset": "Restaurar",
+    "Already at the defaults": "Já está nos padrões",
+    "Every setting already has the value MouseTouch ships with.": "Todos os ajustes já têm o valor com que o MouseTouch é distribuído.",
+    "Settings reset to defaults": "Ajustes restaurados aos padrões",
     "Nearby mice": "Mouses próximos", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouses ligados que ainda não estão conectados. Conectar por aqui remove qualquer emparelhamento incompleto (o estado habitual depois de um Mac) e emparelha, confia e conecta o mouse sozinho.", "Scan": "Procurar", "Scanning…": "Procurando…", "Press Scan with the mouse switched on.": "Toque em Procurar com o mouse ligado.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nenhum mouse encontrado. Desligue e ligue o mouse para que ele se anuncie e procure de novo.", "Connect": "Conectar", "Not paired yet": "Ainda não emparelhado", "Half paired, no bond: Linux would reject it": "Emparelhado pela metade, sem vínculo: o Linux o rejeitaria", "Paired, not connected": "Emparelhado, não conectado", "Connect {name}?": "Conectar {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Qualquer emparelhamento antigo deste mouse é removido; depois ele é emparelhado, marcado como confiável e conectado. Leva cerca de dez segundos; mantenha o mouse ligado.", "Connected: {name}": "Conectado: {name}", "Pairing…": "Emparelhando…", "Working…": "Trabalhando…", "Keep the mouse switched on; switch it off and on if nothing happens": "Mantenha o mouse ligado; desligue e ligue se nada acontecer", "Connected and bonded": "Conectado e vinculado", "Pairing failed: {error}": "Falha no emparelhamento: {error}", "Could not run mousetouch: {error}": "Não foi possível executar o mousetouch: {error}", "Close": "Fechar",
     "Acceleration": "Aceleração", "Extra distance for fast flicks on top of Speed; 0 = off": "Distância extra nos deslizes rápidos, além de Velocidade; 0 = desligada", "Momentum": "Inércia", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuar a rolar ao levantar o dedo, desacelerando como no macOS", "Momentum decay": "Decaimento da inércia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocidade mantida a cada milissegundo; 0.998 é o valor da Apple, menor para mais cedo",
     "Swipe": "Deslizar", "Tap": "Toque", "Double tap": "Toque duplo",
@@ -531,6 +587,17 @@ CATALOG["pt"] = {
 }
 
 CATALOG["nl"] = {
+    "All mice": "Alle muizen",
+    "Reset to defaults": "Standaardwaarden herstellen",
+    "Put every setting back to the values MouseTouch ships with": "Zet elke instelling terug op de waarde waarmee MouseTouch wordt geleverd",
+    "Reset…": "Herstellen…",
+    "Reset to defaults?": "Standaardwaarden herstellen?",
+    "These settings will change:": "Deze instellingen veranderen:",
+    "This setting will change:": "Deze instelling verandert:",
+    "Reset": "Herstellen",
+    "Already at the defaults": "Al op de standaardwaarden",
+    "Every setting already has the value MouseTouch ships with.": "Elke instelling heeft al de waarde waarmee MouseTouch wordt geleverd.",
+    "Settings reset to defaults": "Instellingen hersteld naar standaard",
     "Nearby mice": "Muizen in de buurt", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Ingeschakelde muizen die nog niet verbonden zijn. Hier verbinden verwijdert elke half afgeronde koppeling (de gewone toestand na een Mac) en koppelt, vertrouwt en verbindt de muis zelf.", "Scan": "Zoeken", "Scanning…": "Zoeken…", "Press Scan with the mouse switched on.": "Druk op Zoeken terwijl de muis aan staat.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Geen muizen gevonden. Zet de muis uit en aan zodat hij zich meldt, en zoek opnieuw.", "Connect": "Verbinden", "Not paired yet": "Nog niet gekoppeld", "Half paired, no bond: Linux would reject it": "Half gekoppeld, zonder binding: Linux zou hem weigeren", "Paired, not connected": "Gekoppeld, niet verbonden", "Connect {name}?": "{name} verbinden?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Elke oude koppeling van deze muis wordt verwijderd; daarna wordt hij gekoppeld, vertrouwd en verbonden. Dit duurt ongeveer tien seconden; houd de muis aan.", "Connected: {name}": "Verbonden: {name}", "Pairing…": "Koppelen…", "Working…": "Bezig…", "Keep the mouse switched on; switch it off and on if nothing happens": "Houd de muis aan; zet hem uit en aan als er niets gebeurt", "Connected and bonded": "Verbonden en gebonden", "Pairing failed: {error}": "Koppelen mislukt: {error}", "Could not run mousetouch: {error}": "Kon mousetouch niet starten: {error}", "Close": "Sluiten",
     "Acceleration": "Versnelling", "Extra distance for fast flicks on top of Speed; 0 = off": "Extra afstand bij snelle veegbewegingen, bovenop Snelheid; 0 = uit", "Momentum": "Uitrollen", "Keep scrolling after the finger lifts, slowing down like macOS": "Blijf scrollen nadat de vinger loskomt, afremmend zoals macOS", "Momentum decay": "Afname van het uitrollen", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Behouden snelheid per milliseconde; 0.998 is Apples waarde, lager stopt eerder",
     "Swipe": "Vegen", "Tap": "Tik", "Double tap": "Dubbele tik",
@@ -609,6 +676,17 @@ CATALOG["nl"] = {
 }
 
 CATALOG["sv"] = {
+    "All mice": "Alla möss",
+    "Reset to defaults": "Återställ standardvärden",
+    "Put every setting back to the values MouseTouch ships with": "Återställer varje inställning till värdet MouseTouch levereras med",
+    "Reset…": "Återställ…",
+    "Reset to defaults?": "Återställ standardvärden?",
+    "These settings will change:": "Dessa inställningar ändras:",
+    "This setting will change:": "Den här inställningen ändras:",
+    "Reset": "Återställ",
+    "Already at the defaults": "Redan standardvärden",
+    "Every setting already has the value MouseTouch ships with.": "Varje inställning har redan värdet MouseTouch levereras med.",
+    "Settings reset to defaults": "Inställningarna återställda till standard",
     "Nearby mice": "Möss i närheten", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Påslagna möss som inte är anslutna ännu. Att ansluta här tar bort varje halvfärdig parkoppling (det vanliga läget efter en Mac) och parkopplar, litar på och ansluter musen själv.", "Scan": "Sök", "Scanning…": "Söker…", "Press Scan with the mouse switched on.": "Tryck på Sök med musen påslagen.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Inga möss hittades. Stäng av och slå på musen så att den annonserar sig, och sök igen.", "Connect": "Anslut", "Not paired yet": "Inte parkopplad ännu", "Half paired, no bond: Linux would reject it": "Halvt parkopplad, utan bindning: Linux skulle avvisa den", "Paired, not connected": "Parkopplad, inte ansluten", "Connect {name}?": "Anslut {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "All gammal parkoppling av musen tas bort, sedan parkopplas, betros och ansluts den. Det tar ungefär tio sekunder; låt musen vara påslagen.", "Connected: {name}": "Ansluten: {name}", "Pairing…": "Parkopplar…", "Working…": "Arbetar…", "Keep the mouse switched on; switch it off and on if nothing happens": "Låt musen vara på; stäng av och slå på den om ingenting händer", "Connected and bonded": "Ansluten och bunden", "Pairing failed: {error}": "Parkopplingen misslyckades: {error}", "Could not run mousetouch: {error}": "Kunde inte köra mousetouch: {error}", "Close": "Stäng",
     "Acceleration": "Acceleration", "Extra distance for fast flicks on top of Speed; 0 = off": "Extra sträcka vid snabba svep, utöver Hastighet; 0 = av", "Momentum": "Rörelsemängd", "Keep scrolling after the finger lifts, slowing down like macOS": "Fortsätt rulla när fingret lyfts och sakta ner som macOS", "Momentum decay": "Avmattning", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Hastighet som behålls varje millisekund; 0.998 är Apples värde, lägre stannar tidigare",
     "Swipe": "Svep", "Tap": "Tryck", "Double tap": "Dubbeltryck",
@@ -687,6 +765,17 @@ CATALOG["sv"] = {
 }
 
 CATALOG["pl"] = {
+    "All mice": "Wszystkie myszy",
+    "Reset to defaults": "Przywróć domyślne",
+    "Put every setting back to the values MouseTouch ships with": "Przywraca każdemu ustawieniu wartość, z którą dostarczany jest MouseTouch",
+    "Reset…": "Przywróć…",
+    "Reset to defaults?": "Przywrócić domyślne?",
+    "These settings will change:": "Te ustawienia się zmienią:",
+    "This setting will change:": "To ustawienie się zmieni:",
+    "Reset": "Przywróć",
+    "Already at the defaults": "Już są domyślne",
+    "Every setting already has the value MouseTouch ships with.": "Każde ustawienie ma już wartość, z którą dostarczany jest MouseTouch.",
+    "Settings reset to defaults": "Przywrócono ustawienia domyślne",
     "Nearby mice": "Myszy w pobliżu", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Włączone myszy, które nie są jeszcze połączone. Połączenie stąd usuwa każde niedokończone parowanie (zwykły stan po Macu) i samo paruje, zaufa i łączy mysz.", "Scan": "Szukaj", "Scanning…": "Szukanie…", "Press Scan with the mouse switched on.": "Naciśnij Szukaj przy włączonej myszy.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nie znaleziono myszy. Wyłącz i włącz mysz, aby się rozgłaszała, i szukaj ponownie.", "Connect": "Połącz", "Not paired yet": "Jeszcze niesparowana", "Half paired, no bond: Linux would reject it": "Sparowana połowicznie, bez powiązania: Linux by ją odrzucił", "Paired, not connected": "Sparowana, niepołączona", "Connect {name}?": "Połączyć {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Stare parowanie tej myszy zostaje usunięte, a potem mysz jest parowana, oznaczana jako zaufana i łączona. Trwa to około dziesięciu sekund; nie wyłączaj myszy.", "Connected: {name}": "Połączono: {name}", "Pairing…": "Parowanie…", "Working…": "Pracuję…", "Keep the mouse switched on; switch it off and on if nothing happens": "Nie wyłączaj myszy; wyłącz ją i włącz, jeśli nic się nie dzieje", "Connected and bonded": "Połączona i powiązana", "Pairing failed: {error}": "Parowanie nie powiodło się: {error}", "Could not run mousetouch: {error}": "Nie można uruchomić mousetouch: {error}", "Close": "Zamknij",
     "Acceleration": "Przyspieszenie", "Extra distance for fast flicks on top of Speed; 0 = off": "Dodatkowa odległość przy szybkich ruchach, oprócz Prędkości; 0 = wył.", "Momentum": "Rozpęd", "Keep scrolling after the finger lifts, slowing down like macOS": "Przewijaj dalej po uniesieniu palca, zwalniając jak w macOS", "Momentum decay": "Wygaszanie rozpędu", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Prędkość zachowana co milisekundę; 0.998 to wartość Apple, mniej zatrzymuje wcześniej",
     "Swipe": "Przesunięcie", "Tap": "Stuknięcie", "Double tap": "Podwójne stuknięcie",
@@ -765,6 +854,17 @@ CATALOG["pl"] = {
 }
 
 CATALOG["cs"] = {
+    "All mice": "Všechny myši",
+    "Reset to defaults": "Obnovit výchozí",
+    "Put every setting back to the values MouseTouch ships with": "Vrátí každé nastavení na hodnotu, se kterou se MouseTouch dodává",
+    "Reset…": "Obnovit…",
+    "Reset to defaults?": "Obnovit výchozí?",
+    "These settings will change:": "Tato nastavení se změní:",
+    "This setting will change:": "Toto nastavení se změní:",
+    "Reset": "Obnovit",
+    "Already at the defaults": "Už jsou výchozí",
+    "Every setting already has the value MouseTouch ships with.": "Každé nastavení už má hodnotu, se kterou se MouseTouch dodává.",
+    "Settings reset to defaults": "Nastavení obnovena na výchozí",
     "Nearby mice": "Myši v okolí", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Zapnuté myši, které zatím nejsou připojené. Připojení odsud odstraní každé nedokončené párování (obvyklý stav po Macu) a myš samo spáruje, označí jako důvěryhodnou a připojí.", "Scan": "Hledat", "Scanning…": "Hledání…", "Press Scan with the mouse switched on.": "Stiskněte Hledat se zapnutou myší.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Žádná myš nenalezena. Vypněte a zapněte myš, aby se ohlásila, a hledejte znovu.", "Connect": "Připojit", "Not paired yet": "Zatím nespárovaná", "Half paired, no bond: Linux would reject it": "Spárovaná napůl, bez vazby: Linux by ji odmítl", "Paired, not connected": "Spárovaná, nepřipojená", "Connect {name}?": "Připojit {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Staré párování této myši se odstraní, poté se spáruje, označí jako důvěryhodná a připojí. Trvá to asi deset sekund; nechte myš zapnutou.", "Connected: {name}": "Připojeno: {name}", "Pairing…": "Párování…", "Working…": "Pracuji…", "Keep the mouse switched on; switch it off and on if nothing happens": "Nechte myš zapnutou; pokud se nic neděje, vypněte ji a zapněte", "Connected and bonded": "Připojená a svázaná", "Pairing failed: {error}": "Párování selhalo: {error}", "Could not run mousetouch: {error}": "Nelze spustit mousetouch: {error}", "Close": "Zavřít",
     "Acceleration": "Zrychlení", "Extra distance for fast flicks on top of Speed; 0 = off": "Delší posun při rychlých švihnutích, nad rámec Rychlosti; 0 = vypnuto", "Momentum": "Setrvačnost", "Keep scrolling after the finger lifts, slowing down like macOS": "Po zvednutí prstu dál posouvat a zpomalovat jako macOS", "Momentum decay": "Útlum setrvačnosti", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Rychlost zachovaná každou milisekundu; 0.998 je hodnota Apple, nižší zastaví dřív",
     "Swipe": "Přejetí", "Tap": "Klepnutí", "Double tap": "Dvojité klepnutí",
@@ -843,6 +943,17 @@ CATALOG["cs"] = {
 }
 
 CATALOG["ro"] = {
+    "All mice": "Toate mouse-urile",
+    "Reset to defaults": "Restabilește valorile implicite",
+    "Put every setting back to the values MouseTouch ships with": "Readuce fiecare setare la valoarea cu care vine MouseTouch",
+    "Reset…": "Restabilește…",
+    "Reset to defaults?": "Restabilești valorile implicite?",
+    "These settings will change:": "Aceste setări se vor schimba:",
+    "This setting will change:": "Această setare se va schimba:",
+    "Reset": "Restabilește",
+    "Already at the defaults": "Deja la valorile implicite",
+    "Every setting already has the value MouseTouch ships with.": "Fiecare setare are deja valoarea cu care vine MouseTouch.",
+    "Settings reset to defaults": "Setări restabilite la valorile implicite",
     "Nearby mice": "Mouse-uri în apropiere", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouse-uri pornite care nu sunt încă conectate. Conectarea de aici elimină orice împerechere neterminată (starea obișnuită după un Mac) și împerechează, acordă încredere și conectează mouse-ul singură.", "Scan": "Caută", "Scanning…": "Se caută…", "Press Scan with the mouse switched on.": "Apasă Caută cu mouse-ul pornit.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Nu s-a găsit niciun mouse. Oprește și pornește mouse-ul ca să se anunțe, apoi caută din nou.", "Connect": "Conectează", "Not paired yet": "Încă neîmperecheat", "Half paired, no bond: Linux would reject it": "Împerecheat pe jumătate, fără legătură: Linux l-ar respinge", "Paired, not connected": "Împerecheat, neconectat", "Connect {name}?": "Conectezi {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Orice împerechere veche a acestui mouse este eliminată, apoi este împerecheat, marcat de încredere și conectat. Durează cam zece secunde; ține mouse-ul pornit.", "Connected: {name}": "Conectat: {name}", "Pairing…": "Împerechere…", "Working…": "Se lucrează…", "Keep the mouse switched on; switch it off and on if nothing happens": "Ține mouse-ul pornit; oprește-l și pornește-l dacă nu se întâmplă nimic", "Connected and bonded": "Conectat și legat", "Pairing failed: {error}": "Împerecherea a eșuat: {error}", "Could not run mousetouch: {error}": "Nu s-a putut rula mousetouch: {error}", "Close": "Închide",
     "Acceleration": "Accelerare", "Extra distance for fast flicks on top of Speed; 0 = off": "Distanță suplimentară la mișcările rapide, peste Viteză; 0 = oprită", "Momentum": "Inerție", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuă derularea după ridicarea degetului, încetinind ca pe macOS", "Momentum decay": "Atenuarea inerției", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Viteza păstrată la fiecare milisecundă; 0.998 este valoarea Apple, mai mic se oprește mai repede",
     "Swipe": "Glisare", "Tap": "Atingere", "Double tap": "Atingere dublă",
@@ -921,6 +1032,17 @@ CATALOG["ro"] = {
 }
 
 CATALOG["el"] = {
+    "All mice": "Όλα τα ποντίκια",
+    "Reset to defaults": "Επαναφορά προεπιλογών",
+    "Put every setting back to the values MouseTouch ships with": "Επιστρέφει κάθε ρύθμιση στην τιμή με την οποία διατίθεται το MouseTouch",
+    "Reset…": "Επαναφορά…",
+    "Reset to defaults?": "Επαναφορά προεπιλογών;",
+    "These settings will change:": "Αυτές οι ρυθμίσεις θα αλλάξουν:",
+    "This setting will change:": "Αυτή η ρύθμιση θα αλλάξει:",
+    "Reset": "Επαναφορά",
+    "Already at the defaults": "Ήδη στις προεπιλογές",
+    "Every setting already has the value MouseTouch ships with.": "Κάθε ρύθμιση έχει ήδη την τιμή με την οποία διατίθεται το MouseTouch.",
+    "Settings reset to defaults": "Οι ρυθμίσεις επανήλθαν στις προεπιλογές",
     "Nearby mice": "Ποντίκια κοντά", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Αναμμένα ποντίκια που δεν έχουν συνδεθεί ακόμη. Η σύνδεση από εδώ αφαιρεί κάθε μισοτελειωμένη σύζευξη (η συνηθισμένη κατάσταση μετά από Mac) και συζευγνύει, εμπιστεύεται και συνδέει το ποντίκι μόνη της.", "Scan": "Αναζήτηση", "Scanning…": "Αναζήτηση…", "Press Scan with the mouse switched on.": "Πάτησε Αναζήτηση με το ποντίκι αναμμένο.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Δεν βρέθηκαν ποντίκια. Σβήσε και άναψε το ποντίκι για να εκπέμψει και ξαναψάξε.", "Connect": "Σύνδεση", "Not paired yet": "Δεν έχει συζευχθεί ακόμη", "Half paired, no bond: Linux would reject it": "Μισοσυζευγμένο, χωρίς δέσμευση: το Linux θα το απέρριπτε", "Paired, not connected": "Συζευγμένο, μη συνδεδεμένο", "Connect {name}?": "Σύνδεση με {name};", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Κάθε παλιά σύζευξη αυτού του ποντικιού αφαιρείται και μετά συζευγνύεται, γίνεται έμπιστο και συνδέεται. Διαρκεί περίπου δέκα δευτερόλεπτα· κράτα το ποντίκι αναμμένο.", "Connected: {name}": "Συνδέθηκε: {name}", "Pairing…": "Σύζευξη…", "Working…": "Σε εξέλιξη…", "Keep the mouse switched on; switch it off and on if nothing happens": "Κράτα το ποντίκι αναμμένο· σβήσε το και άναψέ το αν δεν γίνεται τίποτα", "Connected and bonded": "Συνδεδεμένο και δεσμευμένο", "Pairing failed: {error}": "Η σύζευξη απέτυχε: {error}", "Could not run mousetouch: {error}": "Δεν ήταν δυνατή η εκτέλεση του mousetouch: {error}", "Close": "Κλείσιμο",
     "Acceleration": "Επιτάχυνση", "Extra distance for fast flicks on top of Speed; 0 = off": "Επιπλέον απόσταση στις γρήγορες κινήσεις, πέρα από την Ταχύτητα· 0 = ανενεργή", "Momentum": "Αδράνεια", "Keep scrolling after the finger lifts, slowing down like macOS": "Συνέχεια κύλισης αφού σηκωθεί το δάχτυλο, με επιβράδυνση όπως στο macOS", "Momentum decay": "Απόσβεση αδράνειας", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Ταχύτητα που διατηρείται κάθε χιλιοστό του δευτερολέπτου· 0.998 είναι η τιμή της Apple, μικρότερη σταματά νωρίτερα",
     "Swipe": "Σάρωση", "Tap": "Πάτημα", "Double tap": "Διπλό πάτημα",
@@ -999,6 +1121,17 @@ CATALOG["el"] = {
 }
 
 CATALOG["uk"] = {
+    "All mice": "Усі миші",
+    "Reset to defaults": "Скинути до типових",
+    "Put every setting back to the values MouseTouch ships with": "Повертає кожному параметру значення, з яким постачається MouseTouch",
+    "Reset…": "Скинути…",
+    "Reset to defaults?": "Скинути до типових?",
+    "These settings will change:": "Ці параметри зміняться:",
+    "This setting will change:": "Цей параметр зміниться:",
+    "Reset": "Скинути",
+    "Already at the defaults": "Уже типові значення",
+    "Every setting already has the value MouseTouch ships with.": "Кожен параметр уже має значення, з яким постачається MouseTouch.",
+    "Settings reset to defaults": "Параметри скинуто до типових",
     "Nearby mice": "Миші поруч", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Увімкнені миші, які ще не підключені. Підключення звідси видаляє будь-яке незавершене спарювання (звичайний стан після Mac) і сама спарює, довіряє та підключає мишу.", "Scan": "Шукати", "Scanning…": "Пошук…", "Press Scan with the mouse switched on.": "Натисніть Шукати з увімкненою мишею.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Мишей не знайдено. Вимкніть і ввімкніть мишу, щоб вона оголосила себе, і пошукайте знову.", "Connect": "Підключити", "Not paired yet": "Ще не спарована", "Half paired, no bond: Linux would reject it": "Спарована наполовину, без зв'язку: Linux її відхилить", "Paired, not connected": "Спарована, не підключена", "Connect {name}?": "Підключити {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Будь-яке старе спарювання цієї миші видаляється, потім вона спарюється, позначається довіреною та підключається. Це займає близько десяти секунд; тримайте мишу увімкненою.", "Connected: {name}": "Підключено: {name}", "Pairing…": "Спарювання…", "Working…": "Працюю…", "Keep the mouse switched on; switch it off and on if nothing happens": "Тримайте мишу увімкненою; вимкніть і ввімкніть її, якщо нічого не відбувається", "Connected and bonded": "Підключена та зв'язана", "Pairing failed: {error}": "Спарювання не вдалося: {error}", "Could not run mousetouch: {error}": "Не вдалося запустити mousetouch: {error}", "Close": "Закрити",
     "Acceleration": "Прискорення", "Extra distance for fast flicks on top of Speed; 0 = off": "Додаткова відстань для швидких рухів, окрім Швидкості; 0 = вимкнено", "Momentum": "Інерція", "Keep scrolling after the finger lifts, slowing down like macOS": "Продовжувати прокручування після відриву пальця, сповільнюючись як у macOS", "Momentum decay": "Затухання інерції", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Швидкість, що зберігається кожну мілісекунду; 0.998 — значення Apple, менше зупиняється раніше",
     "Swipe": "Гортання", "Tap": "Торкання", "Double tap": "Подвійне торкання",
@@ -1077,6 +1210,17 @@ CATALOG["uk"] = {
 }
 
 CATALOG["ru"] = {
+    "All mice": "Все мыши",
+    "Reset to defaults": "Сбросить к значениям по умолчанию",
+    "Put every setting back to the values MouseTouch ships with": "Возвращает каждому параметру значение, с которым поставляется MouseTouch",
+    "Reset…": "Сбросить…",
+    "Reset to defaults?": "Сбросить к значениям по умолчанию?",
+    "These settings will change:": "Эти параметры изменятся:",
+    "This setting will change:": "Этот параметр изменится:",
+    "Reset": "Сбросить",
+    "Already at the defaults": "Уже значения по умолчанию",
+    "Every setting already has the value MouseTouch ships with.": "Каждый параметр уже имеет значение, с которым поставляется MouseTouch.",
+    "Settings reset to defaults": "Параметры сброшены к значениям по умолчанию",
     "Nearby mice": "Мыши рядом", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Включённые мыши, которые ещё не подключены. Подключение отсюда удаляет любое незавершённое сопряжение (обычное состояние после Mac) и само сопрягает, доверяет и подключает мышь.", "Scan": "Искать", "Scanning…": "Поиск…", "Press Scan with the mouse switched on.": "Нажмите Искать с включённой мышью.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Мыши не найдены. Выключите и включите мышь, чтобы она объявила о себе, и поищите снова.", "Connect": "Подключить", "Not paired yet": "Ещё не сопряжена", "Half paired, no bond: Linux would reject it": "Сопряжена наполовину, без связи: Linux её отклонит", "Paired, not connected": "Сопряжена, не подключена", "Connect {name}?": "Подключить {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Любое старое сопряжение этой мыши удаляется, затем она сопрягается, помечается доверенной и подключается. Это занимает около десяти секунд; не выключайте мышь.", "Connected: {name}": "Подключено: {name}", "Pairing…": "Сопряжение…", "Working…": "Работаю…", "Keep the mouse switched on; switch it off and on if nothing happens": "Не выключайте мышь; выключите и включите её, если ничего не происходит", "Connected and bonded": "Подключена и связана", "Pairing failed: {error}": "Сопряжение не удалось: {error}", "Could not run mousetouch: {error}": "Не удалось запустить mousetouch: {error}", "Close": "Закрыть",
     "Acceleration": "Ускорение", "Extra distance for fast flicks on top of Speed; 0 = off": "Дополнительное расстояние при быстрых движениях, помимо Скорости; 0 = выключено", "Momentum": "Инерция", "Keep scrolling after the finger lifts, slowing down like macOS": "Продолжать прокрутку после отрыва пальца, замедляясь как в macOS", "Momentum decay": "Затухание инерции", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Скорость, сохраняемая каждую миллисекунду; 0.998 — значение Apple, меньше останавливается раньше",
     "Swipe": "Свайп", "Tap": "Касание", "Double tap": "Двойное касание",
@@ -1155,6 +1299,17 @@ CATALOG["ru"] = {
 }
 
 CATALOG["tr"] = {
+    "All mice": "Tüm fareler",
+    "Reset to defaults": "Varsayılanlara sıfırla",
+    "Put every setting back to the values MouseTouch ships with": "Her ayarı MouseTouch ile gelen değerine döndürür",
+    "Reset…": "Sıfırla…",
+    "Reset to defaults?": "Varsayılanlara sıfırlansın mı?",
+    "These settings will change:": "Bu ayarlar değişecek:",
+    "This setting will change:": "Bu ayar değişecek:",
+    "Reset": "Sıfırla",
+    "Already at the defaults": "Zaten varsayılanlarda",
+    "Every setting already has the value MouseTouch ships with.": "Her ayar zaten MouseTouch ile gelen değerde.",
+    "Settings reset to defaults": "Ayarlar varsayılanlara sıfırlandı",
     "Nearby mice": "Yakındaki fareler", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Açık olup henüz bağlanmamış fareler. Buradan bağlanmak yarım kalmış eşleşmeyi (Mac sonrası olağan durum) kaldırır ve fareyi kendisi eşler, güvenir ve bağlar.", "Scan": "Tara", "Scanning…": "Taranıyor…", "Press Scan with the mouse switched on.": "Fare açıkken Tara'ya bas.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Fare bulunamadı. Farenin kendini duyurması için kapatıp aç, sonra yeniden tara.", "Connect": "Bağlan", "Not paired yet": "Henüz eşlenmedi", "Half paired, no bond: Linux would reject it": "Yarım eşlenmiş, bağ yok: Linux reddederdi", "Paired, not connected": "Eşlenmiş, bağlı değil", "Connect {name}?": "{name} bağlansın mı?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Bu farenin eski eşleşmesi kaldırılır, sonra eşlenir, güvenilir olarak işaretlenir ve bağlanır. Yaklaşık on saniye sürer; fareyi açık tut.", "Connected: {name}": "Bağlandı: {name}", "Pairing…": "Eşleniyor…", "Working…": "Çalışıyor…", "Keep the mouse switched on; switch it off and on if nothing happens": "Fareyi açık tut; hiçbir şey olmuyorsa kapatıp aç", "Connected and bonded": "Bağlı ve bağlanmış", "Pairing failed: {error}": "Eşleme başarısız: {error}", "Could not run mousetouch: {error}": "mousetouch çalıştırılamadı: {error}", "Close": "Kapat",
     "Acceleration": "Hızlanma", "Extra distance for fast flicks on top of Speed; 0 = off": "Hızlı kaydırmalarda Hız'a ek mesafe; 0 = kapalı", "Momentum": "Momentum", "Keep scrolling after the finger lifts, slowing down like macOS": "Parmak kalktıktan sonra macOS gibi yavaşlayarak kaydırmaya devam et", "Momentum decay": "Momentum sönümü", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Her milisaniyede korunan hız; 0.998 Apple'ın değeri, daha düşüğü daha erken durur",
     "Swipe": "Kaydırma", "Tap": "Dokunma", "Double tap": "Çift dokunma",
@@ -1233,6 +1388,17 @@ CATALOG["tr"] = {
 }
 
 CATALOG["ar"] = {
+    "All mice": "كل الفئران",
+    "Reset to defaults": "إعادة الضبط إلى الافتراضي",
+    "Put every setting back to the values MouseTouch ships with": "يعيد كل إعداد إلى القيمة التي يأتي بها MouseTouch",
+    "Reset…": "إعادة الضبط…",
+    "Reset to defaults?": "إعادة الضبط إلى الافتراضي؟",
+    "These settings will change:": "ستتغير هذه الإعدادات:",
+    "This setting will change:": "سيتغير هذا الإعداد:",
+    "Reset": "إعادة الضبط",
+    "Already at the defaults": "الإعدادات افتراضية بالفعل",
+    "Every setting already has the value MouseTouch ships with.": "كل إعداد له بالفعل القيمة التي يأتي بها MouseTouch.",
+    "Settings reset to defaults": "أُعيد ضبط الإعدادات إلى الافتراضي",
     "Nearby mice": "الفئران القريبة", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "فئران مشغّلة ولم تتصل بعد. الاتصال من هنا يزيل أي إقران غير مكتمل (الحالة المعتادة بعد Mac) ثم يقرن الفأرة ويثق بها ويصلها بنفسه.", "Scan": "بحث", "Scanning…": "جارٍ البحث…", "Press Scan with the mouse switched on.": "اضغط بحث والفأرة مشغّلة.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "لم يُعثر على فئران. أطفئ الفأرة وشغّلها لتعلن عن نفسها ثم ابحث مجددًا.", "Connect": "اتصال", "Not paired yet": "غير مقرونة بعد", "Half paired, no bond: Linux would reject it": "مقرونة نصفيًا بلا ارتباط: سيرفضها Linux", "Paired, not connected": "مقرونة وغير متصلة", "Connect {name}?": "الاتصال بـ {name}؟", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "يُزال أي إقران قديم لهذه الفأرة ثم تُقرن وتُعتمد وتُوصل. يستغرق ذلك نحو عشر ثوانٍ؛ أبقِ الفأرة مشغّلة.", "Connected: {name}": "متصلة: {name}", "Pairing…": "جارٍ الإقران…", "Working…": "جارٍ العمل…", "Keep the mouse switched on; switch it off and on if nothing happens": "أبقِ الفأرة مشغّلة؛ أطفئها وشغّلها إن لم يحدث شيء", "Connected and bonded": "متصلة ومرتبطة", "Pairing failed: {error}": "فشل الإقران: {error}", "Could not run mousetouch: {error}": "تعذّر تشغيل mousetouch: {error}", "Close": "إغلاق",
     "Acceleration": "التسارع", "Extra distance for fast flicks on top of Speed; 0 = off": "مسافة إضافية عند التمرير السريع فوق السرعة؛ 0 = متوقف", "Momentum": "القصور الذاتي", "Keep scrolling after the finger lifts, slowing down like macOS": "متابعة التمرير بعد رفع الإصبع مع التباطؤ كما في macOS", "Momentum decay": "تلاشي القصور الذاتي", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "السرعة المحتفظ بها كل مللي ثانية؛ 0.998 هي قيمة Apple، والأقل يتوقف أبكر",
     "Swipe": "تمرير", "Tap": "نقرة", "Double tap": "نقرة مزدوجة",
@@ -1311,6 +1477,17 @@ CATALOG["ar"] = {
 }
 
 CATALOG["hi"] = {
+    "All mice": "सभी माउस",
+    "Reset to defaults": "डिफ़ॉल्ट पर रीसेट करें",
+    "Put every setting back to the values MouseTouch ships with": "हर सेटिंग को उस मान पर वापस लाता है जिसके साथ MouseTouch आता है",
+    "Reset…": "रीसेट…",
+    "Reset to defaults?": "डिफ़ॉल्ट पर रीसेट करें?",
+    "These settings will change:": "ये सेटिंग्स बदलेंगी:",
+    "This setting will change:": "यह सेटिंग बदलेगी:",
+    "Reset": "रीसेट",
+    "Already at the defaults": "पहले से डिफ़ॉल्ट पर",
+    "Every setting already has the value MouseTouch ships with.": "हर सेटिंग में पहले से वही मान है जिसके साथ MouseTouch आता है।",
+    "Settings reset to defaults": "सेटिंग्स डिफ़ॉल्ट पर रीसेट हो गईं",
     "Nearby mice": "आस-पास के माउस", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "चालू माउस जो अभी कनेक्ट नहीं हुए। यहाँ से कनेक्ट करने पर अधूरी पेयरिंग (Mac के बाद की सामान्य स्थिति) हट जाती है और माउस को खुद पेयर, ट्रस्ट और कनेक्ट किया जाता है।", "Scan": "खोजें", "Scanning…": "खोज रहे हैं…", "Press Scan with the mouse switched on.": "माउस चालू रखकर खोजें दबाएँ।", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "कोई माउस नहीं मिला। माउस बंद करके चालू करें ताकि वह दिखे, फिर दोबारा खोजें।", "Connect": "कनेक्ट करें", "Not paired yet": "अभी पेयर नहीं", "Half paired, no bond: Linux would reject it": "आधा पेयर, बिना बॉन्ड: Linux इसे अस्वीकार करेगा", "Paired, not connected": "पेयर है, कनेक्ट नहीं", "Connect {name}?": "{name} कनेक्ट करें?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "इस माउस की पुरानी पेयरिंग हटाकर उसे पेयर, ट्रस्ट और कनेक्ट किया जाएगा। लगभग दस सेकंड लगते हैं; माउस चालू रखें।", "Connected: {name}": "कनेक्ट हुआ: {name}", "Pairing…": "पेयर हो रहा है…", "Working…": "काम चल रहा है…", "Keep the mouse switched on; switch it off and on if nothing happens": "माउस चालू रखें; कुछ न हो तो उसे बंद करके चालू करें", "Connected and bonded": "कनेक्ट और बॉन्ड हो गया", "Pairing failed: {error}": "पेयरिंग विफल: {error}", "Could not run mousetouch: {error}": "mousetouch चलाया नहीं जा सका: {error}", "Close": "बंद करें",
     "Acceleration": "त्वरण", "Extra distance for fast flicks on top of Speed; 0 = off": "तेज़ फ़्लिक पर गति के ऊपर अतिरिक्त दूरी; 0 = बंद", "Momentum": "गतिबल", "Keep scrolling after the finger lifts, slowing down like macOS": "उंगली उठाने के बाद भी स्क्रॉल जारी रहे, macOS की तरह धीमा होते हुए", "Momentum decay": "गतिबल का क्षय", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "हर मिलीसेकंड में बनी रहने वाली गति; 0.998 Apple का मान है, कम होने पर जल्दी रुकता है",
     "Swipe": "स्वाइप", "Tap": "टैप", "Double tap": "डबल टैप",
@@ -1389,6 +1566,17 @@ CATALOG["hi"] = {
 }
 
 CATALOG["zh"] = {
+    "All mice": "所有鼠标",
+    "Reset to defaults": "恢复默认设置",
+    "Put every setting back to the values MouseTouch ships with": "将每项设置恢复为 MouseTouch 自带的值",
+    "Reset…": "恢复…",
+    "Reset to defaults?": "恢复默认设置？",
+    "These settings will change:": "以下设置将会改变：",
+    "This setting will change:": "以下设置将会改变：",
+    "Reset": "恢复",
+    "Already at the defaults": "已是默认设置",
+    "Every setting already has the value MouseTouch ships with.": "每项设置都已是 MouseTouch 自带的值。",
+    "Settings reset to defaults": "设置已恢复为默认",
     "Nearby mice": "附近的鼠标", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "已开机但尚未连接的鼠标。从这里连接会清除任何未完成的配对（从 Mac 回来后的常见状态），并自行完成配对、信任和连接。", "Scan": "扫描", "Scanning…": "正在扫描…", "Press Scan with the mouse switched on.": "请在鼠标开机时点击扫描。", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "未找到鼠标。请关闭再打开鼠标使其广播，然后重新扫描。", "Connect": "连接", "Not paired yet": "尚未配对", "Half paired, no bond: Linux would reject it": "配对不完整，没有绑定：Linux 会拒绝它", "Paired, not connected": "已配对，未连接", "Connect {name}?": "连接 {name}？", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "将删除此鼠标的旧配对，然后进行配对、信任并连接。大约需要十秒；请保持鼠标开机。", "Connected: {name}": "已连接：{name}", "Pairing…": "正在配对…", "Working…": "处理中…", "Keep the mouse switched on; switch it off and on if nothing happens": "请保持鼠标开机；如果没有反应，请关闭再打开", "Connected and bonded": "已连接并绑定", "Pairing failed: {error}": "配对失败：{error}", "Could not run mousetouch: {error}": "无法运行 mousetouch：{error}", "Close": "关闭",
     "Acceleration": "加速", "Extra distance for fast flicks on top of Speed; 0 = off": "快速滑动时在速度之上额外滚动的距离；0 = 关闭", "Momentum": "惯性", "Keep scrolling after the finger lifts, slowing down like macOS": "手指抬起后继续滚动，像 macOS 一样逐渐减速", "Momentum decay": "惯性衰减", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "每毫秒保留的速度；0.998 为 Apple 的数值，越小停得越快",
     "Swipe": "滑动", "Tap": "轻点", "Double tap": "双击",
@@ -1467,6 +1655,17 @@ CATALOG["zh"] = {
 }
 
 CATALOG["ja"] = {
+    "All mice": "すべてのマウス",
+    "Reset to defaults": "デフォルトに戻す",
+    "Put every setting back to the values MouseTouch ships with": "すべての設定を MouseTouch 標準の値に戻します",
+    "Reset…": "戻す…",
+    "Reset to defaults?": "デフォルトに戻しますか？",
+    "These settings will change:": "次の設定が変わります:",
+    "This setting will change:": "次の設定が変わります:",
+    "Reset": "戻す",
+    "Already at the defaults": "すでにデフォルトです",
+    "Every setting already has the value MouseTouch ships with.": "すべての設定がすでに MouseTouch 標準の値です。",
+    "Settings reset to defaults": "設定をデフォルトに戻しました",
     "Nearby mice": "近くのマウス", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "電源が入っていてまだ接続されていないマウスです。ここから接続すると、未完了のペアリング（Mac から戻った直後によくある状態）を削除し、ペアリング・信頼・接続まで自動で行います。", "Scan": "スキャン", "Scanning…": "スキャン中…", "Press Scan with the mouse switched on.": "マウスの電源を入れてスキャンを押してください。", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "マウスが見つかりません。マウスの電源を入れ直してアドバタイズさせ、もう一度スキャンしてください。", "Connect": "接続", "Not paired yet": "まだペアリングされていません", "Half paired, no bond: Linux would reject it": "ペアリングが不完全（ボンドなし）：Linux は拒否します", "Paired, not connected": "ペアリング済み、未接続", "Connect {name}?": "{name} に接続しますか？", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "このマウスの古いペアリングを削除し、ペアリング・信頼・接続を行います。約 10 秒かかります。マウスの電源は入れたままにしてください。", "Connected: {name}": "接続しました：{name}", "Pairing…": "ペアリング中…", "Working…": "処理中…", "Keep the mouse switched on; switch it off and on if nothing happens": "マウスの電源を入れたままにしてください。何も起きなければ電源を入れ直してください", "Connected and bonded": "接続・ボンド完了", "Pairing failed: {error}": "ペアリングに失敗しました：{error}", "Could not run mousetouch: {error}": "mousetouch を実行できません：{error}", "Close": "閉じる",
     "Acceleration": "加速", "Extra distance for fast flicks on top of Speed; 0 = off": "速いフリック時に速度に加えて進む距離。0 = オフ", "Momentum": "慣性", "Keep scrolling after the finger lifts, slowing down like macOS": "指を離した後も macOS のように減速しながらスクロールを続ける", "Momentum decay": "慣性の減衰", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "1 ミリ秒ごとに保たれる速度。0.998 が Apple の値、小さいほど早く止まる",
     "Swipe": "スワイプ", "Tap": "タップ", "Double tap": "ダブルタップ",
@@ -1545,6 +1744,17 @@ CATALOG["ja"] = {
 }
 
 CATALOG["ko"] = {
+    "All mice": "모든 마우스",
+    "Reset to defaults": "기본값으로 재설정",
+    "Put every setting back to the values MouseTouch ships with": "모든 설정을 MouseTouch 기본값으로 되돌립니다",
+    "Reset…": "재설정…",
+    "Reset to defaults?": "기본값으로 재설정할까요?",
+    "These settings will change:": "다음 설정이 바뀝니다:",
+    "This setting will change:": "다음 설정이 바뀝니다:",
+    "Reset": "재설정",
+    "Already at the defaults": "이미 기본값입니다",
+    "Every setting already has the value MouseTouch ships with.": "모든 설정이 이미 MouseTouch 기본값입니다.",
+    "Settings reset to defaults": "설정이 기본값으로 재설정되었습니다",
     "Nearby mice": "근처의 마우스", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "켜져 있지만 아직 연결되지 않은 마우스입니다. 여기서 연결하면 미완성 페어링(Mac을 거친 뒤의 흔한 상태)을 제거하고 마우스를 직접 페어링, 신뢰, 연결합니다.", "Scan": "검색", "Scanning…": "검색 중…", "Press Scan with the mouse switched on.": "마우스를 켠 상태로 검색을 누르세요.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "마우스를 찾지 못했습니다. 마우스를 끄고 다시 켜서 광고하게 한 뒤 다시 검색하세요.", "Connect": "연결", "Not paired yet": "아직 페어링되지 않음", "Half paired, no bond: Linux would reject it": "절반만 페어링됨, 결합 없음: Linux가 거부합니다", "Paired, not connected": "페어링됨, 연결되지 않음", "Connect {name}?": "{name}에 연결할까요?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "이 마우스의 이전 페어링을 제거한 뒤 페어링, 신뢰, 연결합니다. 약 10초가 걸리며 마우스는 켜 두세요.", "Connected: {name}": "연결됨: {name}", "Pairing…": "페어링 중…", "Working…": "작업 중…", "Keep the mouse switched on; switch it off and on if nothing happens": "마우스를 켜 두세요. 아무 반응이 없으면 끄고 다시 켜세요", "Connected and bonded": "연결 및 결합 완료", "Pairing failed: {error}": "페어링 실패: {error}", "Could not run mousetouch: {error}": "mousetouch를 실행할 수 없음: {error}", "Close": "닫기",
     "Acceleration": "가속", "Extra distance for fast flicks on top of Speed; 0 = off": "빠른 플릭 시 속도에 더해지는 추가 거리; 0 = 끔", "Momentum": "관성", "Keep scrolling after the finger lifts, slowing down like macOS": "손가락을 뗀 뒤에도 macOS처럼 감속하며 계속 스크롤", "Momentum decay": "관성 감쇠", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "매 밀리초마다 유지되는 속도; 0.998이 Apple 값, 낮을수록 빨리 멈춤",
     "Swipe": "스와이프", "Tap": "탭", "Double tap": "두 번 탭",
@@ -1623,6 +1833,17 @@ CATALOG["ko"] = {
 }
 
 CATALOG["vi"] = {
+    "All mice": "Tất cả chuột",
+    "Reset to defaults": "Đặt lại mặc định",
+    "Put every setting back to the values MouseTouch ships with": "Đưa mọi cài đặt về giá trị đi kèm MouseTouch",
+    "Reset…": "Đặt lại…",
+    "Reset to defaults?": "Đặt lại mặc định?",
+    "These settings will change:": "Các cài đặt này sẽ thay đổi:",
+    "This setting will change:": "Cài đặt này sẽ thay đổi:",
+    "Reset": "Đặt lại",
+    "Already at the defaults": "Đã ở mặc định",
+    "Every setting already has the value MouseTouch ships with.": "Mọi cài đặt đã có giá trị đi kèm MouseTouch.",
+    "Settings reset to defaults": "Đã đặt lại cài đặt về mặc định",
     "Nearby mice": "Chuột ở gần", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Chuột đang bật nhưng chưa kết nối. Kết nối từ đây sẽ xóa mọi ghép nối dở dang (tình trạng thường gặp sau khi dùng với Mac) rồi tự ghép nối, tin cậy và kết nối chuột.", "Scan": "Quét", "Scanning…": "Đang quét…", "Press Scan with the mouse switched on.": "Nhấn Quét khi chuột đang bật.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Không tìm thấy chuột. Tắt rồi bật lại chuột để nó phát tín hiệu, sau đó quét lại.", "Connect": "Kết nối", "Not paired yet": "Chưa ghép nối", "Half paired, no bond: Linux would reject it": "Ghép nối dở dang, không có liên kết: Linux sẽ từ chối", "Paired, not connected": "Đã ghép nối, chưa kết nối", "Connect {name}?": "Kết nối {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Mọi ghép nối cũ của chuột này sẽ bị xóa, sau đó chuột được ghép nối, tin cậy và kết nối. Mất khoảng mười giây; hãy giữ chuột bật.", "Connected: {name}": "Đã kết nối: {name}", "Pairing…": "Đang ghép nối…", "Working…": "Đang xử lý…", "Keep the mouse switched on; switch it off and on if nothing happens": "Giữ chuột bật; tắt rồi bật lại nếu không có gì xảy ra", "Connected and bonded": "Đã kết nối và liên kết", "Pairing failed: {error}": "Ghép nối thất bại: {error}", "Could not run mousetouch: {error}": "Không chạy được mousetouch: {error}", "Close": "Đóng",
     "Acceleration": "Tăng tốc", "Extra distance for fast flicks on top of Speed; 0 = off": "Quãng cuộn thêm khi vuốt nhanh, ngoài Tốc độ; 0 = tắt", "Momentum": "Quán tính", "Keep scrolling after the finger lifts, slowing down like macOS": "Tiếp tục cuộn sau khi nhấc ngón tay, chậm dần như macOS", "Momentum decay": "Suy giảm quán tính", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Tốc độ giữ lại mỗi mili giây; 0.998 là giá trị của Apple, thấp hơn thì dừng sớm hơn",
     "Swipe": "Vuốt", "Tap": "Chạm", "Double tap": "Chạm đôi",
@@ -1701,6 +1922,17 @@ CATALOG["vi"] = {
 }
 
 CATALOG["id"] = {
+    "All mice": "Semua mouse",
+    "Reset to defaults": "Setel ulang ke bawaan",
+    "Put every setting back to the values MouseTouch ships with": "Mengembalikan setiap pengaturan ke nilai bawaan MouseTouch",
+    "Reset…": "Setel ulang…",
+    "Reset to defaults?": "Setel ulang ke bawaan?",
+    "These settings will change:": "Pengaturan ini akan berubah:",
+    "This setting will change:": "Pengaturan ini akan berubah:",
+    "Reset": "Setel ulang",
+    "Already at the defaults": "Sudah bawaan",
+    "Every setting already has the value MouseTouch ships with.": "Setiap pengaturan sudah memakai nilai bawaan MouseTouch.",
+    "Settings reset to defaults": "Pengaturan disetel ulang ke bawaan",
     "Nearby mice": "Mouse di sekitar", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "Mouse yang menyala tetapi belum terhubung. Menghubungkan dari sini menghapus pemasangan yang setengah jadi (keadaan umum setelah dipakai di Mac) lalu memasangkan, mempercayai, dan menghubungkan mouse sendiri.", "Scan": "Pindai", "Scanning…": "Memindai…", "Press Scan with the mouse switched on.": "Tekan Pindai dengan mouse menyala.", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "Tidak ada mouse ditemukan. Matikan dan nyalakan mouse agar terdeteksi, lalu pindai lagi.", "Connect": "Hubungkan", "Not paired yet": "Belum dipasangkan", "Half paired, no bond: Linux would reject it": "Dipasangkan setengah, tanpa ikatan: Linux akan menolaknya", "Paired, not connected": "Dipasangkan, belum terhubung", "Connect {name}?": "Hubungkan {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "Pemasangan lama mouse ini dihapus, lalu mouse dipasangkan, dipercaya, dan dihubungkan. Butuh sekitar sepuluh detik; biarkan mouse menyala.", "Connected: {name}": "Terhubung: {name}", "Pairing…": "Memasangkan…", "Working…": "Memproses…", "Keep the mouse switched on; switch it off and on if nothing happens": "Biarkan mouse menyala; matikan dan nyalakan jika tidak terjadi apa-apa", "Connected and bonded": "Terhubung dan terikat", "Pairing failed: {error}": "Pemasangan gagal: {error}", "Could not run mousetouch: {error}": "Tidak dapat menjalankan mousetouch: {error}", "Close": "Tutup",
     "Acceleration": "Akselerasi", "Extra distance for fast flicks on top of Speed; 0 = off": "Jarak tambahan saat jentikan cepat, di atas Kecepatan; 0 = mati", "Momentum": "Momentum", "Keep scrolling after the finger lifts, slowing down like macOS": "Terus menggulir setelah jari diangkat, melambat seperti macOS", "Momentum decay": "Peluruhan momentum", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Kecepatan yang dipertahankan tiap milidetik; 0.998 nilai Apple, lebih rendah berhenti lebih cepat",
     "Swipe": "Geser", "Tap": "Ketuk", "Double tap": "Ketuk dua kali",
@@ -1779,6 +2011,17 @@ CATALOG["id"] = {
 }
 
 CATALOG["th"] = {
+    "All mice": "เมาส์ทั้งหมด",
+    "Reset to defaults": "รีเซ็ตเป็นค่าเริ่มต้น",
+    "Put every setting back to the values MouseTouch ships with": "คืนทุกการตั้งค่ากลับเป็นค่าที่มากับ MouseTouch",
+    "Reset…": "รีเซ็ต…",
+    "Reset to defaults?": "รีเซ็ตเป็นค่าเริ่มต้นหรือไม่?",
+    "These settings will change:": "การตั้งค่าเหล่านี้จะเปลี่ยน:",
+    "This setting will change:": "การตั้งค่านี้จะเปลี่ยน:",
+    "Reset": "รีเซ็ต",
+    "Already at the defaults": "เป็นค่าเริ่มต้นอยู่แล้ว",
+    "Every setting already has the value MouseTouch ships with.": "ทุกการตั้งค่าเป็นค่าที่มากับ MouseTouch อยู่แล้ว",
+    "Settings reset to defaults": "รีเซ็ตการตั้งค่าเป็นค่าเริ่มต้นแล้ว",
     "Nearby mice": "เมาส์ที่อยู่ใกล้", "Mice that are switched on and not connected yet. Connecting here removes any half-finished pairing (the usual state after a Mac) and pairs, trusts and connects the mouse itself.": "เมาส์ที่เปิดอยู่แต่ยังไม่เชื่อมต่อ การเชื่อมต่อจากตรงนี้จะลบการจับคู่ที่ค้างอยู่ (สถานะปกติหลังใช้กับ Mac) แล้วจับคู่ ไว้วางใจ และเชื่อมต่อเมาส์ให้เอง", "Scan": "สแกน", "Scanning…": "กำลังสแกน…", "Press Scan with the mouse switched on.": "กดสแกนขณะที่เมาส์เปิดอยู่", "No mice found. Switch the mouse off and on so it advertises, then scan again.": "ไม่พบเมาส์ ปิดแล้วเปิดเมาส์ใหม่เพื่อให้มันประกาศตัว แล้วสแกนอีกครั้ง", "Connect": "เชื่อมต่อ", "Not paired yet": "ยังไม่จับคู่", "Half paired, no bond: Linux would reject it": "จับคู่ไม่สมบูรณ์ ไม่มีการผูก: Linux จะปฏิเสธ", "Paired, not connected": "จับคู่แล้ว ยังไม่เชื่อมต่อ", "Connect {name}?": "เชื่อมต่อ {name}?", "Any old pairing of this mouse is removed, then it is paired, trusted and connected. It takes about ten seconds; keep the mouse switched on.": "การจับคู่เดิมของเมาส์นี้จะถูกลบ แล้วจับคู่ ไว้วางใจ และเชื่อมต่อใหม่ ใช้เวลาประมาณสิบวินาที เปิดเมาส์ไว้", "Connected: {name}": "เชื่อมต่อแล้ว: {name}", "Pairing…": "กำลังจับคู่…", "Working…": "กำลังทำงาน…", "Keep the mouse switched on; switch it off and on if nothing happens": "เปิดเมาส์ไว้ หากไม่มีอะไรเกิดขึ้นให้ปิดแล้วเปิดใหม่", "Connected and bonded": "เชื่อมต่อและผูกแล้ว", "Pairing failed: {error}": "จับคู่ไม่สำเร็จ: {error}", "Could not run mousetouch: {error}": "เรียกใช้ mousetouch ไม่ได้: {error}", "Close": "ปิด",
     "Acceleration": "ความเร่ง", "Extra distance for fast flicks on top of Speed; 0 = off": "ระยะเพิ่มเติมเมื่อปัดเร็ว นอกเหนือจากความเร็ว; 0 = ปิด", "Momentum": "แรงเฉื่อย", "Keep scrolling after the finger lifts, slowing down like macOS": "เลื่อนต่อหลังยกนิ้ว โดยค่อยๆ ช้าลงแบบ macOS", "Momentum decay": "การลดลงของแรงเฉื่อย", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "ความเร็วที่คงไว้ทุกมิลลิวินาที; 0.998 คือค่าของ Apple ยิ่งต่ำยิ่งหยุดเร็ว",
     "Swipe": "ปัด", "Tap": "แตะ", "Double tap": "แตะสองครั้ง",
@@ -1938,6 +2181,13 @@ def dump_config(cfg: dict) -> str:
         "# Edit by hand or with `mousetouch-settings`. The daemon reloads on save.",
         "",
     ]
+    if not cfg["gesture"]:
+        # A file without the key gets the daemon's default gestures back, so
+        # an empty list has to be written out; a top-level key must come
+        # before the first [section].
+        out.append("# No gestures. Delete this line to get the default ones back.")
+        out.append("gesture = []")
+        out.append("")
     for section in ("general", "workspace_swipe", "pinch", "scroll", "taps"):
         out.append(f"[{section}]")
         for k, v in cfg[section].items():
@@ -1982,6 +2232,87 @@ def describe_action(a: dict) -> str:
     if t == "command":
         return _("Run: {command}").format(command=a.get("command", ""))
     return str(a)
+
+
+def setting_labels() -> dict:
+    """(section, key) -> (group title, row title), the same strings the rows use."""
+    ws, pz, sc, tp, gn = _("Workspace swipe"), _("Pinch zoom"), _("Scrolling"), _("Tap timing"), _("Advanced")
+    return {
+        ("workspace_swipe", "enabled"): (ws, _("Enabled")),
+        ("workspace_swipe", "fingers"): (ws, _("Fingers on the mouse")),
+        ("workspace_swipe", "direction"): (ws, _("Direction")),
+        ("workspace_swipe", "sensitivity"): (ws, _("Sensitivity")),
+        ("workspace_swipe", "activation_mm"): (ws, _("Activation distance (mm)")),
+        ("workspace_swipe", "synthetic_fingers"): (ws, _("Desktop gesture fingers")),
+        ("workspace_swipe", "axis"): (ws, _("Axis")),
+        ("workspace_swipe", "compositor_natural_scroll"): (ws, _("Desktop touchpad natural scrolling")),
+        ("pinch", "enabled"): (pz, _("Enabled")),
+        ("pinch", "fingers"): (pz, _("Fingers")),
+        ("pinch", "sensitivity"): (pz, _("Sensitivity")),
+        ("pinch", "activation_mm"): (pz, _("Activation distance (mm)")),
+        ("scroll", "direction_debounce"): (sc, _("Filter the backwards jump")),
+        ("scroll", "debounce_units"): (sc, _("Movement before scrolling starts")),
+        ("scroll", "mode"): (sc, _("Mode")),
+        ("scroll", "speed"): (sc, _("Speed")),
+        ("scroll", "acceleration"): (sc, _("Acceleration")),
+        ("scroll", "momentum"): (sc, _("Momentum")),
+        ("scroll", "momentum_decay"): (sc, _("Momentum decay")),
+        ("taps", "tap_max_ms"): (tp, _("Tap max duration (ms)")),
+        ("taps", "tap_max_mm"): (tp, _("Tap max movement (mm)")),
+        ("taps", "tap_max_lift_speed"): (tp, _("Tap max lift speed (mm/s)")),
+        ("taps", "double_tap_ms"): (tp, _("Double tap window (ms)")),
+        ("general", "suppress_scroll_from_fingers"): (gn, _("Mute scrolling from N fingers")),
+        ("general", "device_match"): (gn, _("Device name contains")),
+    }
+
+
+def setting_choices() -> dict:
+    """Stored value -> label for the settings shown as a drop-down."""
+    return {
+        ("workspace_swipe", "direction"): {"natural": _("Natural"), "inverted": _("Inverted")},
+        ("workspace_swipe", "synthetic_fingers"): {4: _("4 (COSMIC, KDE)"), 3: _("3 (GNOME)")},
+        ("workspace_swipe", "axis"): {"horizontal": _("Horizontal"), "vertical": _("Vertical"), "both": _("Both")},
+        ("workspace_swipe", "compositor_natural_scroll"): {None: _("Auto-detect"), True: _("On"), False: _("Off")},
+        ("scroll", "mode"): {"notches": _("Whole notches"), "smooth": _("Smooth steps")},
+    }
+
+
+def format_setting(section: str, key: str, value) -> str:
+    choices = setting_choices().get((section, key))
+    if choices is not None and value in choices:
+        return choices[value]
+    if value is None:
+        return "—"
+    if isinstance(value, bool):
+        return _("On") if value else _("Off")
+    if isinstance(value, float):
+        return f"{value:g}"
+    return str(value)
+
+
+def gestures_text(gestures: list) -> str:
+    if not gestures:
+        return _("No gestures yet")
+    return "\n".join(f"{describe_gesture(g)} — {describe_action(g['action'])}" for g in gestures)
+
+
+def config_diff(cfg: dict) -> list:
+    """What a reset would change: (label, current text, default text) per setting,
+    in the order the window shows them; the gesture list counts as one entry."""
+    labels = setting_labels()
+    out = []
+    for section in ("workspace_swipe", "pinch", "scroll", "taps", "general"):
+        defaults = DEFAULTS[section]
+        current = cfg.get(section, {})
+        for key in list(defaults) + [k for k in current if k not in defaults]:
+            cur, dflt = current.get(key), defaults.get(key)
+            if cur == dflt:
+                continue
+            group, title = labels.get((section, key), (section, key))
+            out.append((f"{group} · {title}", format_setting(section, key, cur), format_setting(section, key, dflt)))
+    if cfg.get("gesture", []) != DEFAULTS["gesture"]:
+        out.append((_("Gestures"), gestures_text(cfg.get("gesture", [])), gestures_text(DEFAULTS["gesture"])))
+    return out
 
 
 def describe_gesture(g: dict) -> str:
@@ -2165,16 +2496,24 @@ def socket_path() -> Path:
 class EventClient:
     """Connection to the daemon's event stream; retries every 1.5 s while the
     daemon is away. Listeners get each decoded event plus synthetic
-    {"t": "connected"} / {"t": "disconnected"} markers."""
+    {"t": "connected"} / {"t": "disconnected"} markers.
+
+    Events of a mouse carry "dev", a number the daemon gives each attached
+    mouse; a daemon older than that field sends none (key None here)."""
 
     def __init__(self):
         self.listeners = []
         self.connected = False
-        # Last "device" event. The daemon replays it only to new socket
-        # connections, and every view shares this one connection, so a view
-        # created later (the detached Live window) has to get it from here;
-        # without the device's size it would draw every finger in a corner.
-        self.device = None
+        # Attached mice: dev -> their "device" event, in the order they
+        # arrived. The daemon replays them only to a new socket connection
+        # and every view shares this one, so views created later (the
+        # detached Live window) get them from here instead.
+        self.devices: dict = {}
+        # dev -> palette slot, kept while the mouse stays attached so its
+        # colours do not change when another one comes or goes.
+        self.slots: dict = {}
+        # Last known name of every dev seen, also after it went away.
+        self.names: dict = {}
         self._sock = None
         self._buf = b""
         GLib.timeout_add(1500, self._try_connect)
@@ -2183,19 +2522,39 @@ class EventClient:
     def add_listener(self, fn):
         if fn not in self.listeners:
             self.listeners.append(fn)
-            if self.device is not None:
-                fn(self.device)
+            for ev in list(self.devices.values()):
+                fn(ev)
 
     def remove_listener(self, fn):
         if fn in self.listeners:
             self.listeners.remove(fn)
 
+    def palette(self, dev) -> list:
+        return FINGER_PALETTES[self.slots.get(dev, 0) % len(FINGER_PALETTES)]
+
+    def label(self, dev) -> str:
+        """The mouse's name, with its number when two share a name."""
+        name = self.names.get(dev) or self.devices.get(dev, {}).get("name") or _("Magic Mouse")
+        twins = [d for d, n in self.names.items() if n == name and d in self.devices]
+        return f"{name} #{dev}" if dev is not None and len(twins) > 1 else name
+
     def _emit(self, ev):
         t = ev.get("t")
+        dev = ev.get("dev")
         if t == "device":
-            self.device = ev
-        elif t in ("device_lost", "disconnected"):
-            self.device = None
+            self.devices[dev] = ev
+            self.names[dev] = ev.get("name", "")
+            if dev not in self.slots:
+                slot = 0
+                while slot in self.slots.values():
+                    slot += 1
+                self.slots[dev] = slot
+        elif t == "device_lost":
+            self.devices.pop(dev, None)
+            self.slots.pop(dev, None)
+        elif t == "disconnected":
+            self.devices.clear()
+            self.slots.clear()
         for fn in list(self.listeners):
             fn(ev)
 
@@ -2242,9 +2601,59 @@ class EventClient:
         return True
 
 
+class DeviceChooser(Gtk.DropDown):
+    """Which mouse the live view (and log) follow. Lists every attached mouse
+    and, when there are several, "All mice" first; `on_change` gets the dev
+    number, or None for all of them."""
+
+    def __init__(self, client: EventClient, on_change):
+        super().__init__(valign=Gtk.Align.CENTER)
+        self.client = client
+        self.on_change = on_change
+        self.keys = []
+        self._rebuilding = False
+        self.connect("notify::selected", self._selected)
+        self.connect("map", lambda *_a: client.add_listener(self.on_event))
+        self.connect("unmap", lambda *_a: client.remove_listener(self.on_event))
+        self._rebuild(None)
+
+    def current(self):
+        i = self.get_selected()
+        return self.keys[i] if 0 <= i < len(self.keys) else None
+
+    def on_event(self, ev: dict):
+        if ev.get("t") in ("device", "device_lost", "disconnected"):
+            self._rebuild(self.current())
+
+    def _rebuild(self, keep):
+        devs = list(self.client.devices)
+        if not devs:
+            keys, labels = [None], [_("No Magic Mouse connected")]
+        elif len(devs) == 1:
+            keys, labels = devs, [self.client.label(devs[0])]
+        else:
+            keys, labels = [None] + devs, [_("All mice")] + [self.client.label(d) for d in devs]
+        self._rebuilding = True
+        self.keys = keys
+        self.set_model(Gtk.StringList.new(labels))
+        self.set_selected(keys.index(keep) if keep in keys else 0)
+        self.set_sensitive(bool(devs))
+        self._rebuilding = False
+        self.on_change(self.current())
+
+    def _selected(self, *_a):
+        if not self._rebuilding:
+            self.on_change(self.current())
+
 DIR_ARROWS = {"left": "←", "right": "→", "up": "↑", "down": "↓"}
-FINGER_COLORS = [(0.21, 0.52, 0.89), (0.18, 0.69, 0.42), (0.96, 0.47, 0.0), (0.72, 0.26, 0.76), (0.88, 0.16, 0.20)]
-ACCENT = (0.21, 0.52, 0.89)
+# Finger colours: one palette per mouse shown at the same time (first colour
+# doubles as that mouse's accent for arrows, gauges and badges).
+FINGER_PALETTES = [
+    [(0.21, 0.52, 0.89), (0.18, 0.69, 0.42), (0.96, 0.47, 0.0), (0.72, 0.26, 0.76), (0.88, 0.16, 0.20)],  # cool, blue first
+    [(0.86, 0.22, 0.45), (0.95, 0.65, 0.10), (0.10, 0.65, 0.65), (0.55, 0.40, 0.90), (0.45, 0.60, 0.15)],  # warm, pink first
+]
+FINGER_COLORS = FINGER_PALETTES[0]
+ACCENT = FINGER_COLORS[0]
 # Magic Mouse 2 footprint (mm); only the outline's proportions matter.
 MOUSE_W_MM, MOUSE_L_MM = 57.0, 113.0
 
@@ -2264,7 +2673,7 @@ def describe_rule(ev: dict) -> str:
     return s
 
 
-def describe_gesture(ev: dict) -> str:
+def describe_live_gesture(ev: dict) -> str:
     name = _("Workspace swipe") if ev.get("gesture") == "workspace_swipe" else _("Pinch")
     s = f"{name} · {fingers_text(ev.get('fingers', 0))}"
     if ev.get("dir"):
@@ -2278,7 +2687,7 @@ def describe_event(ev: dict) -> str | None:
     if t == "rule":
         return describe_rule(ev)
     if t == "gesture_begin":
-        return describe_gesture(ev)
+        return describe_live_gesture(ev)
     if t == "touch_end":
         n = ev.get("fingers", 0)
         if ev.get("tap"):
@@ -2342,10 +2751,28 @@ def draw_arrow(cr, x1, y1, x2, y2, color, width=4.0, alpha=1.0):
     cr.fill()
 
 
+class DevState:
+    """What one mouse is doing right now, as the live view tracks it."""
+
+    def __init__(self):
+        self.fingers = []
+        self.trails = {}
+        self.lifted = []
+        self.state = "idle"
+        self.pad = None
+        self.scale = None
+        self.scroll = {"dx": 0.0, "dy": 0.0, "t": 0.0}
+        self.buttons = {}
+
+    def animating(self, now: float) -> bool:
+        return bool(self.fingers or self.lifted or now - self.scroll["t"] < 1.0 or any(self.buttons.values()))
+
+
 class MouseView(Gtk.DrawingArea):
     """Top view of the mouse with the fingers on it, where they landed, the
     path they took, the gesture the daemon is replaying, scrolling and
-    clicks. Listens only while mapped."""
+    clicks. Follows one mouse (`filter` = its dev number) or all of them at
+    once, each in its own colours. Listens only while mapped."""
 
     BADGE_S = 2.8
     TRAIL_S = 0.7
@@ -2356,89 +2783,87 @@ class MouseView(Gtk.DrawingArea):
         self.client = client
         self.compact = compact
         self.connected = client.connected
-        self.device = None
-        self.fingers = []
-        self.trails = {}
-        self.lifted = []
-        self.state = "idle"
-        self.pad = None
-        self.scale = None
+        self.devs: dict = {}  # dev -> DevState, every attached mouse
+        self.filter = None  # dev to show, None for all
         self.badges = []
-        self.scroll = {"dx": 0.0, "dy": 0.0, "t": 0.0}
-        self.buttons = {}
         self._tick = 0
         self.set_draw_func(self._draw)
         self.connect("map", lambda *_a: client.add_listener(self.on_event))
         self.connect("unmap", lambda *_a: client.remove_listener(self.on_event))
 
+    def set_filter(self, dev):
+        self.filter = dev
+        self.queue_draw()
+
+    def _shown(self) -> list:
+        return [d for d in self.client.devices if self.filter is None or d == self.filter]
+
     # -- events ------------------------------------------------------------
     def on_event(self, ev: dict):
         t = ev.get("t")
+        dev = ev.get("dev")
         now = time.monotonic()
         if t == "connected":
             self.connected = True
         elif t == "disconnected":
             self.connected = False
-            self.device = None
-            self._clear_touch()
+            self.devs = {}
+            self.badges = []
         elif t == "device":
-            self.device = ev
+            self.devs.setdefault(dev, DevState())
         elif t == "device_lost":
-            self.device = None
-            self._clear_touch()
-        elif t == "frame":
-            fingers = ev.get("fingers", [])
-            if fingers:
-                ids = {f["id"] for f in fingers}
-                for f in fingers:
-                    tr = self.trails.setdefault(f["id"], [])
-                    tr.append((f["x"], f["y"], now))
-                    del tr[:-150]
-                for k in [k for k in self.trails if k not in ids]:
-                    del self.trails[k]
-            else:
-                self.lifted = [(f["x"], f["y"], now) for f in self.fingers] + self.lifted
-                self.trails = {}
-            self.fingers = fingers
-            self.state = ev.get("state", "idle")
-            self.pad = (ev["pad_dx"], ev["pad_dy"]) if "pad_dx" in ev else None
-            self.scale = ev.get("scale")
-        elif t == "gesture_begin":
-            self._badge(describe_gesture(ev), "accent")
-        elif t == "rule":
-            # Every 1-finger movement is checked against swipe rules; a miss
-            # there is just normal mouse use, not worth a badge.
-            if ev.get("matched") or ev.get("fingers", 0) > 1 or ev.get("kind") != "swipe":
-                self._badge(describe_rule(ev), "accent" if ev.get("matched") else "muted")
-        elif t == "touch_end":
-            n = ev.get("fingers", 0)
-            if ev.get("tap"):
-                self._badge(f"{_('Tap')} · {fingers_text(n)}", "info")
-            elif n > 1 and ev.get("reason"):
-                self._badge(_("not a tap: {reason}").format(reason=_(ev["reason"])), "warn")
-        elif t == "scroll":
-            if now - self.scroll["t"] > 0.8:
-                self.scroll["dx"] = self.scroll["dy"] = 0.0
-            self.scroll["dx"] += ev.get("dx", 0)
-            self.scroll["dy"] += ev.get("dy", 0)
-            self.scroll["t"] = now
-        elif t == "button":
-            self.buttons[ev.get("button", "")] = bool(ev.get("down"))
+            self.devs.pop(dev, None)
+        else:
+            st = self.devs.setdefault(dev, DevState())
+            # A hidden mouse is still tracked, so switching to it shows its
+            # fingers right away; only its badges are skipped.
+            shown = self.filter is None or dev == self.filter
+            if t == "frame":
+                fingers = ev.get("fingers", [])
+                if fingers:
+                    ids = {f["id"] for f in fingers}
+                    for f in fingers:
+                        tr = st.trails.setdefault(f["id"], [])
+                        tr.append((f["x"], f["y"], now))
+                        del tr[:-150]
+                    for k in [k for k in st.trails if k not in ids]:
+                        del st.trails[k]
+                else:
+                    st.lifted = [(f["x"], f["y"], now) for f in st.fingers] + st.lifted
+                    st.trails = {}
+                st.fingers = fingers
+                st.state = ev.get("state", "idle")
+                st.pad = (ev["pad_dx"], ev["pad_dy"]) if "pad_dx" in ev else None
+                st.scale = ev.get("scale")
+            elif t == "gesture_begin" and shown:
+                self._badge(dev, describe_live_gesture(ev), "accent")
+            elif t == "rule" and shown:
+                # Every 1-finger movement is checked against swipe rules; a miss
+                # there is just normal mouse use, not worth a badge.
+                if ev.get("matched") or ev.get("fingers", 0) > 1 or ev.get("kind") != "swipe":
+                    self._badge(dev, describe_rule(ev), "accent" if ev.get("matched") else "muted")
+            elif t == "touch_end" and shown:
+                n = ev.get("fingers", 0)
+                if ev.get("tap"):
+                    self._badge(dev, f"{_('Tap')} · {fingers_text(n)}", "info")
+                elif n > 1 and ev.get("reason"):
+                    self._badge(dev, _("not a tap: {reason}").format(reason=_(ev["reason"])), "warn")
+            elif t == "scroll":
+                if now - st.scroll["t"] > 0.8:
+                    st.scroll["dx"] = st.scroll["dy"] = 0.0
+                st.scroll["dx"] += ev.get("dx", 0)
+                st.scroll["dy"] += ev.get("dy", 0)
+                st.scroll["t"] = now
+            elif t == "button":
+                st.buttons[ev.get("button", "")] = bool(ev.get("down"))
         self._animate()
 
-    def _clear_touch(self):
-        self.fingers = []
-        self.trails = {}
-        self.state = "idle"
-        self.pad = self.scale = None
-        self.buttons = {}
-
-    def _badge(self, text: str, kind: str):
-        self.badges.append({"text": text, "kind": kind, "t": time.monotonic()})
+    def _badge(self, dev, text: str, kind: str):
+        self.badges.append({"text": text, "kind": kind, "t": time.monotonic(), "dev": dev})
         del self.badges[:-3]
 
     def _animating(self, now: float) -> bool:
-        return bool(self.fingers or self.lifted or self.badges or now - self.scroll["t"] < 1.0 or any(self.buttons.values()))
+        return bool(self.badges or any(st.animating(now) for st in self.devs.values()))
 
     def _animate(self):
         self.queue_draw()
@@ -2448,7 +2873,8 @@ class MouseView(Gtk.DrawingArea):
     def _on_tick(self):
         now = time.monotonic()
         self.badges = [b for b in self.badges if now - b["t"] < self.BADGE_S]
-        self.lifted = [g for g in self.lifted if now - g[2] < 0.6]
+        for st in self.devs.values():
+            st.lifted = [g for g in st.lifted if now - g[2] < 0.6]
         self.queue_draw()
         if self._animating(now):
             return True
@@ -2464,22 +2890,35 @@ class MouseView(Gtk.DrawingArea):
         edge = (0.45, 0.45, 0.47) if dark else (0.68, 0.68, 0.67)
         now = time.monotonic()
         font = 10.0 if self.compact else 11.5
+        shown = self._shown()
+        mixed = len(shown) > 1
 
-        # Header: device or status; finger count.
+        # Header: status, or one legend entry (colour dot + name) per mouse
+        # shown; finger count on the right.
         if not self.connected:
-            title, hint = _("Daemon not running"), _("Start the background service (mousetouch.service)")
-        elif not self.device:
-            title, hint = _("No Magic Mouse connected"), ""
+            draw_text(cr, _("Daemon not running"), 12, 8, font, muted, bold=True)
+            draw_text(cr, _("Start the background service (mousetouch.service)"), 12, 8 + font * 1.5, font * 0.9, muted)
+        elif not shown:
+            draw_text(cr, _("No Magic Mouse connected"), 12, 8, font, muted, bold=True)
         else:
-            title, hint = self.device.get("name", ""), self.device.get("source", "")
-        draw_text(cr, title, 12, 8, font, fg if self.device else muted, bold=True)
-        if hint:
-            draw_text(cr, hint, 12, 8 + font * 1.5, font * 0.9, muted)
-        if self.fingers:
-            state = {"workspace": _("Workspace swipe"), "pinch": _("Pinch")}.get(self.state)
-            right = fingers_text(len(self.fingers)) + (f" · {state}" if state else "")
+            x = 12
+            for dev in shown:
+                dot = self.client.palette(dev)[0]
+                cr.arc(x + font * 0.4, 8 + font * 0.75, font * 0.4, 0, 2 * math.pi)
+                cr.set_source_rgb(*dot)
+                cr.fill()
+                tw, _th = draw_text(cr, self.client.label(dev), x + font * 1.2, 8, font, fg, bold=True)
+                x += font * 1.2 + tw + font * 1.4
+            if not mixed:
+                draw_text(cr, self.client.devices[shown[0]].get("source", ""), 12, 8 + font * 1.5, font * 0.9, muted)
+        fingers_total = sum(len(self.devs[d].fingers) for d in shown if d in self.devs)
+        if fingers_total:
+            states = [self.devs[d].state for d in shown if d in self.devs and self.devs[d].fingers]
+            state = next((s for s in states if s in ("workspace", "pinch")), None)
+            state = {"workspace": _("Workspace swipe"), "pinch": _("Pinch")}.get(state)
+            right = fingers_text(fingers_total) + (f" · {state}" if state else "")
             draw_text(cr, right, w - 12, 8, font, fg, align="right", bold=True)
-        elif self.device and not self.badges:
+        elif shown and not self.badges:
             draw_text(cr, _("Waiting for a touch…"), w - 12, 8, font * 0.9, muted, align="right")
 
         # Outline, leaving room for the header and the scroll gauge.
@@ -2494,13 +2933,54 @@ class MouseView(Gtk.DrawingArea):
         cr.set_source_rgb(*edge)
         cr.set_line_width(1.5)
         cr.stroke()
-        if not self.device:
+        if not shown:
             cr.set_source_rgba(*muted, 0.25 if dark else 0.18)
             rounded_rect(cr, mx, my, mw, ml, mw * 0.46)
             cr.fill()
 
+        inset = 3.0 * s
+        r = max(8.0, 4.5 * s)  # a fingertip contact is roughly 9 mm across
+        for i, dev in enumerate(shown):
+            st = self.devs.get(dev)
+            if st is None:
+                continue
+            pal = self.client.palette(dev)
+            accent = pal[0]
+            info = self.client.devices[dev]
+            self._draw_mouse(cr, st, pal, accent, info, i, now, s, r, inset, mx, my, mw, ml, gauge, font, fg, muted)
+
+        # Badges: recent discrete results, newest at the bottom; the mouse's
+        # name in front when several are shown.
+        by = h - 10
+        for b in reversed(self.badges):
+            age = now - b["t"]
+            a = 1.0 if age < self.BADGE_S - 0.7 else max(0.0, (self.BADGE_S - age) / 0.7)
+            accent = self.client.palette(b["dev"])[0]
+            bg = {"accent": accent, "warn": (0.90, 0.45, 0.10), "muted": muted, "info": (0.36, 0.60, 0.46)}[b["kind"]]
+            text = f"{self.client.label(b['dev'])} · {b['text']}" if mixed else b["text"]
+            layout = PangoCairo.create_layout(cr)
+            fd = Pango.FontDescription.from_string("Sans")
+            fd.set_absolute_size(font * Pango.SCALE)
+            fd.set_weight(Pango.Weight.BOLD)
+            layout.set_font_description(fd)
+            layout.set_text(text, -1)
+            layout.set_width(int((w - 24) * Pango.SCALE))
+            layout.set_ellipsize(Pango.EllipsizeMode.END)
+            tw, th = layout.get_pixel_size()
+            bh = th + 10
+            rounded_rect(cr, 10, by - bh, tw + 18, bh, bh / 2)
+            cr.set_source_rgba(*bg, 0.92 * a)
+            cr.fill()
+            cr.set_source_rgba(1, 1, 1, a)
+            cr.move_to(19, by - bh + 5)
+            PangoCairo.show_layout(cr, layout)
+            by -= bh + 6
+
+    def _draw_mouse(self, cr, st, pal, accent, info, idx, now, s, r, inset, mx, my, mw, ml, gauge, font, fg, muted):
+        """One mouse's fingers, gesture, clicks and scrolling on the shared
+        outline; `idx` offsets the scroll gauges so two mice do not overlap."""
         # Clicks light up the front half on the side pressed.
-        for name, down in self.buttons.items():
+        for name, down in st.buttons.items():
             if not down:
                 continue
             cr.save()
@@ -2512,13 +2992,12 @@ class MouseView(Gtk.DrawingArea):
                 cr.rectangle(mx + mw / 2, my, mw / 2, ml * 0.42)
             else:
                 cr.rectangle(mx + mw * 0.3, my, mw * 0.4, ml * 0.42)
-            cr.set_source_rgba(*ACCENT, 0.3)
+            cr.set_source_rgba(*accent, 0.3)
             cr.fill()
             cr.restore()
 
-        dev_w = (self.device or {}).get("w_mm") or 1.0
-        dev_h = (self.device or {}).get("h_mm") or 1.0
-        inset = 3.0 * s
+        dev_w = info.get("w_mm") or 1.0
+        dev_h = info.get("h_mm") or 1.0
 
         def to_px(x, y):
             return (
@@ -2526,10 +3005,8 @@ class MouseView(Gtk.DrawingArea):
                 my + inset + (ml - 2 * inset) * min(1.0, max(0.0, y / dev_h)),
             )
 
-        r = max(8.0, 4.5 * s)  # a fingertip contact is roughly 9 mm across
-
         # Ghosts of fingers that just lifted.
-        for x, y, t0 in self.lifted:
+        for x, y, t0 in st.lifted:
             a = max(0.0, 1 - (now - t0) / 0.6)
             px, py = to_px(x, y)
             cr.arc(px, py, r * (1 + 0.8 * (1 - a)), 0, 2 * math.pi)
@@ -2538,9 +3015,9 @@ class MouseView(Gtk.DrawingArea):
             cr.stroke()
 
         # Trails, landing points and fingers.
-        for i, f in enumerate(self.fingers):
-            col = FINGER_COLORS[i % len(FINGER_COLORS)]
-            tr = self.trails.get(f["id"], [])
+        for i, f in enumerate(st.fingers):
+            col = pal[i % len(pal)]
+            tr = st.trails.get(f["id"], [])
             if len(tr) > 1:
                 cr.set_line_width(max(2.0, r * 0.5))
                 cr.set_line_cap(cairo.LINE_CAP_ROUND)
@@ -2568,9 +3045,9 @@ class MouseView(Gtk.DrawingArea):
             draw_text(cr, str(i + 1), px, py, r * 1.15, (1, 1, 1), align="center", bold=True)
 
         # Centroid and the continuous gesture being replayed.
-        if len(self.fingers) >= 2:
-            cx = sum(f["x"] for f in self.fingers) / len(self.fingers)
-            cy = sum(f["y"] for f in self.fingers) / len(self.fingers)
+        if len(st.fingers) >= 2:
+            cx = sum(f["x"] for f in st.fingers) / len(st.fingers)
+            cy = sum(f["y"] for f in st.fingers) / len(st.fingers)
             pcx, pcy = to_px(cx, cy)
             cr.set_source_rgba(*fg, 0.5)
             cr.set_line_width(1.2)
@@ -2579,21 +3056,21 @@ class MouseView(Gtk.DrawingArea):
             cr.move_to(pcx, pcy - 6)
             cr.line_to(pcx, pcy + 6)
             cr.stroke()
-            if self.state == "workspace" and self.pad:
-                dx, dy = self.pad
+            if st.state == "workspace" and st.pad:
+                dx, dy = st.pad
                 dist = math.hypot(dx, dy)
                 if dist > 0.3:
                     ux, uy = dx / dist, dy / dist
                     length = min(ml * 0.42, 14 + dist * s)
-                    draw_arrow(cr, pcx, pcy, pcx + ux * length, pcy + uy * length, ACCENT, width=max(3.0, r * 0.4))
+                    draw_arrow(cr, pcx, pcy, pcx + ux * length, pcy + uy * length, accent, width=max(3.0, r * 0.4))
                     draw_text(cr, f"{dist:.0f} mm", pcx + ux * (length + 10), pcy + uy * (length + 10) - font / 2, font, fg,
                               align="right" if ux < 0 else "left", bold=True)
-            elif self.state == "pinch" and self.scale:
+            elif st.state == "pinch" and st.scale:
                 # One arrow beyond each finger, pointing away from the centroid
                 # when the fingers spread and towards it when they close.
-                out = self.scale >= 1.0
+                out = st.scale >= 1.0
                 reach = r * 2.2
-                for f in self.fingers[:2]:
+                for f in st.fingers[:2]:
                     px, py = to_px(f["x"], f["y"])
                     d = math.hypot(px - pcx, py - pcy)
                     if d < 1:
@@ -2602,57 +3079,34 @@ class MouseView(Gtk.DrawingArea):
                     base = (px + ux * r * 1.3, py + uy * r * 1.3)
                     tip = (base[0] + ux * reach, base[1] + uy * reach)
                     if out:
-                        draw_arrow(cr, *base, *tip, ACCENT, width=max(3.0, r * 0.3))
+                        draw_arrow(cr, *base, *tip, accent, width=max(3.0, r * 0.3))
                     else:
-                        draw_arrow(cr, *tip, *base, ACCENT, width=max(3.0, r * 0.3))
-                draw_text(cr, f"×{self.scale:.2f}", pcx, pcy + r * 1.6, font, fg, align="center", bold=True)
+                        draw_arrow(cr, *tip, *base, accent, width=max(3.0, r * 0.3))
+                draw_text(cr, f"×{st.scale:.2f}", pcx, pcy + r * 1.6, font, fg, align="center", bold=True)
 
-        # Scroll gauge beside the mouse (vertical wheel) and below it (horizontal).
-        age = now - self.scroll["t"]
-        if age < 1.0 and (self.scroll["dy"] or self.scroll["dx"]):
+        # Scroll gauge beside the mouse (vertical wheel) and below it
+        # (horizontal), one lane per mouse shown.
+        age = now - st.scroll["t"]
+        if age < 1.0 and (st.scroll["dy"] or st.scroll["dx"]):
             a = 1.0 if age < 0.5 else 1 - (age - 0.5) / 0.5
-            gx = mx + mw + gauge * 0.55
+            gx = mx + mw + gauge * 0.55 + idx * 16
             cr.set_source_rgba(*muted, 0.35 * a)
             cr.set_line_width(2)
             cr.move_to(gx, my + ml * 0.15)
             cr.line_to(gx, my + ml * 0.85)
             cr.stroke()
-            notches = self.scroll["dy"] / 120.0
+            notches = st.scroll["dy"] / 120.0
             if notches:
                 # Positive wheel = away from the user = content up.
                 length = min(ml * 0.33, 10 + abs(notches) * 14)
                 gy = my + ml / 2
-                draw_arrow(cr, gx, gy, gx, gy - math.copysign(length, notches), ACCENT, width=3.5, alpha=a)
+                draw_arrow(cr, gx, gy, gx, gy - math.copysign(length, notches), accent, width=3.5, alpha=a)
                 draw_text(cr, f"{notches:+.1f}", gx, gy + math.copysign(length + 10, -notches) - font / 2, font, fg, align="center", alpha=a, bold=True)
-            hnotches = self.scroll["dx"] / 120.0
+            hnotches = st.scroll["dx"] / 120.0
             if hnotches:
                 length = min(mw * 0.4, 10 + abs(hnotches) * 14)
-                gy = my + ml + 8
-                draw_arrow(cr, mx + mw / 2, gy, mx + mw / 2 + math.copysign(length, hnotches), gy, ACCENT, width=3.5, alpha=a)
-
-        # Badges: recent discrete results, newest at the bottom.
-        by = h - 10
-        for b in reversed(self.badges):
-            age = now - b["t"]
-            a = 1.0 if age < self.BADGE_S - 0.7 else max(0.0, (self.BADGE_S - age) / 0.7)
-            bg = {"accent": ACCENT, "warn": (0.90, 0.45, 0.10), "muted": muted, "info": (0.36, 0.60, 0.46)}[b["kind"]]
-            layout = PangoCairo.create_layout(cr)
-            fd = Pango.FontDescription.from_string("Sans")
-            fd.set_absolute_size(font * Pango.SCALE)
-            fd.set_weight(Pango.Weight.BOLD)
-            layout.set_font_description(fd)
-            layout.set_text(b["text"], -1)
-            layout.set_width(int((w - 24) * Pango.SCALE))
-            layout.set_ellipsize(Pango.EllipsizeMode.END)
-            tw, th = layout.get_pixel_size()
-            bh = th + 10
-            rounded_rect(cr, 10, by - bh, tw + 18, bh, bh / 2)
-            cr.set_source_rgba(*bg, 0.92 * a)
-            cr.fill()
-            cr.set_source_rgba(1, 1, 1, a)
-            cr.move_to(19, by - bh + 5)
-            PangoCairo.show_layout(cr, layout)
-            by -= bh + 6
+                gy = my + ml + 8 + idx * 12
+                draw_arrow(cr, mx + mw / 2, gy, mx + mw / 2 + math.copysign(length, hnotches), gy, accent, width=3.5, alpha=a)
 
 
 class EventLog(Gtk.ScrolledWindow):
@@ -2663,20 +3117,38 @@ class EventLog(Gtk.ScrolledWindow):
 
     def __init__(self, client: EventClient):
         super().__init__(vexpand=True, min_content_height=150, hscrollbar_policy=Gtk.PolicyType.NEVER)
+        self.client = client
+        self.filter = None  # dev to show, None for all
         self.list = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE, css_classes=["boxed-list"])
         self.set_child(self.list)
         self._scroll_row = None
+        self._scroll_dev = None
         self._scroll_t = 0.0
         self._scroll_sum = [0.0, 0.0]
         self.connect("map", lambda *_a: client.add_listener(self.on_event))
         self.connect("unmap", lambda *_a: client.remove_listener(self.on_event))
 
+    def set_filter(self, dev):
+        self.filter = dev
+
+    def _prefix(self, ev: dict) -> str:
+        dev = ev.get("dev")
+        if self.filter is None and dev is not None and len(self.client.devices) > 1:
+            return self.client.label(dev) + " · "
+        return ""
+
     def on_event(self, ev: dict):
-        if ev.get("t") == "scroll":
+        t = ev.get("t")
+        dev = ev.get("dev")
+        if t not in ("device", "device_lost", "connected", "disconnected") and self.filter is not None and dev != self.filter:
+            return
+        if t == "scroll":
             now = time.monotonic()
-            if self._scroll_row is None or now - self._scroll_t > 0.5 or self.list.get_row_at_index(0) is not self._scroll_row:
+            if (self._scroll_row is None or now - self._scroll_t > 0.5 or dev != self._scroll_dev
+                    or self.list.get_row_at_index(0) is not self._scroll_row):
                 self._scroll_sum = [0.0, 0.0]
                 self._scroll_row = self._add("")
+                self._scroll_dev = dev
             self._scroll_t = now
             self._scroll_sum[0] += ev.get("dx", 0)
             self._scroll_sum[1] += ev.get("dy", 0)
@@ -2685,11 +3157,11 @@ class EventLog(Gtk.ScrolledWindow):
                 parts.append(f"{'↑' if self._scroll_sum[1] > 0 else '↓'} {abs(self._scroll_sum[1]) / 120:.1f}")
             if self._scroll_sum[0]:
                 parts.append(f"{'→' if self._scroll_sum[0] > 0 else '←'} {abs(self._scroll_sum[0]) / 120:.1f}")
-            self._scroll_row.set_title(GLib.markup_escape_text(f"{_('Scroll')} {' '.join(parts)}"))
+            self._scroll_row.set_title(GLib.markup_escape_text(f"{self._prefix(ev)}{_('Scroll')} {' '.join(parts)}"))
             return
         text = describe_event(ev)
         if text:
-            self._add(text)
+            self._add(self._prefix(ev) + text if t not in ("device", "device_lost") else text)
 
     def _add(self, text: str) -> Adw.ActionRow:
         row = Adw.ActionRow(title=GLib.markup_escape_text(text), subtitle=time.strftime("%H:%M:%S"))
@@ -2958,9 +3430,14 @@ class LiveWindow(Adw.Window):
         self.log = EventLog(client)
         box.append(self.log)
         clear.connect("clicked", lambda *_a: self.log.clear())
+        header.pack_start(DeviceChooser(client, self._follow))
         self.toast.set_child(box)
         tb.set_content(self.toast)
         self.set_content(tb)
+
+    def _follow(self, dev):
+        self.view.set_filter(dev)
+        self.log.set_filter(dev)
 
 
 class Window(Adw.ApplicationWindow):
@@ -2982,9 +3459,13 @@ class Window(Adw.ApplicationWindow):
                                    description=_("What the daemon sees on the mouse as it happens: fingers, taps, swipes, pinch, scrolling and clicks."))
         detach = Gtk.Button(icon_name="window-new-symbolic", valign=Gtk.Align.CENTER, css_classes=["flat"], tooltip_text=_("Open in its own window"))
         detach.connect("clicked", lambda *_a: self.app.open_live())
-        grp.set_header_suffix(detach)
+        view = MouseView(app.events, compact=True)
+        suffix = Gtk.Box(spacing=6)
+        suffix.append(DeviceChooser(app.events, view.set_filter))
+        suffix.append(detach)
+        grp.set_header_suffix(suffix)
         card = Gtk.Frame(css_classes=["card"])
-        card.set_child(MouseView(app.events, compact=True))
+        card.set_child(view)
         grp.add(card)
         page.add(grp)
 
@@ -3095,6 +3576,11 @@ class Window(Adw.ApplicationWindow):
         open_row.add_suffix(Gtk.Image.new_from_icon_name("document-open-symbolic"))
         open_row.connect("activated", lambda *_a: Gio.AppInfo.launch_default_for_uri(CONFIG_PATH.as_uri(), None))
         grp.add(open_row)
+        reset_row = Adw.ActionRow(title=_("Reset to defaults"), subtitle=_("Put every setting back to the values MouseTouch ships with"))
+        reset_btn = Gtk.Button(label=_("Reset…"), valign=Gtk.Align.CENTER, css_classes=["destructive-action"])
+        reset_btn.connect("clicked", self._reset_defaults)
+        reset_row.add_suffix(reset_btn)
+        grp.add(reset_row)
         page.add(grp)
 
         # Support: one row that opens the hosted donate page in the browser.
@@ -3107,6 +3593,52 @@ class Window(Adw.ApplicationWindow):
         self._refresh_status()
         self._status_timer = GLib.timeout_add_seconds(5, self._refresh_status)
         self.connect("close-request", lambda *_a: GLib.source_remove(self._status_timer) and False)
+
+    # -- reset -----------------------------------------------------------
+    def _reset_defaults(self, *_a):
+        """List what differs from the shipped defaults and ask before writing them."""
+        diff = config_diff(self.cfg)
+        if not diff:
+            dlg = Adw.AlertDialog(heading=_("Already at the defaults"),
+                                  body=_("Every setting already has the value MouseTouch ships with."))
+            dlg.add_response("close", _("Close"))
+            dlg.present(self)
+            return
+        dlg = Adw.AlertDialog(heading=_("Reset to defaults?"),
+                              body=_("These settings will change:") if len(diff) > 1 else _("This setting will change:"))
+        lst = Gtk.ListBox(selection_mode=Gtk.SelectionMode.NONE, css_classes=["boxed-list"])
+        for label, cur, dflt in diff:
+            row = Adw.ActionRow(title=GLib.markup_escape_text(label))
+            if "\n" in cur or "\n" in dflt:
+                row.set_subtitle(GLib.markup_escape_text(f"{cur}\n→\n{dflt}"))
+            else:
+                row.set_subtitle(GLib.markup_escape_text(f"{cur}  →  {dflt}"))
+            lst.append(row)
+        scroller = Gtk.ScrolledWindow(propagate_natural_height=True, max_content_height=360,
+                                      hscrollbar_policy=Gtk.PolicyType.NEVER, child=lst)
+        dlg.set_extra_child(scroller)
+        dlg.add_response("cancel", _("Cancel"))
+        dlg.add_response("reset", _("Reset"))
+        dlg.set_response_appearance("reset", Adw.ResponseAppearance.DESTRUCTIVE)
+        dlg.set_default_response("cancel")
+        dlg.set_close_response("cancel")
+        dlg.connect("response", self._on_reset_response)
+        dlg.present(self)
+
+    def _on_reset_response(self, _dlg, response):
+        if response != "reset":
+            return
+        if self._save_id:
+            GLib.source_remove(self._save_id)
+            self._save_id = 0
+        self.cfg = copy.deepcopy(DEFAULTS)
+        try:
+            save_config(self.cfg)
+        except Exception as e:  # noqa: BLE001
+            self.toast.add_toast(Adw.Toast(title=_("Could not save: {error}").format(error=e)))
+            return
+        new = self.app.rebuild_window(self)
+        new.toast.add_toast(Adw.Toast(title=_("Settings reset to defaults")))
 
     # -- state -----------------------------------------------------------
     def _set(self, section, key, value):
@@ -3237,13 +3769,14 @@ class App(Adw.Application):
         win = self.props.active_window or Window(self)
         win.present()
 
-    def rebuild_window(self, old: Window) -> None:
-        """Replace the window after a language change (same size and position)."""
+    def rebuild_window(self, old: Window) -> Window:
+        """Replace the window after a language change or a reset (same size)."""
         w, h = old.get_default_size()
         new = Window(self)
         new.set_default_size(w, h)
         new.present()
         old.close()
+        return new
 
 
 if __name__ == "__main__":

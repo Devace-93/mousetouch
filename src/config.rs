@@ -385,3 +385,23 @@ pub fn detect_compositor_natural_scroll() -> bool {
     }
     false
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn missing_gesture_key_means_the_defaults() {
+        let cfg: Config = toml::from_str("[scroll]\nspeed = 1.5\n").unwrap();
+        assert_eq!(cfg.gestures.len(), 2);
+    }
+
+    #[test]
+    fn empty_gesture_list_means_none() {
+        // What mousetouch-settings writes after the last gesture is removed.
+        let cfg: Config = toml::from_str("gesture = []\n\n[scroll]\nspeed = 1.5\n").unwrap();
+        assert!(cfg.gestures.is_empty());
+        let cfg: Config = toml::from_str(&to_toml(&cfg).unwrap()).unwrap();
+        assert!(cfg.gestures.is_empty(), "round trip through to_toml keeps it empty");
+    }
+}
