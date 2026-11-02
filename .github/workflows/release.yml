@@ -15,6 +15,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 env:
   CARGO_TERM_COLOR: always
@@ -129,13 +130,21 @@ jobs:
           git commit -m "mousetouch ${GITHUB_REF_NAME}" || echo "formula unchanged"
           git push
 
-      # The landing page and the README carry one copy-pasteable command per
-      # package with the latest version in it. main only takes pull requests,
-      # so point them at this release on a branch and open the PR (merging it
-      # makes the Pages workflow redeploy the site). Opening PRs needs the
-      # repository setting "Allow GitHub Actions to create and approve pull
-      # requests"; without it the branch is still pushed and the step prints
-      # the compare link instead of failing the release.
+      # The landing page takes the latest version at build time, so just
+      # redeploy it (a workflow_dispatch is the one event GITHUB_TOKEN may
+      # trigger; the release event it just created does not start workflows).
+      - name: Redeploy the landing page
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --repo "$GITHUB_REPOSITORY" --ref main
+
+      # The README (and the committed fallback in site/) carry one
+      # copy-pasteable command per package with the latest version in it. main
+      # only takes pull requests, so update them on a branch, open the PR and
+      # merge it right away. Opening PRs needs the repository setting "Allow
+      # GitHub Actions to create and approve pull requests"; without it the
+      # branch is still pushed and the step prints the compare link instead of
+      # failing the release.
       - name: Point the install instructions at this release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -151,7 +160,11 @@ jobs:
           git add site/index.html README.md
           git commit -m "Install instructions: latest release is ${GITHUB_REF_NAME}" || { echo "instructions already current"; exit 0; }
           git push --force origin "$branch"
-          gh pr create --base main --head "$branch" \
-            --title "Install instructions: latest release is ${GITHUB_REF_NAME}" \
-            --body "Opened by the Release workflow: scripts/set-release-version.py ${version} over site/index.html and README.md. Merge to update the landing page." \
-            || echo "::warning::could not open the pull request; open it by hand: https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}"
+          if gh pr create --base main --head "$branch" \
+               --title "Install instructions: latest release is ${GITHUB_REF_NAME}" \
+               --body "Opened by the Release workflow: scripts/set-release-version.py ${version} over README.md and site/index.html."; then
+            gh pr merge "$branch" --merge --delete-branch \
+              || echo "::warning::could not merge the pull request; merge it by hand"
+          else
+            echo "::warning::could not open the pull request; open it by hand: https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}"
+          fi
