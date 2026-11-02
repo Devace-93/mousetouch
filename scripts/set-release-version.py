@@ -54,7 +54,8 @@ def main(argv: list[str]) -> int:
             if not check:
                 path.write_text(new, encoding="utf-8")
     for path in changed:
-        shown = path.relative_to(ROOT) if path.resolve().is_relative_to(ROOT) else path
+        resolved = path.resolve()
+        shown = resolved.relative_to(ROOT) if resolved.is_relative_to(ROOT) else path
         print(f"{'would update' if check else 'updated'} {shown}")
     if not changed:
         print(f"already at {version}")
