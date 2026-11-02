@@ -166,6 +166,9 @@ fn run(config_path: &Path) -> Result<()> {
     desktop::ensure_app_menu_entry();
 
     let active: Arc<Mutex<HashSet<PathBuf>>> = Arc::new(Mutex::new(HashSet::new()));
+    // Device number stamped on the event stream, so the settings app can
+    // tell two mice apart; never reused while the daemon runs.
+    let mut next_dev: u32 = 0;
     let mut last_mtime = std::fs::metadata(config_path).and_then(|m| m.modified()).ok();
     // Nodes already reported as unusable, so the warning is logged once.
     let mut warned: HashSet<PathBuf> = HashSet::new();
@@ -201,7 +204,8 @@ fn run(config_path: &Path) -> Result<()> {
             let shared = Arc::clone(&shared);
             let active = Arc::clone(&active);
             let focus = Arc::clone(&focus);
-            let monitor = monitor.clone();
+            next_dev += 1;
+            let monitor = monitor.for_device(next_dev);
             thread::spawn(move || {
                 let name = dev.name().unwrap_or("?").to_string();
                 log::info!("attached {} ({})", name, path.display());

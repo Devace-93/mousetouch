@@ -165,6 +165,11 @@ event log, handy next to the app you are testing (use your desktop's window
 menu to keep it on every workspace: COSMIC *Sticky*, GNOME *Always on
 Visible Workspace*, KDE *All Desktops*).
 
+With more than one Magic Mouse attached, the drop-down next to the view
+picks which one to follow, or *All mice*: then each mouse draws in its own
+colours (blue-first and pink-first palettes) and badges and log lines carry
+its name. Every event in the stream has a `dev` number for this.
+
 The data comes from the daemon's event stream on
 `$XDG_RUNTIME_DIR/mousetouch.sock` (newline-delimited JSON, see
 `src/monitor.rs`); `mousetouch events` prints it in a terminal.
