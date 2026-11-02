@@ -138,6 +138,7 @@ def apply_theme(theme: str) -> None:
 # Translations: CATALOG["xx"] = {"English source": "translation", ...}
 
 CATALOG["es"] = {
+    "Acceleration": "Aceleración", "Extra distance for fast flicks on top of Speed; 0 = off": "Distancia extra en los deslizamientos rápidos, además de Velocidad; 0 = apagada", "Momentum": "Inercia", "Keep scrolling after the finger lifts, slowing down like macOS": "Seguir desplazando al levantar el dedo, frenando como en macOS", "Momentum decay": "Frenado de la inercia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocidad que se conserva cada milisegundo; 0.998 es el valor de Apple, menos para parar antes",
     "Swipe": "Deslizar", "Tap": "Toque", "Double tap": "Doble toque",
     "Left": "Izquierda", "Right": "Derecha", "Up": "Arriba", "Down": "Abajo",
     "Keyboard shortcut": "Atajo de teclado", "Toggle two shortcuts": "Alternar dos atajos", "Cycle through shortcuts": "Ciclar entre atajos",
@@ -212,6 +213,7 @@ CATALOG["es"] = {
 }
 
 CATALOG["fr"] = {
+    "Acceleration": "Accélération", "Extra distance for fast flicks on top of Speed; 0 = off": "Distance supplémentaire pour les gestes rapides, en plus de Vitesse ; 0 = désactivée", "Momentum": "Inertie", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuer à défiler après avoir levé le doigt, en ralentissant comme macOS", "Momentum decay": "Décroissance de l'inertie", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Vitesse conservée chaque milliseconde ; 0.998 est la valeur d'Apple, plus bas s'arrête plus tôt",
     "Swipe": "Balayage", "Tap": "Tapotement", "Double tap": "Double tapotement",
     "Left": "Gauche", "Right": "Droite", "Up": "Haut", "Down": "Bas",
     "Keyboard shortcut": "Raccourci clavier", "Toggle two shortcuts": "Basculer entre deux raccourcis", "Cycle through shortcuts": "Cycler entre des raccourcis",
@@ -286,6 +288,7 @@ CATALOG["fr"] = {
 }
 
 CATALOG["de"] = {
+    "Acceleration": "Beschleunigung", "Extra distance for fast flicks on top of Speed; 0 = off": "Zusätzlicher Weg bei schnellen Wischern, zusätzlich zur Geschwindigkeit; 0 = aus", "Momentum": "Schwung", "Keep scrolling after the finger lifts, slowing down like macOS": "Nach dem Abheben des Fingers weiterscrollen und wie macOS ausrollen", "Momentum decay": "Abklingen des Schwungs", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Pro Millisekunde behaltene Geschwindigkeit; 0.998 ist Apples Wert, niedriger stoppt früher",
     "Swipe": "Wischen", "Tap": "Tipp", "Double tap": "Doppeltipp",
     "Left": "Links", "Right": "Rechts", "Up": "Oben", "Down": "Unten",
     "Keyboard shortcut": "Tastenkürzel", "Toggle two shortcuts": "Zwischen zwei Kürzeln umschalten", "Cycle through shortcuts": "Kürzel durchlaufen",
@@ -360,6 +363,7 @@ CATALOG["de"] = {
 }
 
 CATALOG["it"] = {
+    "Acceleration": "Accelerazione", "Extra distance for fast flicks on top of Speed; 0 = off": "Distanza extra per i gesti rapidi, oltre a Velocità; 0 = disattivata", "Momentum": "Inerzia", "Keep scrolling after the finger lifts, slowing down like macOS": "Continua a scorrere quando sollevi il dito, rallentando come macOS", "Momentum decay": "Decadimento dell'inerzia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocità mantenuta ogni millisecondo; 0.998 è il valore di Apple, più basso si ferma prima",
     "Swipe": "Scorrimento", "Tap": "Tocco", "Double tap": "Doppio tocco",
     "Left": "Sinistra", "Right": "Destra", "Up": "Su", "Down": "Giù",
     "Keyboard shortcut": "Scorciatoia da tastiera", "Toggle two shortcuts": "Alterna due scorciatoie", "Cycle through shortcuts": "Cicla tra scorciatoie",
@@ -434,6 +438,7 @@ CATALOG["it"] = {
 }
 
 CATALOG["pt"] = {
+    "Acceleration": "Aceleração", "Extra distance for fast flicks on top of Speed; 0 = off": "Distância extra nos deslizes rápidos, além de Velocidade; 0 = desligada", "Momentum": "Inércia", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuar a rolar ao levantar o dedo, desacelerando como no macOS", "Momentum decay": "Decaimento da inércia", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Velocidade mantida a cada milissegundo; 0.998 é o valor da Apple, menor para mais cedo",
     "Swipe": "Deslizar", "Tap": "Toque", "Double tap": "Toque duplo",
     "Left": "Esquerda", "Right": "Direita", "Up": "Cima", "Down": "Baixo",
     "Keyboard shortcut": "Atalho de teclado", "Toggle two shortcuts": "Alternar dois atalhos", "Cycle through shortcuts": "Ciclar entre atalhos",
@@ -508,6 +513,7 @@ CATALOG["pt"] = {
 }
 
 CATALOG["nl"] = {
+    "Acceleration": "Versnelling", "Extra distance for fast flicks on top of Speed; 0 = off": "Extra afstand bij snelle veegbewegingen, bovenop Snelheid; 0 = uit", "Momentum": "Uitrollen", "Keep scrolling after the finger lifts, slowing down like macOS": "Blijf scrollen nadat de vinger loskomt, afremmend zoals macOS", "Momentum decay": "Afname van het uitrollen", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Behouden snelheid per milliseconde; 0.998 is Apples waarde, lager stopt eerder",
     "Swipe": "Vegen", "Tap": "Tik", "Double tap": "Dubbele tik",
     "Left": "Links", "Right": "Rechts", "Up": "Omhoog", "Down": "Omlaag",
     "Keyboard shortcut": "Sneltoets", "Toggle two shortcuts": "Tussen twee sneltoetsen schakelen", "Cycle through shortcuts": "Door sneltoetsen heen lopen",
@@ -582,6 +588,7 @@ CATALOG["nl"] = {
 }
 
 CATALOG["sv"] = {
+    "Acceleration": "Acceleration", "Extra distance for fast flicks on top of Speed; 0 = off": "Extra sträcka vid snabba svep, utöver Hastighet; 0 = av", "Momentum": "Rörelsemängd", "Keep scrolling after the finger lifts, slowing down like macOS": "Fortsätt rulla när fingret lyfts och sakta ner som macOS", "Momentum decay": "Avmattning", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Hastighet som behålls varje millisekund; 0.998 är Apples värde, lägre stannar tidigare",
     "Swipe": "Svep", "Tap": "Tryck", "Double tap": "Dubbeltryck",
     "Left": "Vänster", "Right": "Höger", "Up": "Upp", "Down": "Ner",
     "Keyboard shortcut": "Kortkommando", "Toggle two shortcuts": "Växla mellan två kortkommandon", "Cycle through shortcuts": "Stega genom kortkommandon",
@@ -656,6 +663,7 @@ CATALOG["sv"] = {
 }
 
 CATALOG["pl"] = {
+    "Acceleration": "Przyspieszenie", "Extra distance for fast flicks on top of Speed; 0 = off": "Dodatkowa odległość przy szybkich ruchach, oprócz Prędkości; 0 = wył.", "Momentum": "Rozpęd", "Keep scrolling after the finger lifts, slowing down like macOS": "Przewijaj dalej po uniesieniu palca, zwalniając jak w macOS", "Momentum decay": "Wygaszanie rozpędu", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Prędkość zachowana co milisekundę; 0.998 to wartość Apple, mniej zatrzymuje wcześniej",
     "Swipe": "Przesunięcie", "Tap": "Stuknięcie", "Double tap": "Podwójne stuknięcie",
     "Left": "W lewo", "Right": "W prawo", "Up": "W górę", "Down": "W dół",
     "Keyboard shortcut": "Skrót klawiszowy", "Toggle two shortcuts": "Przełączaj dwa skróty", "Cycle through shortcuts": "Przechodź przez skróty",
@@ -730,6 +738,7 @@ CATALOG["pl"] = {
 }
 
 CATALOG["cs"] = {
+    "Acceleration": "Zrychlení", "Extra distance for fast flicks on top of Speed; 0 = off": "Delší posun při rychlých švihnutích, nad rámec Rychlosti; 0 = vypnuto", "Momentum": "Setrvačnost", "Keep scrolling after the finger lifts, slowing down like macOS": "Po zvednutí prstu dál posouvat a zpomalovat jako macOS", "Momentum decay": "Útlum setrvačnosti", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Rychlost zachovaná každou milisekundu; 0.998 je hodnota Apple, nižší zastaví dřív",
     "Swipe": "Přejetí", "Tap": "Klepnutí", "Double tap": "Dvojité klepnutí",
     "Left": "Vlevo", "Right": "Vpravo", "Up": "Nahoru", "Down": "Dolů",
     "Keyboard shortcut": "Klávesová zkratka", "Toggle two shortcuts": "Přepínat dvě zkratky", "Cycle through shortcuts": "Procházet zkratky",
@@ -804,6 +813,7 @@ CATALOG["cs"] = {
 }
 
 CATALOG["ro"] = {
+    "Acceleration": "Accelerare", "Extra distance for fast flicks on top of Speed; 0 = off": "Distanță suplimentară la mișcările rapide, peste Viteză; 0 = oprită", "Momentum": "Inerție", "Keep scrolling after the finger lifts, slowing down like macOS": "Continuă derularea după ridicarea degetului, încetinind ca pe macOS", "Momentum decay": "Atenuarea inerției", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Viteza păstrată la fiecare milisecundă; 0.998 este valoarea Apple, mai mic se oprește mai repede",
     "Swipe": "Glisare", "Tap": "Atingere", "Double tap": "Atingere dublă",
     "Left": "Stânga", "Right": "Dreapta", "Up": "Sus", "Down": "Jos",
     "Keyboard shortcut": "Scurtătură de tastatură", "Toggle two shortcuts": "Comută între două scurtături", "Cycle through shortcuts": "Parcurge scurtăturile",
@@ -878,6 +888,7 @@ CATALOG["ro"] = {
 }
 
 CATALOG["el"] = {
+    "Acceleration": "Επιτάχυνση", "Extra distance for fast flicks on top of Speed; 0 = off": "Επιπλέον απόσταση στις γρήγορες κινήσεις, πέρα από την Ταχύτητα· 0 = ανενεργή", "Momentum": "Αδράνεια", "Keep scrolling after the finger lifts, slowing down like macOS": "Συνέχεια κύλισης αφού σηκωθεί το δάχτυλο, με επιβράδυνση όπως στο macOS", "Momentum decay": "Απόσβεση αδράνειας", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Ταχύτητα που διατηρείται κάθε χιλιοστό του δευτερολέπτου· 0.998 είναι η τιμή της Apple, μικρότερη σταματά νωρίτερα",
     "Swipe": "Σάρωση", "Tap": "Πάτημα", "Double tap": "Διπλό πάτημα",
     "Left": "Αριστερά", "Right": "Δεξιά", "Up": "Πάνω", "Down": "Κάτω",
     "Keyboard shortcut": "Συντόμευση πληκτρολογίου", "Toggle two shortcuts": "Εναλλαγή δύο συντομεύσεων", "Cycle through shortcuts": "Κυκλική εναλλαγή συντομεύσεων",
@@ -952,6 +963,7 @@ CATALOG["el"] = {
 }
 
 CATALOG["uk"] = {
+    "Acceleration": "Прискорення", "Extra distance for fast flicks on top of Speed; 0 = off": "Додаткова відстань для швидких рухів, окрім Швидкості; 0 = вимкнено", "Momentum": "Інерція", "Keep scrolling after the finger lifts, slowing down like macOS": "Продовжувати прокручування після відриву пальця, сповільнюючись як у macOS", "Momentum decay": "Затухання інерції", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Швидкість, що зберігається кожну мілісекунду; 0.998 — значення Apple, менше зупиняється раніше",
     "Swipe": "Гортання", "Tap": "Торкання", "Double tap": "Подвійне торкання",
     "Left": "Вліво", "Right": "Вправо", "Up": "Вгору", "Down": "Вниз",
     "Keyboard shortcut": "Комбінація клавіш", "Toggle two shortcuts": "Перемикати дві комбінації", "Cycle through shortcuts": "Перебирати комбінації",
@@ -1026,6 +1038,7 @@ CATALOG["uk"] = {
 }
 
 CATALOG["ru"] = {
+    "Acceleration": "Ускорение", "Extra distance for fast flicks on top of Speed; 0 = off": "Дополнительное расстояние при быстрых движениях, помимо Скорости; 0 = выключено", "Momentum": "Инерция", "Keep scrolling after the finger lifts, slowing down like macOS": "Продолжать прокрутку после отрыва пальца, замедляясь как в macOS", "Momentum decay": "Затухание инерции", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Скорость, сохраняемая каждую миллисекунду; 0.998 — значение Apple, меньше останавливается раньше",
     "Swipe": "Свайп", "Tap": "Касание", "Double tap": "Двойное касание",
     "Left": "Влево", "Right": "Вправо", "Up": "Вверх", "Down": "Вниз",
     "Keyboard shortcut": "Сочетание клавиш", "Toggle two shortcuts": "Переключать два сочетания", "Cycle through shortcuts": "Перебирать сочетания",
@@ -1100,6 +1113,7 @@ CATALOG["ru"] = {
 }
 
 CATALOG["tr"] = {
+    "Acceleration": "Hızlanma", "Extra distance for fast flicks on top of Speed; 0 = off": "Hızlı kaydırmalarda Hız'a ek mesafe; 0 = kapalı", "Momentum": "Momentum", "Keep scrolling after the finger lifts, slowing down like macOS": "Parmak kalktıktan sonra macOS gibi yavaşlayarak kaydırmaya devam et", "Momentum decay": "Momentum sönümü", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Her milisaniyede korunan hız; 0.998 Apple'ın değeri, daha düşüğü daha erken durur",
     "Swipe": "Kaydırma", "Tap": "Dokunma", "Double tap": "Çift dokunma",
     "Left": "Sol", "Right": "Sağ", "Up": "Yukarı", "Down": "Aşağı",
     "Keyboard shortcut": "Klavye kısayolu", "Toggle two shortcuts": "İki kısayol arasında geçiş", "Cycle through shortcuts": "Kısayollar arasında dön",
@@ -1174,6 +1188,7 @@ CATALOG["tr"] = {
 }
 
 CATALOG["ar"] = {
+    "Acceleration": "التسارع", "Extra distance for fast flicks on top of Speed; 0 = off": "مسافة إضافية عند التمرير السريع فوق السرعة؛ 0 = متوقف", "Momentum": "القصور الذاتي", "Keep scrolling after the finger lifts, slowing down like macOS": "متابعة التمرير بعد رفع الإصبع مع التباطؤ كما في macOS", "Momentum decay": "تلاشي القصور الذاتي", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "السرعة المحتفظ بها كل مللي ثانية؛ 0.998 هي قيمة Apple، والأقل يتوقف أبكر",
     "Swipe": "تمرير", "Tap": "نقرة", "Double tap": "نقرة مزدوجة",
     "Left": "يسار", "Right": "يمين", "Up": "أعلى", "Down": "أسفل",
     "Keyboard shortcut": "اختصار لوحة المفاتيح", "Toggle two shortcuts": "التبديل بين اختصارين", "Cycle through shortcuts": "التنقل الدوري بين الاختصارات",
@@ -1248,6 +1263,7 @@ CATALOG["ar"] = {
 }
 
 CATALOG["hi"] = {
+    "Acceleration": "त्वरण", "Extra distance for fast flicks on top of Speed; 0 = off": "तेज़ फ़्लिक पर गति के ऊपर अतिरिक्त दूरी; 0 = बंद", "Momentum": "गतिबल", "Keep scrolling after the finger lifts, slowing down like macOS": "उंगली उठाने के बाद भी स्क्रॉल जारी रहे, macOS की तरह धीमा होते हुए", "Momentum decay": "गतिबल का क्षय", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "हर मिलीसेकंड में बनी रहने वाली गति; 0.998 Apple का मान है, कम होने पर जल्दी रुकता है",
     "Swipe": "स्वाइप", "Tap": "टैप", "Double tap": "डबल टैप",
     "Left": "बाएँ", "Right": "दाएँ", "Up": "ऊपर", "Down": "नीचे",
     "Keyboard shortcut": "कीबोर्ड शॉर्टकट", "Toggle two shortcuts": "दो शॉर्टकट के बीच टॉगल", "Cycle through shortcuts": "शॉर्टकट में साइकल",
@@ -1322,6 +1338,7 @@ CATALOG["hi"] = {
 }
 
 CATALOG["zh"] = {
+    "Acceleration": "加速", "Extra distance for fast flicks on top of Speed; 0 = off": "快速滑动时在速度之上额外滚动的距离；0 = 关闭", "Momentum": "惯性", "Keep scrolling after the finger lifts, slowing down like macOS": "手指抬起后继续滚动，像 macOS 一样逐渐减速", "Momentum decay": "惯性衰减", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "每毫秒保留的速度；0.998 为 Apple 的数值，越小停得越快",
     "Swipe": "滑动", "Tap": "轻点", "Double tap": "双击",
     "Left": "左", "Right": "右", "Up": "上", "Down": "下",
     "Keyboard shortcut": "键盘快捷键", "Toggle two shortcuts": "在两个快捷键间切换", "Cycle through shortcuts": "循环执行快捷键",
@@ -1396,6 +1413,7 @@ CATALOG["zh"] = {
 }
 
 CATALOG["ja"] = {
+    "Acceleration": "加速", "Extra distance for fast flicks on top of Speed; 0 = off": "速いフリック時に速度に加えて進む距離。0 = オフ", "Momentum": "慣性", "Keep scrolling after the finger lifts, slowing down like macOS": "指を離した後も macOS のように減速しながらスクロールを続ける", "Momentum decay": "慣性の減衰", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "1 ミリ秒ごとに保たれる速度。0.998 が Apple の値、小さいほど早く止まる",
     "Swipe": "スワイプ", "Tap": "タップ", "Double tap": "ダブルタップ",
     "Left": "左", "Right": "右", "Up": "上", "Down": "下",
     "Keyboard shortcut": "キーボードショートカット", "Toggle two shortcuts": "2 つのショートカットを切り替え", "Cycle through shortcuts": "ショートカットを順に実行",
@@ -1470,6 +1488,7 @@ CATALOG["ja"] = {
 }
 
 CATALOG["ko"] = {
+    "Acceleration": "가속", "Extra distance for fast flicks on top of Speed; 0 = off": "빠른 플릭 시 속도에 더해지는 추가 거리; 0 = 끔", "Momentum": "관성", "Keep scrolling after the finger lifts, slowing down like macOS": "손가락을 뗀 뒤에도 macOS처럼 감속하며 계속 스크롤", "Momentum decay": "관성 감쇠", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "매 밀리초마다 유지되는 속도; 0.998이 Apple 값, 낮을수록 빨리 멈춤",
     "Swipe": "스와이프", "Tap": "탭", "Double tap": "두 번 탭",
     "Left": "왼쪽", "Right": "오른쪽", "Up": "위", "Down": "아래",
     "Keyboard shortcut": "키보드 단축키", "Toggle two shortcuts": "두 단축키 전환", "Cycle through shortcuts": "단축키 순환",
@@ -1544,6 +1563,7 @@ CATALOG["ko"] = {
 }
 
 CATALOG["vi"] = {
+    "Acceleration": "Tăng tốc", "Extra distance for fast flicks on top of Speed; 0 = off": "Quãng cuộn thêm khi vuốt nhanh, ngoài Tốc độ; 0 = tắt", "Momentum": "Quán tính", "Keep scrolling after the finger lifts, slowing down like macOS": "Tiếp tục cuộn sau khi nhấc ngón tay, chậm dần như macOS", "Momentum decay": "Suy giảm quán tính", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Tốc độ giữ lại mỗi mili giây; 0.998 là giá trị của Apple, thấp hơn thì dừng sớm hơn",
     "Swipe": "Vuốt", "Tap": "Chạm", "Double tap": "Chạm đôi",
     "Left": "Trái", "Right": "Phải", "Up": "Lên", "Down": "Xuống",
     "Keyboard shortcut": "Phím tắt", "Toggle two shortcuts": "Chuyển đổi giữa hai phím tắt", "Cycle through shortcuts": "Xoay vòng các phím tắt",
@@ -1618,6 +1638,7 @@ CATALOG["vi"] = {
 }
 
 CATALOG["id"] = {
+    "Acceleration": "Akselerasi", "Extra distance for fast flicks on top of Speed; 0 = off": "Jarak tambahan saat jentikan cepat, di atas Kecepatan; 0 = mati", "Momentum": "Momentum", "Keep scrolling after the finger lifts, slowing down like macOS": "Terus menggulir setelah jari diangkat, melambat seperti macOS", "Momentum decay": "Peluruhan momentum", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "Kecepatan yang dipertahankan tiap milidetik; 0.998 nilai Apple, lebih rendah berhenti lebih cepat",
     "Swipe": "Geser", "Tap": "Ketuk", "Double tap": "Ketuk dua kali",
     "Left": "Kiri", "Right": "Kanan", "Up": "Atas", "Down": "Bawah",
     "Keyboard shortcut": "Pintasan keyboard", "Toggle two shortcuts": "Bergantian dua pintasan", "Cycle through shortcuts": "Putar beberapa pintasan",
@@ -1692,6 +1713,7 @@ CATALOG["id"] = {
 }
 
 CATALOG["th"] = {
+    "Acceleration": "ความเร่ง", "Extra distance for fast flicks on top of Speed; 0 = off": "ระยะเพิ่มเติมเมื่อปัดเร็ว นอกเหนือจากความเร็ว; 0 = ปิด", "Momentum": "แรงเฉื่อย", "Keep scrolling after the finger lifts, slowing down like macOS": "เลื่อนต่อหลังยกนิ้ว โดยค่อยๆ ช้าลงแบบ macOS", "Momentum decay": "การลดลงของแรงเฉื่อย", "Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner": "ความเร็วที่คงไว้ทุกมิลลิวินาที; 0.998 คือค่าของ Apple ยิ่งต่ำยิ่งหยุดเร็ว",
     "Swipe": "ปัด", "Tap": "แตะ", "Double tap": "แตะสองครั้ง",
     "Left": "ซ้าย", "Right": "ขวา", "Up": "ขึ้น", "Down": "ลง",
     "Keyboard shortcut": "คีย์ลัด", "Toggle two shortcuts": "สลับระหว่างคีย์ลัดสองชุด", "Cycle through shortcuts": "วนรอบคีย์ลัด",
@@ -1778,7 +1800,8 @@ DEFAULTS = {
         # compositor_natural_scroll absent = auto
     },
     "pinch": {"enabled": True, "fingers": 2, "sensitivity": 1.5, "activation_mm": 3.0},
-    "scroll": {"direction_debounce": True, "debounce_units": 120, "mode": "notches", "speed": 1.0},
+    "scroll": {"direction_debounce": True, "debounce_units": 40, "mode": "smooth", "speed": 1.0,
+               "acceleration": 0.5, "momentum": True, "momentum_decay": 0.998},
     "taps": {"tap_max_ms": 400, "tap_max_mm": 15.0, "tap_max_lift_speed": 80.0, "double_tap_ms": 500},
     "gesture": [
         {"kind": "double_tap", "fingers": 2, "enabled": True, "action": {"type": "key", "combo": "super+w"}},
@@ -2690,10 +2713,16 @@ class Window(Adw.ApplicationWindow):
         grp.add(spin_row(_("Movement before scrolling starts"), _("In wheel units, 120 = one notch; raise if a scroll still starts backwards, lower if it starts late"),
                          sc["debounce_units"], 12, 600, 12, 0, lambda v: self._set("scroll", "debounce_units", int(v))))
         grp.add(combo_row(_("Mode"), _("Whole notches is the classic wheel feel; smooth is finer but faster in terminals"),
-                          [("notches", _("Whole notches")), ("smooth", _("Smooth steps"))], sc.get("mode", "notches"),
+                          [("notches", _("Whole notches")), ("smooth", _("Smooth steps"))], sc.get("mode", "smooth"),
                           lambda v: self._set("scroll", "mode", v)))
         grp.add(spin_row(_("Speed"), _("Multiplier on scroll distance"), sc.get("speed", 1.0), 0.2, 4.0, 0.1, 1,
                          lambda v: self._set("scroll", "speed", v)))
+        grp.add(spin_row(_("Acceleration"), _("Extra distance for fast flicks on top of Speed; 0 = off"), sc.get("acceleration", 0.5), 0.0, 4.0, 0.1, 1,
+                         lambda v: self._set("scroll", "acceleration", v)))
+        grp.add(switch_row(_("Momentum"), _("Keep scrolling after the finger lifts, slowing down like macOS"), sc.get("momentum", True),
+                           lambda v: self._set("scroll", "momentum", v)))
+        grp.add(spin_row(_("Momentum decay"), _("Speed kept each millisecond; 0.998 is Apple's rate, lower stops sooner"), sc.get("momentum_decay", 0.998), 0.980, 0.999, 0.001, 3,
+                         lambda v: self._set("scroll", "momentum_decay", v)))
         page.add(grp)
 
         self.gest_group = Adw.PreferencesGroup(title=_("Gestures"), description=_("Taps and quick swipes that trigger an action once, optionally only in one app."))
