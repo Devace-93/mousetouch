@@ -280,6 +280,11 @@ Known cases, in the order they tend to happen to someone coming from a Mac:
   the Mac's Bluetooth off), unplug the USB-C cable (over the cable it works
   as a USB mouse and turns Bluetooth off), then switch the mouse off, wait a
   few seconds and switch it on; the LED blinks while it looks for a host.
+- *The desktop's Bluetooth panel does not list the mouse at all*, though it is
+  switched on: some panels hide devices they cannot classify. **Nearby mice**
+  in the settings app talks to BlueZ directly, lists every mouse that is
+  advertising and pairs it from there (a second Magic Mouse 2 that COSMIC's
+  panel never showed paired fine this way).
 - *The mouse pairs but never connects* (typical right after a Mac, even when
   it was forgotten on both sides): BlueZ keeps a record that is *paired* but
   not *bonded* and rejects the mouse (`journalctl -u bluetooth` says
@@ -326,6 +331,26 @@ Known cases, in the order they tend to happen to someone coming from a Mac:
   parity).
 - *`app` rules never fire*: run with `-v` and look for "focus tracking via";
   the compositor must expose one of the toplevel protocols listed above.
+
+## Tested on
+
+Mice and systems MouseTouch has actually been run on; the full table with
+firmware, adapters and install methods is at <https://mouse.3m4.net/tested/>.
+Rows marked *reported* come from users and have not been reproduced yet.
+
+| Mouse                              | Ids         | Driver                          | Status   | Notes |
+|------------------------------------|-------------|---------------------------------|----------|-------|
+| Apple Magic Mouse (USB-C, 2024)    | `004c:0323` | `hid-magicmouse` (Linux 6.16+)  | works    | Renamed on a Mac; paired again from *Nearby mice* after the desktop panel left it half paired |
+| Apple Magic Mouse 2 (Lightning)    | `004c:0269` | `hid-magicmouse` (Linux 5.15+)  | works    | Not listed by the desktop's Bluetooth panel; *Nearby mice* found and paired it. Both mice work at once |
+| Apple Magic Mouse 2 (Lightning)    | `004c:0269` | `hid-magicmouse`                | reported | Zorin OS on a 2017 iMac, issue #20; detection by id shipped in 0.1.5, confirmation pending |
+
+| System                                   | Desktop · session   | Kernel · BlueZ      | Bluetooth · machine                                  | Install                                | Status   |
+|------------------------------------------|---------------------|---------------------|------------------------------------------------------|----------------------------------------|----------|
+| Pop!_OS 24.04 LTS                        | COSMIC · Wayland    | 6.17.9 · 5.72       | Qualcomm QCA61x4 (USB) · Lenovo IdeaPad Gaming 3     | one-line (.deb), Homebrew, `install.sh` | works    |
+| Zorin OS 17                              | GNOME · Wayland     | —                   | built-in · iMac (2017)                               | one-line (.deb)                        | reported |
+
+Tested somewhere else? Open an issue with the mouse ids (`mousetouch probe`),
+distro, desktop, `uname -r`, `bluetoothctl --version` and how you installed.
 
 ## Development
 

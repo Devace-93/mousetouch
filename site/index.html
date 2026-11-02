@@ -29,179 +29,7 @@
     if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
   } catch (e) {}
 </script>
-<style>
-  :root {
-    --bg: #fafafb;
-    --bg-elev: #ffffff;
-    --surface-hover: #f0f0f5;
-    --fg: #17171c;
-    --fg-muted: #5c5c68;
-    --line: #e3e3e9;
-    --accent: #1f6fe0;
-    --accent-fg: #ffffff;
-    --code-bg: #15161b;
-    --code-fg: #e9e9ef;
-    --ok: #1d9a5b;
-    --max: 1040px;
-    color-scheme: light;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0f1014;
-      --bg-elev: #17181e;
-      --surface-hover: #1e2028;
-      --fg: #ececf1;
-      --fg-muted: #a0a0ad;
-      --line: #2a2b33;
-      --accent: #5b9bff;
-      --accent-fg: #0b1220;
-      --code-bg: #07080b;
-      --code-fg: #e7e7ee;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #0f1014; --bg-elev: #17181e; --surface-hover: #1e2028; --fg: #ececf1; --fg-muted: #a0a0ad;
-    --line: #2a2b33; --accent: #5b9bff; --accent-fg: #0b1220;
-    --code-bg: #07080b; --code-fg: #e7e7ee;
-    color-scheme: dark;
-  }
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0; background: var(--bg); color: var(--fg);
-    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Cantarell, "Noto Sans", sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 16px; }
-  header.top {
-    position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px);
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
-    border-bottom: 1px solid var(--line);
-  }
-  header.top .wrap { display: flex; align-items: center; gap: 16px; height: 56px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--fg); }
-  .brand svg { width: 26px; height: 26px; }
-  nav { margin-inline-start: auto; display: flex; gap: 18px; font-size: 14px; align-items: center; }
-  nav a { color: var(--fg-muted); }
-  nav a:hover { color: var(--fg); text-decoration: none; }
-  .top-controls { display: flex; align-items: center; gap: 8px; }
-  @media (max-width: 760px) { nav .hide-sm { display: none; } }
-
-  /* Theme toggle + language selector, same look as the other 3m4.net pages. */
-  #theme-toggle {
-    display: flex; align-items: center; background: var(--bg-elev); border: 1px solid var(--line);
-    color: var(--fg); border-radius: 999px; padding: 6px 11px; font-size: 0.85rem; line-height: 1.4;
-    cursor: pointer; font-family: inherit;
-  }
-  #theme-toggle:hover { background: var(--surface-hover); border-color: var(--accent); }
-  .lang-sel { position: relative; }
-  .lang-sel > button {
-    display: flex; align-items: center; gap: 7px;
-    background: var(--bg-elev); border: 1px solid var(--line);
-    color: var(--fg); border-radius: 999px; padding: 6px 13px;
-    font-weight: 600; cursor: pointer; font-size: 0.85rem; font-family: inherit;
-  }
-  .lang-sel > button:hover { background: var(--surface-hover); border-color: var(--accent); }
-  .lang-sel > button .caret { opacity: 0.6; font-size: 0.8em; }
-  @media (max-width: 640px) { .lang-sel > button .lname { display: none; } }
-  .lang-sel .panel {
-    position: absolute; top: calc(100% + 8px); inset-inline-end: 0; z-index: 60;
-    background: var(--bg-elev); border: 1px solid var(--line); border-radius: 12px;
-    padding: 8px; min-width: 230px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  }
-  .lang-sel .panel input {
-    width: 100%; box-sizing: border-box; margin-bottom: 8px;
-    background: var(--bg); border: 1px solid var(--line);
-    border-radius: 8px; color: var(--fg); padding: 6px 10px;
-    font-size: 0.92em; font-family: inherit;
-  }
-  .lang-sel .panel input::placeholder { color: var(--fg-muted); }
-  .lang-sel .list { max-height: 288px; overflow-y: auto; }
-  .lang-sel .list button {
-    display: flex; align-items: center; gap: 9px; width: 100%;
-    background: none; border: none; color: var(--fg); cursor: pointer;
-    padding: 7px 10px; border-radius: 8px; font-size: 0.92em; text-align: start;
-    font-family: inherit;
-  }
-  .lang-sel .list button:hover { background: var(--surface-hover); }
-  .lang-sel .list button.active { background: color-mix(in srgb, var(--accent) 22%, transparent); }
-
-  .hero { padding-top: 72px; padding-bottom: 40px; }  /* keep .wrap's side gutter */
-  .hero h1 { font-size: clamp(32px, 5.5vw, 54px); line-height: 1.08; margin: 0 0 16px; letter-spacing: -0.02em; }
-  .hero h1 span.accent { color: var(--accent); }
-  .hero p.lead { font-size: 19px; color: var(--fg-muted); max-width: 640px; margin: 0 0 28px; }
-  .cta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 10px;
-    font-weight: 600; border: 1px solid var(--line); background: var(--bg-elev); color: var(--fg);
-  }
-  .btn:hover { text-decoration: none; border-color: var(--fg-muted); }
-  .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent); }
-  .btn.primary:hover { filter: brightness(1.08); }
-  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
-  .pill { font-size: 13px; color: var(--fg-muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 11px; background: var(--bg-elev); }
-
-  section { padding: 44px 0; border-top: 1px solid var(--line); }
-  h2 { font-size: 26px; margin: 0 0 8px; letter-spacing: -0.01em; }
-  .sub { color: var(--fg-muted); margin: 0 0 24px; max-width: 680px; }
-  h3 { font-size: 18px; margin: 28px 0 10px; }
-
-  .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-  .card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
-  .card .g { font-size: 13px; color: var(--fg-muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
-  .card .r { font-weight: 600; }
-  .card .n { color: var(--fg-muted); font-size: 14px; margin-top: 4px; }
-
-  pre {
-    position: relative; margin: 0; background: var(--code-bg); color: var(--code-fg);
-    border-radius: 12px; padding: 14px 52px 14px 16px; overflow-x: auto; direction: ltr; text-align: left;
-    font: 13.5px/1.55 ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  }
-  pre + pre, .step + .step { margin-top: 10px; }
-  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; direction: ltr; unicode-bidi: embed; }
-  p code, li code, td code, div code { background: color-mix(in srgb, var(--fg) 8%, transparent); padding: 1px 5px; border-radius: 5px; font-size: 0.92em; }
-  .copy {
-    position: absolute; top: 8px; right: 8px; font: 12px system-ui, sans-serif; cursor: pointer;
-    background: rgba(255,255,255,.08); color: var(--code-fg); border: 1px solid rgba(255,255,255,.14);
-    border-radius: 7px; padding: 4px 9px;
-  }
-  .copy:hover { background: rgba(255,255,255,.16); }
-  .copy.done { color: #7ee2a8; border-color: #7ee2a8; }
-
-  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 18px 0 12px; }
-  .tab {
-    border: 1px solid var(--line); background: var(--bg-elev); color: var(--fg-muted);
-    border-radius: 999px; padding: 6px 13px; font-size: 14px; cursor: pointer; font-family: inherit;
-  }
-  .tab[aria-selected="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-  .panel-tab { display: none; }
-  .panel-tab[data-active] { display: block; }
-  .panel-tab p { margin: 8px 0 10px; color: var(--fg-muted); font-size: 15px; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 15px; }
-  th, td { text-align: start; padding: 10px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { color: var(--fg-muted); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; }
-  .tbl { overflow-x: auto; }
-
-  .two { display: grid; gap: 28px; grid-template-columns: 1.15fr 1fr; align-items: start; }
-  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } }
-  ol.steps { padding-inline-start: 20px; margin: 0; }
-  ol.steps li { margin-bottom: 10px; }
-  ul.plain { padding-inline-start: 20px; margin: 0; }
-  ul.plain li { margin-bottom: 6px; }
-
-  .note { border-inline-start: 3px solid var(--accent); padding: 8px 14px; background: var(--bg-elev); border-radius: 10px; color: var(--fg-muted); font-size: 15px; margin-top: 16px; }
-
-  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--fg-muted); font-size: 14px; }
-  footer .links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0 0 12px; }
-  footer .links a { color: var(--fg-muted); text-decoration: underline; }
-  footer .links a:hover { color: var(--fg); }
-  footer p { margin: 6px 0; }
-</style>
+<link rel="stylesheet" href="style.css">
 <!-- retro feedback widget (bug reports, feedback, feature requests). The project key is public by design; it follows 3m4.theme / 3m4.lang. -->
 <script src="https://retro.3m4.net/widget.js" data-project-key="retro_pub_xw11No-PwNCvsempoEy8k9b8d0dMfvbA" defer></script>
 <!-- metrics web analytics (page views, visitors, referrers, devices; cookie-less). The project key is public by design. -->
@@ -222,6 +50,7 @@
       <a href="#install" class="hide-sm" data-i18n="navInstall">Install</a>
       <a href="#settings" class="hide-sm" data-i18n="navSettings">Settings app</a>
       <a href="#help" class="hide-sm" data-i18n="navHelp">Help</a>
+      <a href="tested/" class="hide-sm" data-i18n="navTested">Tested on</a>
       <a href="https://github.com/Devace-93/mousetouch" class="hide-sm">GitHub</a>
       <div class="top-controls">
         <button id="theme-toggle" type="button" aria-label="Theme">🌙</button>
@@ -424,8 +253,10 @@ journalctl -u bluetooth          # what bluetoothd thinks of the mouse</code></p
           <tr><td data-i18n="s7">Mouse missing from the Bluetooth list</td><td data-i18n-html="c7">It only advertises when no other computer holds it: forget it on the Mac, unplug the cable, switch it off and on.</td></tr>
           <tr><td data-i18n="s8">USB-C mouse moves the pointer, no gestures</td><td data-i18n-html="c8">That model needs the in-tree driver of Linux 6.16+; a DKMS <code>hid-magicmouse</code> shadows it. Remove it (see the DKMS note).</td></tr>
           <tr><td data-i18n="s9">Scroll choppy, or too fast in terminals</td><td data-i18n-html="c9">Settings → Scrolling: <em>Smooth steps</em> is the default since 0.1.6; pick <em>Whole notches</em> for the classic feel.</td></tr>
+          <tr><td data-i18n="s10">The desktop's Bluetooth panel does not list the mouse at all</td><td data-i18n-html="c10">Some panels hide it. <em>Settings → Nearby mice</em> talks to BlueZ directly, lists every mouse that is switched on and pairs it from there.</td></tr>
         </table>
       </div>
+      <p class="sub" style="margin-top:18px"><a href="tested/" data-i18n="testedLink">Mice and systems this has been tested on</a></p>
       <p class="sub" style="margin-top:18px" data-i18n-html="helpMore">More in the <a href="https://github.com/Devace-93/mousetouch#troubleshooting">README</a>, or open an <a href="https://github.com/Devace-93/mousetouch/issues">issue</a>.</p>
     </div>
   </section>
