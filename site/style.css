@@ -175,6 +175,9 @@
 #support { margin: 0 0 16px; }
 #support:empty { display: none; }
 #support .m4p { --m4p-fg: var(--accent-fg); }
+/* payments supporters list mount (pay.js data-kind="supporters"). Empty until the portal returns at least one supporter. */
+#supporters { margin: 0 0 16px; }
+#supporters:empty { display: none; }
 /* Hero CTA row: rendered, it matches the .btn size next to it. */
 #support-hero:empty { display: none; }
 #support-hero .m4p { --m4p-fg: var(--accent-fg); padding: 11px 18px; border: 1px solid transparent; border-radius: 10px; font-size: 16px; line-height: 1.55; }
