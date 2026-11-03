@@ -1,9 +1,14 @@
 name: CI
 
 on:
+  # Docs-only changes (README, landing page) have nothing to build; this also
+  # keeps the Release workflow's own README pull request, which it merges and
+  # deletes right away, from leaving a red "workflow file issue" run behind.
   pull_request:
+    paths-ignore: ["README.md", "site/**", "packaging/RELEASING.md", "tools/*.md"]
   push:
     branches: [main]
+    paths-ignore: ["README.md", "site/**", "packaging/RELEASING.md", "tools/*.md"]
 
 jobs:
   build-and-test:
