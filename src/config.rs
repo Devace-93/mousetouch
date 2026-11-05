@@ -72,8 +72,10 @@ pub struct WorkspaceSwipe {
     pub direction: Direction,
     /// Finger travel multiplier. Higher = less travel needed per workspace.
     pub sensitivity: f64,
-    /// Contacts to synthesise on the virtual touchpad (4 = COSMIC, 3 = GNOME).
-    pub synthetic_fingers: u8,
+    /// Contacts to synthesise on the virtual touchpad (4 = COSMIC/KDE,
+    /// 3 = GNOME). `None` means auto-detect from the running desktop.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub synthetic_fingers: Option<u8>,
     /// Millimetres the fingers must travel before a swipe starts.
     pub activation_mm: f64,
     /// Axis the compositor uses for workspace swipes.
@@ -90,7 +92,7 @@ impl Default for WorkspaceSwipe {
             fingers: 2,
             direction: Direction::Natural,
             sensitivity: 0.4,
-            synthetic_fingers: 4,
+            synthetic_fingers: None,
             activation_mm: 2.0,
             axis: Axis::Horizontal,
             compositor_natural_scroll: None,
@@ -222,6 +224,12 @@ pub enum SwipeDir {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Action {
+    /// Show the workspaces with the shortcut the desktop has for it (read
+    /// from the desktop's settings, follows changes).
+    Workspaces,
+    /// Show the installed applications (COSMIC App Library, GNOME app grid,
+    /// KDE launcher), same way.
+    Apps,
     /// Key combination, e.g. "super+w", "ctrl+alt+right". Several combos
     /// separated by commas are pressed in sequence ("ctrl+equal,ctrl+equal").
     Key { combo: String },
@@ -273,7 +281,7 @@ impl Default for Config {
                     kind: GestureKind::DoubleTap,
                     fingers: 2,
                     direction: None,
-                    action: Action::Key { combo: default_overview_combo() },
+                    action: Action::Workspaces,
                     app: None,
                     enabled: true,
                 },
@@ -281,35 +289,12 @@ impl Default for Config {
                     kind: GestureKind::Tap,
                     fingers: 3,
                     direction: None,
-                    action: Action::Key { combo: default_app_grid_combo() },
+                    action: Action::Apps,
                     app: None,
                     enabled: true,
                 },
             ],
         }
-    }
-}
-
-/// Keyboard shortcut that shows the workspaces on the current desktop.
-fn default_overview_combo() -> String {
-    match std::env::var("XDG_CURRENT_DESKTOP")
-        .unwrap_or_default()
-        .to_ascii_lowercase()
-        .as_str()
-    {
-        d if d.contains("cosmic") => "super+w".into(),
-        d if d.contains("gnome") => "super".into(),
-        d if d.contains("kde") => "super+w".into(),
-        _ => "super+w".into(),
-    }
-}
-
-/// Keyboard shortcut that shows all installed applications (COSMIC App
-/// Library, GNOME app grid, KDE launcher).
-fn default_app_grid_combo() -> String {
-    match std::env::var("XDG_CURRENT_DESKTOP").unwrap_or_default().to_ascii_lowercase().as_str() {
-        d if d.contains("kde") => "super".into(),
-        _ => "super+a".into(),
     }
 }
 
@@ -352,43 +337,22 @@ pub fn to_toml(cfg: &Config) -> Result<String> {
     ))
 }
 
-/// Resolve `compositor_natural_scroll` when it is set to auto.
-pub fn detect_compositor_natural_scroll() -> bool {
-    let desktop = std::env::var("XDG_CURRENT_DESKTOP").unwrap_or_default().to_ascii_lowercase();
-    if desktop.contains("cosmic") {
-        let home = std::env::var_os("HOME").map(PathBuf::from).unwrap_or_default();
-        let candidates = [
-            home.join(".config/cosmic/com.system76.CosmicComp/v1/input_touchpad"),
-            PathBuf::from("/usr/share/cosmic/com.system76.CosmicComp/v1/input_touchpad"),
-        ];
-        for p in candidates {
-            if let Ok(text) = fs::read_to_string(&p) {
-                // RON: `natural_scroll: Some(true)` / `natural_scroll: None`
-                let compact: String = text.chars().filter(|c| !c.is_whitespace()).collect();
-                if compact.contains("natural_scroll:Some(true)") {
-                    return true;
-                }
-                if compact.contains("natural_scroll:Some(false)") || compact.contains("natural_scroll:None") {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-    if desktop.contains("gnome") {
-        if let Ok(out) = std::process::Command::new("gsettings")
-            .args(["get", "org.gnome.desktop.peripherals.touchpad", "natural-scroll"])
-            .output()
-        {
-            return String::from_utf8_lossy(&out.stdout).trim() == "true";
-        }
-    }
-    false
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn desktop_actions_and_auto_fingers_round_trip() {
+        let text = to_toml(&Config::default()).unwrap();
+        assert!(text.contains("type = \"workspaces\""), "{text}");
+        assert!(text.contains("type = \"apps\""), "{text}");
+        assert!(!text.contains("synthetic_fingers"), "{text}");
+        let back: Config = toml::from_str(&text).unwrap();
+        assert!(matches!(back.gestures[0].action, Action::Workspaces));
+        assert_eq!(back.workspace_swipe.synthetic_fingers, None);
+        let old: Config = toml::from_str("[workspace_swipe]\nsynthetic_fingers = 3\n").unwrap();
+        assert_eq!(old.workspace_swipe.synthetic_fingers, Some(3));
+    }
 
     #[test]
     fn missing_gesture_key_means_the_defaults() {

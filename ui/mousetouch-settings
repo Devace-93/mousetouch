@@ -142,6 +142,8 @@ def apply_theme(theme: str) -> None:
 # Translations: CATALOG["xx"] = {"English source": "translation", ...}
 
 CATALOG["es"] = {
+    "Workspaces overview (auto)": "Vista de espacios de trabajo (auto)", "App library (auto)": "Biblioteca de apps (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Sigue el atajo de los ajustes de tu escritorio (ahora {combo})", "Shortcut": "Atajo",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} está instalado; esta ventana aún corre {old}.",
     "Reopen": "Reabrir",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} está instalado pero el daemon aún corre {old}.",
@@ -235,6 +237,8 @@ CATALOG["es"] = {
 }
 
 CATALOG["fr"] = {
+    "Workspaces overview (auto)": "Vue des espaces de travail (auto)", "App library (auto)": "Bibliothèque d'applications (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Suit le raccourci défini dans les réglages de votre bureau (actuellement {combo})", "Shortcut": "Raccourci",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} est installé ; cette fenêtre exécute encore {old}.",
     "Reopen": "Rouvrir",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} est installé mais le démon exécute encore {old}.",
@@ -328,6 +332,8 @@ CATALOG["fr"] = {
 }
 
 CATALOG["de"] = {
+    "Workspaces overview (auto)": "Arbeitsflächen-Übersicht (auto)", "App library (auto)": "App-Bibliothek (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Folgt dem Kürzel aus deinen Desktop-Einstellungen (derzeit {combo})", "Shortcut": "Kürzel",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} ist installiert; dieses Fenster läuft noch mit {old}.",
     "Reopen": "Neu öffnen",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} ist installiert, aber der Dienst läuft noch mit {old}.",
@@ -421,6 +427,8 @@ CATALOG["de"] = {
 }
 
 CATALOG["it"] = {
+    "Workspaces overview (auto)": "Panoramica spazi di lavoro (auto)", "App library (auto)": "Libreria app (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Segue la scorciatoia nelle impostazioni del desktop (ora {combo})", "Shortcut": "Scorciatoia",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} è installato; questa finestra usa ancora {old}.",
     "Reopen": "Riapri",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} è installato ma il demone usa ancora {old}.",
@@ -514,6 +522,8 @@ CATALOG["it"] = {
 }
 
 CATALOG["pt"] = {
+    "Workspaces overview (auto)": "Visão geral das áreas de trabalho (auto)", "App library (auto)": "Biblioteca de apps (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Segue o atalho das configurações do seu desktop (agora {combo})", "Shortcut": "Atalho",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} está instalado; esta janela ainda usa {old}.",
     "Reopen": "Reabrir",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} está instalado mas o daemon ainda usa {old}.",
@@ -607,6 +617,8 @@ CATALOG["pt"] = {
 }
 
 CATALOG["nl"] = {
+    "Workspaces overview (auto)": "Werkbladenoverzicht (auto)", "App library (auto)": "App-bibliotheek (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Volgt de sneltoets uit je desktopinstellingen (nu {combo})", "Shortcut": "Sneltoets",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} is geïnstalleerd; dit venster draait nog {old}.",
     "Reopen": "Opnieuw openen",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} is geïnstalleerd, maar de daemon draait nog {old}.",
@@ -700,6 +712,8 @@ CATALOG["nl"] = {
 }
 
 CATALOG["sv"] = {
+    "Workspaces overview (auto)": "Översikt över arbetsytor (auto)", "App library (auto)": "Appbibliotek (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Följer kortkommandot i skrivbordets inställningar (nu {combo})", "Shortcut": "Kortkommando",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} är installerat; det här fönstret kör fortfarande {old}.",
     "Reopen": "Öppna igen",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} är installerat men demonen kör fortfarande {old}.",
@@ -793,6 +807,8 @@ CATALOG["sv"] = {
 }
 
 CATALOG["pl"] = {
+    "Workspaces overview (auto)": "Podgląd obszarów roboczych (auto)", "App library (auto)": "Biblioteka aplikacji (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Używa skrótu z ustawień pulpitu (teraz {combo})", "Shortcut": "Skrót",
     "MouseTouch {new} is installed; this window still runs {old}.": "Zainstalowano MouseTouch {new}; to okno nadal działa w wersji {old}.",
     "Reopen": "Otwórz ponownie",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "Zainstalowano MouseTouch {new}, ale demon nadal działa w wersji {old}.",
@@ -886,6 +902,8 @@ CATALOG["pl"] = {
 }
 
 CATALOG["cs"] = {
+    "Workspaces overview (auto)": "Přehled ploch (auto)", "App library (auto)": "Knihovna aplikací (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Řídí se zkratkou z nastavení plochy (nyní {combo})", "Shortcut": "Zkratka",
     "MouseTouch {new} is installed; this window still runs {old}.": "Je nainstalován MouseTouch {new}; toto okno stále běží ve verzi {old}.",
     "Reopen": "Znovu otevřít",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "Je nainstalován MouseTouch {new}, ale démon stále běží ve verzi {old}.",
@@ -979,6 +997,8 @@ CATALOG["cs"] = {
 }
 
 CATALOG["ro"] = {
+    "Workspaces overview (auto)": "Prezentarea spațiilor de lucru (auto)", "App library (auto)": "Biblioteca de aplicații (auto)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Urmează scurtătura din setările desktopului (acum {combo})", "Shortcut": "Scurtătură",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} este instalat; această fereastră rulează încă {old}.",
     "Reopen": "Redeschide",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} este instalat, dar daemonul rulează încă {old}.",
@@ -1072,6 +1092,8 @@ CATALOG["ro"] = {
 }
 
 CATALOG["el"] = {
+    "Workspaces overview (auto)": "Επισκόπηση χώρων εργασίας (αυτόματο)", "App library (auto)": "Βιβλιοθήκη εφαρμογών (αυτόματο)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Ακολουθεί τη συντόμευση από τις ρυθμίσεις της επιφάνειας εργασίας (τώρα {combo})", "Shortcut": "Συντόμευση",
     "MouseTouch {new} is installed; this window still runs {old}.": "Το MouseTouch {new} είναι εγκατεστημένο· αυτό το παράθυρο τρέχει ακόμη {old}.",
     "Reopen": "Άνοιγμα ξανά",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "Το MouseTouch {new} είναι εγκατεστημένο, αλλά ο δαίμονας τρέχει ακόμη {old}.",
@@ -1165,6 +1187,8 @@ CATALOG["el"] = {
 }
 
 CATALOG["uk"] = {
+    "Workspaces overview (auto)": "Огляд робочих просторів (авто)", "App library (auto)": "Бібліотека програм (авто)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Використовує сполучення клавіш із налаштувань стільниці (зараз {combo})", "Shortcut": "Сполучення клавіш",
     "MouseTouch {new} is installed; this window still runs {old}.": "Встановлено MouseTouch {new}; це вікно ще працює на {old}.",
     "Reopen": "Відкрити знову",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "Встановлено MouseTouch {new}, але демон ще працює на {old}.",
@@ -1258,6 +1282,8 @@ CATALOG["uk"] = {
 }
 
 CATALOG["ru"] = {
+    "Workspaces overview (auto)": "Обзор рабочих пространств (авто)", "App library (auto)": "Библиотека приложений (авто)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Использует сочетание клавиш из настроек рабочего стола (сейчас {combo})", "Shortcut": "Сочетание клавиш",
     "MouseTouch {new} is installed; this window still runs {old}.": "Установлен MouseTouch {new}; это окно ещё работает на {old}.",
     "Reopen": "Открыть заново",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "Установлен MouseTouch {new}, но демон ещё работает на {old}.",
@@ -1351,6 +1377,8 @@ CATALOG["ru"] = {
 }
 
 CATALOG["tr"] = {
+    "Workspaces overview (auto)": "Çalışma alanı genel görünümü (otomatik)", "App library (auto)": "Uygulama kitaplığı (otomatik)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Masaüstü ayarlarındaki kısayolu izler (şu an {combo})", "Shortcut": "Kısayol",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} kurulu; bu pencere hâlâ {old} çalıştırıyor.",
     "Reopen": "Yeniden aç",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} kurulu ama arka plan hizmeti hâlâ {old} çalıştırıyor.",
@@ -1444,6 +1472,8 @@ CATALOG["tr"] = {
 }
 
 CATALOG["ar"] = {
+    "Workspaces overview (auto)": "نظرة عامة على مساحات العمل (تلقائي)", "App library (auto)": "مكتبة التطبيقات (تلقائي)",
+    "Follows the shortcut in your desktop settings (now {combo})": "يتبع الاختصار المحدد في إعدادات سطح المكتب (حاليًا {combo})", "Shortcut": "اختصار",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} مثبّت؛ هذه النافذة لا تزال تعمل بـ {old}.",
     "Reopen": "إعادة الفتح",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} مثبّت لكن الخدمة لا تزال تعمل بـ {old}.",
@@ -1537,6 +1567,8 @@ CATALOG["ar"] = {
 }
 
 CATALOG["hi"] = {
+    "Workspaces overview (auto)": "वर्कस्पेस ओवरव्यू (ऑटो)", "App library (auto)": "ऐप लाइब्रेरी (ऑटो)",
+    "Follows the shortcut in your desktop settings (now {combo})": "आपकी डेस्कटॉप सेटिंग्स के शॉर्टकट का पालन करता है (अभी {combo})", "Shortcut": "शॉर्टकट",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} इंस्टॉल है; यह विंडो अभी भी {old} चला रही है।",
     "Reopen": "फिर से खोलें",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} इंस्टॉल है लेकिन डेमन अभी भी {old} चला रहा है।",
@@ -1630,6 +1662,8 @@ CATALOG["hi"] = {
 }
 
 CATALOG["zh"] = {
+    "Workspaces overview (auto)": "工作区总览（自动）", "App library (auto)": "应用库（自动）",
+    "Follows the shortcut in your desktop settings (now {combo})": "跟随桌面设置中的快捷键（当前为 {combo}）", "Shortcut": "快捷键",
     "MouseTouch {new} is installed; this window still runs {old}.": "已安装 MouseTouch {new}，此窗口仍在运行 {old}。",
     "Reopen": "重新打开",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "已安装 MouseTouch {new}，但后台服务仍在运行 {old}。",
@@ -1723,6 +1757,8 @@ CATALOG["zh"] = {
 }
 
 CATALOG["ja"] = {
+    "Workspaces overview (auto)": "ワークスペース一覧（自動）", "App library (auto)": "アプリライブラリ（自動）",
+    "Follows the shortcut in your desktop settings (now {combo})": "デスクトップ設定のショートカットに従います（現在 {combo}）", "Shortcut": "ショートカット",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} がインストール済みです。このウィンドウはまだ {old} で動いています。",
     "Reopen": "再度開く",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} がインストール済みですが、デーモンはまだ {old} で動いています。",
@@ -1816,6 +1852,8 @@ CATALOG["ja"] = {
 }
 
 CATALOG["ko"] = {
+    "Workspaces overview (auto)": "작업 공간 개요 (자동)", "App library (auto)": "앱 라이브러리 (자동)",
+    "Follows the shortcut in your desktop settings (now {combo})": "데스크톱 설정의 바로 가기를 따릅니다 (현재 {combo})", "Shortcut": "바로 가기",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new}이(가) 설치되었지만 이 창은 아직 {old}로 실행 중입니다.",
     "Reopen": "다시 열기",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new}이(가) 설치되었지만 데몬은 아직 {old}로 실행 중입니다.",
@@ -1909,6 +1947,8 @@ CATALOG["ko"] = {
 }
 
 CATALOG["vi"] = {
+    "Workspaces overview (auto)": "Tổng quan không gian làm việc (tự động)", "App library (auto)": "Thư viện ứng dụng (tự động)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Theo phím tắt trong cài đặt màn hình của bạn (hiện là {combo})", "Shortcut": "Phím tắt",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} đã được cài; cửa sổ này vẫn chạy {old}.",
     "Reopen": "Mở lại",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} đã được cài nhưng daemon vẫn chạy {old}.",
@@ -2002,6 +2042,8 @@ CATALOG["vi"] = {
 }
 
 CATALOG["id"] = {
+    "Workspaces overview (auto)": "Ikhtisar ruang kerja (otomatis)", "App library (auto)": "Pustaka aplikasi (otomatis)",
+    "Follows the shortcut in your desktop settings (now {combo})": "Mengikuti pintasan di pengaturan desktop Anda (saat ini {combo})", "Shortcut": "Pintasan",
     "MouseTouch {new} is installed; this window still runs {old}.": "MouseTouch {new} terpasang; jendela ini masih menjalankan {old}.",
     "Reopen": "Buka ulang",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "MouseTouch {new} terpasang tetapi daemon masih menjalankan {old}.",
@@ -2095,6 +2137,8 @@ CATALOG["id"] = {
 }
 
 CATALOG["th"] = {
+    "Workspaces overview (auto)": "ภาพรวมพื้นที่ทำงาน (อัตโนมัติ)", "App library (auto)": "คลังแอป (อัตโนมัติ)",
+    "Follows the shortcut in your desktop settings (now {combo})": "ใช้ปุ่มลัดจากการตั้งค่าเดสก์ท็อปของคุณ (ตอนนี้ {combo})", "Shortcut": "ปุ่มลัด",
     "MouseTouch {new} is installed; this window still runs {old}.": "ติดตั้ง MouseTouch {new} แล้ว หน้าต่างนี้ยังใช้ {old} อยู่",
     "Reopen": "เปิดใหม่",
     "MouseTouch {new} is installed but the daemon still runs {old}.": "ติดตั้ง MouseTouch {new} แล้ว แต่เดมอนยังใช้ {old} อยู่",
@@ -2194,7 +2238,7 @@ DEFAULTS = {
         "fingers": 2,
         "direction": "natural",
         "sensitivity": 0.4,
-        "synthetic_fingers": 4,
+        # synthetic_fingers absent = auto (3 on GNOME, 4 elsewhere)
         "activation_mm": 2.0,
         "axis": "horizontal",
         # compositor_natural_scroll absent = auto
@@ -2204,8 +2248,8 @@ DEFAULTS = {
                "acceleration": 0.5, "momentum": True, "momentum_decay": 0.998},
     "taps": {"tap_max_ms": 400, "tap_max_mm": 15.0, "tap_max_lift_speed": 80.0, "double_tap_ms": 500},
     "gesture": [
-        {"kind": "double_tap", "fingers": 2, "enabled": True, "action": {"type": "key", "combo": "super+w"}},
-        {"kind": "tap", "fingers": 3, "enabled": True, "action": {"type": "key", "combo": "super+a"}},
+        {"kind": "double_tap", "fingers": 2, "enabled": True, "action": {"type": "workspaces"}},
+        {"kind": "tap", "fingers": 3, "enabled": True, "action": {"type": "apps"}},
     ],
 }
 
@@ -2219,8 +2263,34 @@ def DIRS():
 
 
 def ACTIONS():
-    return [("key", _("Keyboard shortcut")), ("toggle", _("Toggle two shortcuts")), ("cycle", _("Cycle through shortcuts")),
+    return [("workspaces", _("Workspaces overview (auto)")), ("apps", _("App library (auto)")),
+            ("key", _("Keyboard shortcut")), ("toggle", _("Toggle two shortcuts")), ("cycle", _("Cycle through shortcuts")),
             ("button", _("Mouse button")), ("command", _("Run command"))]
+
+
+# Actions whose shortcut the daemon reads from the desktop's own settings.
+DESKTOP_ACTIONS = ("workspaces", "apps")
+_DESKTOP_CACHE: dict = {}
+
+
+def desktop_settings() -> dict:
+    """What the daemon detected (`mousetouch desktop`): swipe fingers, natural
+    scrolling and the workspaces/apps shortcuts. Empty when it cannot be run."""
+    if "value" not in _DESKTOP_CACHE:
+        _DESKTOP_CACHE["value"] = {}
+        exe = mousetouch_binary()
+        if exe:
+            try:
+                out = subprocess.run([exe, "desktop"], capture_output=True, text=True, timeout=5).stdout
+                _DESKTOP_CACHE["value"] = json.loads(out)
+            except (OSError, subprocess.TimeoutExpired, ValueError):
+                pass
+    return _DESKTOP_CACHE["value"]
+
+
+def desktop_action_hint(t: str) -> str:
+    combo = desktop_settings().get({"workspaces": "workspaces_combo", "apps": "apps_combo"}[t], "?")
+    return _("Follows the shortcut in your desktop settings (now {combo})").format(combo=combo)
 
 
 def ACTION_HINT(t):
@@ -2309,6 +2379,8 @@ def save_config(cfg: dict) -> None:
 
 def describe_action(a: dict) -> str:
     t = a.get("type")
+    if t in DESKTOP_ACTIONS:
+        return dict(ACTIONS())[t]
     if t == "key":
         return _("Shortcut: {value}").format(value=a.get("combo", ""))
     if t == "toggle":
@@ -2358,7 +2430,7 @@ def setting_choices() -> dict:
     """Stored value -> label for the settings shown as a drop-down."""
     return {
         ("workspace_swipe", "direction"): {"natural": _("Natural"), "inverted": _("Inverted")},
-        ("workspace_swipe", "synthetic_fingers"): {4: _("4 (COSMIC, KDE)"), 3: _("3 (GNOME)")},
+        ("workspace_swipe", "synthetic_fingers"): {None: _("Auto-detect"), 4: _("4 (COSMIC, KDE)"), 3: _("3 (GNOME)")},
         ("workspace_swipe", "axis"): {"horizontal": _("Horizontal"), "vertical": _("Vertical"), "both": _("Both")},
         ("workspace_swipe", "compositor_natural_scroll"): {None: _("Auto-detect"), True: _("On"), False: _("Off")},
         ("scroll", "mode"): {"notches": _("Whole notches"), "smooth": _("Smooth steps")},
@@ -2505,9 +2577,14 @@ class GestureDialog(Adw.Dialog):
         page.add(grp)
 
         grp = Adw.PreferencesGroup(title=_("Action"))
-        grp.add(combo_row(_("Do"), None, ACTIONS(), self.g["action"]["type"], self._set_action_type))
-        self.value_row = Adw.EntryRow(title=ACTION_HINT(self.g["action"]["type"]))
+        t = self.g["action"]["type"]
+        grp.add(combo_row(_("Do"), None, ACTIONS(), t, self._set_action_type))
+        self.auto_row = Adw.ActionRow(title=_("Shortcut"), subtitle=desktop_action_hint(t if t in DESKTOP_ACTIONS else "workspaces"))
+        self.auto_row.set_visible(t in DESKTOP_ACTIONS)
+        grp.add(self.auto_row)
+        self.value_row = Adw.EntryRow(title=ACTION_HINT(t) if t not in DESKTOP_ACTIONS else "")
         self.value_row.set_text(self._action_value())
+        self.value_row.set_visible(t not in DESKTOP_ACTIONS)
         grp.add(self.value_row)
         self.off_row = Adw.EntryRow(title=_("Second trigger (off), e.g. ctrl+0"))
         self.off_row.set_text(self.g["action"].get("off", ""))
@@ -2538,19 +2615,28 @@ class GestureDialog(Adw.Dialog):
 
     def _set_action_type(self, t):
         self.g["action"] = {"type": t}
-        self.value_row.set_title(ACTION_HINT(t))
+        auto = t in DESKTOP_ACTIONS
+        self.auto_row.set_visible(auto)
+        if auto:
+            self.auto_row.set_subtitle(desktop_action_hint(t))
+        else:
+            self.value_row.set_title(ACTION_HINT(t))
+        self.value_row.set_visible(not auto)
         self.off_row.set_visible(t == "toggle")
 
     def _save(self, *_a):
         t = self.g["action"]["type"]
-        key = {"key": "combo", "toggle": "on", "cycle": "steps", "button": "button", "command": "command"}[t]
-        value = self.value_row.get_text().strip()
-        if not value:
-            self.value_row.add_css_class("error")
-            return
-        if t == "cycle":
-            value = [p.strip() for p in value.split(";") if p.strip()]
-        self.g["action"] = {"type": t, key: value}
+        if t in DESKTOP_ACTIONS:
+            self.g["action"] = {"type": t}
+        else:
+            key = {"key": "combo", "toggle": "on", "cycle": "steps", "button": "button", "command": "command"}[t]
+            value = self.value_row.get_text().strip()
+            if not value:
+                self.value_row.add_css_class("error")
+                return
+            if t == "cycle":
+                value = [p.strip() for p in value.split(";") if p.strip()]
+            self.g["action"] = {"type": t, key: value}
         if t == "toggle":
             off = self.off_row.get_text().strip()
             if not off:
@@ -3620,9 +3706,10 @@ class Window(Adw.ApplicationWindow):
                          lambda v: self._set("workspace_swipe", "sensitivity", v)))
         grp.add(spin_row(_("Activation distance (mm)"), _("Finger travel before a swipe starts"), ws["activation_mm"], 0.5, 15.0, 0.5, 1,
                          lambda v: self._set("workspace_swipe", "activation_mm", v)))
+        sf = ws.get("synthetic_fingers")
         grp.add(combo_row(_("Desktop gesture fingers"), _("Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME"),
-                          [("4", _("4 (COSMIC, KDE)")), ("3", _("3 (GNOME)"))], str(ws["synthetic_fingers"]),
-                          lambda v: self._set("workspace_swipe", "synthetic_fingers", int(v))))
+                          [("auto", _("Auto-detect")), ("4", _("4 (COSMIC, KDE)")), ("3", _("3 (GNOME)"))], "auto" if sf is None else str(sf),
+                          lambda v: self._set("workspace_swipe", "synthetic_fingers", None if v == "auto" else int(v))))
         grp.add(combo_row(_("Axis"), _("Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)"),
                           [("horizontal", _("Horizontal")), ("vertical", _("Vertical")), ("both", _("Both"))], ws["axis"],
                           lambda v: self._set("workspace_swipe", "axis", v)))

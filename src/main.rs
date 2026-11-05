@@ -10,6 +10,7 @@
 mod bluetooth;
 mod config;
 mod desktop;
+mod desktop_settings;
 mod discover;
 mod engine;
 mod focus;
@@ -56,6 +57,9 @@ Commands:
   demo-swipe DIR [MM] Replay a synthetic swipe on the virtual touchpad
                       (DIR = left|right|up|down, MM = travel, default 40)
   print-config        Print the effective configuration as TOML
+  desktop             Print what the desktop expects, as JSON: fingers for a
+                      workspace swipe, natural scrolling, and the shortcuts
+                      for the workspaces overview and the app library
   key COMBO           Press a key combo through a virtual keyboard (testing),
                       e.g. key ctrl+kpplus  or  key 'ctrl+equal,ctrl+equal'
   fake-mouse [WHAT]   Create a fake Magic Mouse via uinput and play gestures
@@ -133,6 +137,10 @@ fn main() -> Result<()> {
             thread::sleep(Duration::from_millis(200));
             Ok(())
         }
+        "desktop" => {
+            println!("{}", serde_json::to_string(&desktop_settings::detect())?);
+            Ok(())
+        }
         "print-config" => {
             let cfg = config::load_or_create(&config_path)?;
             print!("{}", config::to_toml(&cfg)?);
@@ -157,8 +165,7 @@ fn run(config_path: &Path) -> Result<()> {
         keyboard: VirtualKeyboard::new()?,
         toggles: HashMap::new(),
     }));
-    let compositor_natural = config::detect_compositor_natural_scroll();
-    log::info!("compositor touchpad natural scroll: {compositor_natural}");
+    let desktop = desktop_settings::watch();
     let focus = focus::spawn();
     let monitor = monitor::Monitor::start();
     // Homebrew installs are outside the desktop's search path; add the
@@ -209,6 +216,7 @@ fn run(config_path: &Path) -> Result<()> {
             }
             active.lock().unwrap().insert(path.clone());
             let cfg = Arc::clone(&cfg);
+            let desktop = Arc::clone(&desktop);
             let shared = Arc::clone(&shared);
             let active = Arc::clone(&active);
             let focus = Arc::clone(&focus);
@@ -217,7 +225,7 @@ fn run(config_path: &Path) -> Result<()> {
             thread::spawn(move || {
                 let name = dev.name().unwrap_or("?").to_string();
                 log::info!("attached {} ({})", name, path.display());
-                if let Err(e) = serve_device(&path, dev, cfg, shared, compositor_natural, focus, monitor.clone()) {
+                if let Err(e) = serve_device(&path, dev, cfg, shared, desktop, focus, monitor.clone()) {
                     log::warn!("{} detached: {e:#}", name);
                 } else {
                     log::info!("{} detached", name);
@@ -313,7 +321,7 @@ fn serve_device(
     mut dev: Device,
     cfg: Arc<RwLock<Config>>,
     shared: Arc<Mutex<Shared>>,
-    compositor_natural: bool,
+    desktop: desktop_settings::Shared,
     focus: focus::Focus,
     monitor: monitor::Monitor,
 ) -> Result<()> {
@@ -329,7 +337,7 @@ fn serve_device(
     dev.grab().context("grabbing device (EVIOCGRAB)")?;
     dev.set_nonblocking(true)?;
 
-    let mut engine = Engine::new(cfg, shared, mouse, ax, ay, compositor_natural, focus, monitor.clone());
+    let mut engine = Engine::new(cfg, shared, mouse, ax, ay, desktop, focus, monitor.clone());
 
     // Prefer raw HID reports for touch data (see hidraw.rs for why).
     let mut raw: Option<std::fs::File> = None;
