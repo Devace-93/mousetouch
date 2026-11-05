@@ -189,9 +189,13 @@ The same options exist in the TOML file:
   *Inverted*. The daemon accounts for your desktop's touchpad natural-scroll
   setting automatically.
 - **Sensitivity** — finger travel per workspace.
-- **Desktop gesture fingers** — 4 for COSMIC/KDE, 3 for GNOME.
+- **Desktop gesture fingers** — *Auto-detect* follows the running desktop
+  (3 on GNOME, 4 on COSMIC/KDE); 3 or 4 force it.
 - **Gestures** — add rows like *Tap · 3 fingers → Click middle* or
-  *Swipe · 2 fingers · up → super+w*.
+  *Swipe · 2 fingers · up → super+w*. The two default rows, *Workspaces
+  overview (auto)* and *App library (auto)*, press whatever shortcut your
+  desktop has for those: the daemon reads it from the desktop's settings
+  (GNOME, COSMIC, KDE) and picks up changes as you make them.
 
 ```toml
 [workspace_swipe]
@@ -199,13 +203,14 @@ enabled = true
 fingers = 2
 direction = "natural"   # or "inverted"
 sensitivity = 0.4
-synthetic_fingers = 4   # 3 on GNOME
+# synthetic_fingers = 3 # contacts the desktop expects; absent = auto-detect
 axis = "horizontal"
 
 [[gesture]]
 kind = "double_tap"     # swipe | tap | double_tap
 fingers = 2
-action = { type = "key", combo = "super+w" }
+action = { type = "workspaces" }   # the desktop's own shortcut; or
+                                   # { type = "key", combo = "super+w" }
 # gesture = []          # instead of any [[gesture]]: no gestures at all
                         # (a file without the key gets the two defaults)
 
@@ -269,14 +274,15 @@ app = "firefox"
 action = { type = "key", combo = "alt+right" }
 ```
 
-On GNOME set `axis = "both"` under `[workspace_swipe]` (with
-`synthetic_fingers = 3`): a horizontal 2-finger swipe switches workspaces and a
-vertical one opens the overview, both with GNOME's own animation.
+On GNOME set `axis = "both"` under `[workspace_swipe]`: a horizontal 2-finger
+swipe switches workspaces and a vertical one opens the overview, both with
+GNOME's own animation.
 
 ## Troubleshooting
 
 ```sh
 mousetouch probe          # is the mouse seen, with touch axes?
+mousetouch desktop        # what the daemon detected: swipe fingers, natural scroll, shortcuts
 mousetouch watch          # live finger positions (daemon stopped)
 mousetouch events         # the running daemon's event stream as JSON lines
 mousetouch demo-swipe left 40   # replay a synthetic 4-finger swipe

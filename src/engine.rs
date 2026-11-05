@@ -3,6 +3,7 @@
 //! mouse, and turns multi-finger touches into gestures.
 
 use crate::config::{Action, Axis, Config, Direction, GestureKind, SwipeDir};
+use crate::desktop_settings::{self, DesktopSettings};
 use crate::focus::Focus;
 use crate::hidraw::RawTouch;
 use crate::monitor::{Event as Mon, Finger, Monitor};
@@ -110,7 +111,7 @@ pub struct Engine {
     session: Option<Session>,
     pending_tap: Option<PendingTap>,
     last_tap: Option<(usize, Instant)>,
-    compositor_natural: bool,
+    desktop: desktop_settings::Shared,
     /// Focused window app id (for per-application rules).
     focus: Focus,
     /// Max finger travel seen in the frame before all fingers lifted.
@@ -138,7 +139,7 @@ impl Engine {
         mouse: VirtualMouse,
         ax: AxisInfo,
         ay: AxisInfo,
-        compositor_natural: bool,
+        desktop: desktop_settings::Shared,
         focus: Focus,
         monitor: Monitor,
     ) -> Self {
@@ -156,7 +157,7 @@ impl Engine {
             session: None,
             pending_tap: None,
             last_tap: None,
-            compositor_natural,
+            desktop,
             focus,
             last_travel: 0.0,
             last_speed: 0.0,
@@ -598,7 +599,8 @@ impl Engine {
                     } else if ws.enabled && ws.fingers as usize == n && axis_matches(ws.axis, dir) {
                         session.gestured = true;
                         let natural = ws.direction == Direction::Natural;
-                        let compositor_natural = ws.compositor_natural_scroll.unwrap_or(self.compositor_natural);
+                        let desktop = self.desktop.read().unwrap().clone();
+                        let compositor_natural = ws.compositor_natural_scroll.unwrap_or(desktop.natural_scroll);
                         // The compositor already follows the fingers when its
                         // own natural scrolling is on; otherwise flip.
                         let sign = if natural != compositor_natural { -1.0 } else { 1.0 };
@@ -609,7 +611,7 @@ impl Engine {
                             a => a,
                         };
                         let mut sh = self.shared.lock().unwrap();
-                        sh.touchpad.begin(ws.synthetic_fingers as usize)?;
+                        sh.touchpad.begin(ws.synthetic_fingers.unwrap_or(desktop.synthetic_fingers) as usize)?;
                         let (vx, vy) = match axis {
                             Axis::Horizontal => (dx * ws.sensitivity * sign, 0.0),
                             _ => (0.0, dy * ws.sensitivity * sign),
@@ -734,7 +736,7 @@ impl Engine {
                 fingers,
                 dir: dir.map(dir_name),
                 matched: action.is_some(),
-                action: action.as_ref().map(|(a, _)| describe_action(a)),
+                action: action.as_ref().map(|(a, _)| describe_action(a, &self.desktop.read().unwrap())),
                 app: action.as_ref().and_then(|(_, app)| app.clone()),
             });
         }
@@ -747,6 +749,13 @@ impl Engine {
 
     fn run_action(&mut self, action: &Action, toggle_key: &str) -> Result<()> {
         match action {
+            Action::Workspaces | Action::Apps => {
+                let d = self.desktop.read().unwrap();
+                let combo = if matches!(action, Action::Workspaces) { &d.workspaces_combo } else { &d.apps_combo };
+                if let Err(e) = self.shared.lock().unwrap().keyboard.tap_combo(combo) {
+                    log::error!("{action:?} action '{combo}': {e}");
+                }
+            }
             Action::Key { combo } => {
                 if let Err(e) = self.shared.lock().unwrap().keyboard.tap_combo(combo) {
                     log::error!("key action '{combo}': {e}");
@@ -816,8 +825,10 @@ fn kind_name(k: GestureKind) -> &'static str {
 }
 
 /// One-line description of an action for the live view.
-fn describe_action(a: &Action) -> String {
+fn describe_action(a: &Action, d: &DesktopSettings) -> String {
     match a {
+        Action::Workspaces => format!("workspaces ({})", d.workspaces_combo),
+        Action::Apps => format!("apps ({})", d.apps_combo),
         Action::Key { combo } => combo.clone(),
         Action::Toggle { on, off } => format!("{on} ⇄ {off}"),
         Action::Cycle { steps } => steps.join(" → "),
@@ -876,7 +887,7 @@ mod tests {
         let mouse = VirtualMouse::new("Test Magic Mouse", InputId::new(BusType::BUS_BLUETOOTH, 0x4c, 0x269, 1)).unwrap();
         let ax = AxisInfo { min: -1100, max: 1258, res: 26.0 };
         let ay = AxisInfo { min: -1589, max: 2047, res: 70.0 };
-        Engine::new(cfg, shared, mouse, ax, ay, false, Arc::new(Mutex::new(None)), Monitor::disabled())
+        Engine::new(cfg, shared, mouse, ax, ay, Arc::new(RwLock::new(desktop_settings::DesktopSettings::fallback(desktop_settings::Desktop::Other))), Arc::new(Mutex::new(None)), Monitor::disabled())
     }
 
     #[test]
