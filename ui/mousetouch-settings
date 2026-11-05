@@ -3269,8 +3269,20 @@ def mousetouch_binary() -> str | None:
     exe = shutil.which("mousetouch")
     if exe:
         return exe
-    here = Path(__file__).resolve().parent.parent
-    for p in (here / "target" / "release" / "mousetouch", here / "target" / "debug" / "mousetouch"):
+    # Launched from a desktop entry the session PATH may lack the install
+    # prefix (Homebrew, ~/.local, Nix): every packager puts both binaries in
+    # the same bin dir, so look next to this script before giving up.
+    here = Path(__file__).resolve()
+    candidates = [
+        here.parent / "mousetouch",
+        here.parent.parent / "target" / "release" / "mousetouch",
+        here.parent.parent / "target" / "debug" / "mousetouch",
+        Path("/home/linuxbrew/.linuxbrew/bin/mousetouch"),
+        Path.home() / ".linuxbrew" / "bin" / "mousetouch",
+        Path.home() / ".local" / "bin" / "mousetouch",
+        Path.home() / ".cargo" / "bin" / "mousetouch",
+    ]
+    for p in candidates:
         if p.is_file() and os.access(p, os.X_OK):
             return str(p)
     return None
