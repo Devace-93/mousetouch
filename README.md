@@ -23,6 +23,13 @@ Extra taps and swipes (3 fingers, vertical swipes, ...) can be mapped to
 shortcuts, mouse buttons or commands from the settings app, optionally only
 for a given application (e.g. 2-finger swipes = back/forward in the browser).
 
+**Swiping inside the COSMIC workspace overview.** The stock COSMIC overview
+(`Super+W`) ignores touchpad swipes, so a mouse swipe does nothing there
+either. [COSMIC Overview Swipe](https://cosmic-swipe.3m4.net), a companion
+project, adds finger-following swipes to the overview for touchpads and, with
+MouseTouch 0.1.13 or newer, for the Magic Mouse. It installs without sudo
+on Pop!_OS 24.04 and can be removed with one command.
+
 Coming from a Mac? The settings app's **Nearby mice** section lists the mouse
 as soon as it is switched on and pairs it with one click, running the
 Bluetooth repair BlueZ needs after a macOS pairing (the desktop's own pairing
