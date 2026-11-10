@@ -63,7 +63,7 @@ assets = [
 summary = "Apple Magic Mouse multitouch gestures for Linux/Wayland"
 license = "MIT"
 url = "https://github.com/Devace-93/mousetouch"
-post_install_script = "udevadm control --reload-rules || true; udevadm trigger --subsystem-match=input --subsystem-match=misc || true; modprobe uinput || true; systemctl --global enable mousetouch.service || true"
+post_install_script = "udevadm control --reload-rules || true; udevadm trigger --subsystem-match=input --subsystem-match=hidraw --subsystem-match=misc || true; modprobe uinput || true; systemctl --global enable mousetouch.service || true"
 pre_uninstall_script = "if [ $1 -eq 0 ]; then systemctl --global disable mousetouch.service || true; fi"
 assets = [
     { source = "target/release/mousetouch", dest = "/usr/bin/mousetouch", mode = "755" },

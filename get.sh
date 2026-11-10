@@ -97,7 +97,7 @@ else
     sudo_run modprobe uinput || true
     if have udevadm; then
         sudo_run udevadm control --reload-rules
-        sudo_run udevadm trigger --subsystem-match=input --subsystem-match=misc
+        sudo_run udevadm trigger --subsystem-match=input --subsystem-match=hidraw --subsystem-match=misc
     fi
     enable_service
 fi
