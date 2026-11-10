@@ -170,10 +170,10 @@ pub fn detect() -> DesktopSettings {
     let desktop = current_desktop();
     let mut s = DesktopSettings::fallback(desktop);
     match desktop {
-        Desktop::Gnome => detect_gnome(&mut s),
+        Desktop::Gnome => detect_gnome(&mut s, &Gsettings::for_desktop(desktop)),
         Desktop::Cosmic => detect_cosmic(&mut s),
         Desktop::Kde => detect_kde(&mut s),
-        Desktop::Pantheon => detect_pantheon(&mut s),
+        Desktop::Pantheon => detect_pantheon(&mut s, &Gsettings::for_desktop(desktop)),
         Desktop::Other => {}
     }
     s
@@ -321,9 +321,68 @@ fn modifier_name(m: &str) -> Option<&'static str> {
 // GNOME: dconf through gsettings
 // ---------------------------------------------------------------------------
 
-fn gsettings(schema: &str, key: &str) -> Option<String> {
-    let out = std::process::Command::new("gsettings").args(["get", schema, key]).output().ok()?;
-    out.status.success().then(|| String::from_utf8_lossy(&out.stdout).trim().to_string())
+/// `gsettings get`, asked the way the session would ask.
+///
+/// A schema's defaults can differ per desktop (`[schema:Pantheon]` in a
+/// `.gschema.override`), and GLib picks them by `XDG_CURRENT_DESKTOP`. A
+/// service started before the session has no such variable, so without it
+/// elementary's `panel-main-menu` reads as GNOME's `<Alt>F1` instead of
+/// `<Super>space`, and `show-desktop` as unset.
+struct Gsettings {
+    /// `XDG_CURRENT_DESKTOP` to run with when our own environment has none.
+    desktop_env: Option<String>,
+}
+
+impl Gsettings {
+    fn for_desktop(desktop: Desktop) -> Self {
+        let ours = std::env::var("XDG_CURRENT_DESKTOP").map_or(false, |v| !v.is_empty());
+        let desktop_env = if ours { None } else { compositor_desktop_env().or_else(|| default_desktop_env(desktop).map(String::from)) };
+        Self { desktop_env }
+    }
+
+    fn get(&self, schema: &str, key: &str) -> Option<String> {
+        let mut cmd = std::process::Command::new("gsettings");
+        cmd.args(["get", schema, key]);
+        if let Some(name) = &self.desktop_env {
+            cmd.env("XDG_CURRENT_DESKTOP", name);
+        }
+        let out = cmd.output().ok()?;
+        out.status.success().then(|| String::from_utf8_lossy(&out.stdout).trim().to_string())
+    }
+}
+
+/// `XDG_CURRENT_DESKTOP` as the running compositor has it (Ubuntu's session
+/// says `ubuntu:GNOME`, which selects Ubuntu's overrides, not GNOME's).
+fn compositor_desktop_env() -> Option<String> {
+    let procs = std::fs::read_dir("/proc").ok()?;
+    for entry in procs.flatten() {
+        let Ok(comm) = std::fs::read_to_string(entry.path().join("comm")) else { continue };
+        if !matches!(comm.trim(), "gnome-shell" | "gala") {
+            continue;
+        }
+        if let Some(name) = std::fs::read(entry.path().join("environ")).ok().and_then(|e| environ_var(&e, "XDG_CURRENT_DESKTOP")) {
+            return Some(name);
+        }
+    }
+    None
+}
+
+/// Value of `name` in a `/proc/<pid>/environ` blob (NUL-separated).
+fn environ_var(environ: &[u8], name: &str) -> Option<String> {
+    environ.split(|b| *b == 0).find_map(|entry| {
+        let value = entry.strip_prefix(name.as_bytes())?.strip_prefix(b"=")?;
+        let value = String::from_utf8_lossy(value);
+        (!value.is_empty()).then(|| value.into_owned())
+    })
+}
+
+/// What the session sets when the compositor's environment cannot be read.
+fn default_desktop_env(desktop: Desktop) -> Option<&'static str> {
+    match desktop {
+        Desktop::Gnome => Some("GNOME"),
+        Desktop::Pantheon => Some("Pantheon"),
+        _ => None,
+    }
 }
 
 /// First element of a GVariant string array: `['<Super>s', '<Super>w']`.
@@ -349,7 +408,8 @@ pub fn combo_from_gtk_accel(accel: &str) -> Option<String> {
     (!parts.is_empty()).then(|| parts.join("+"))
 }
 
-fn detect_gnome(s: &mut DesktopSettings) {
+fn detect_gnome(s: &mut DesktopSettings, gs: &Gsettings) {
+    let gsettings = |schema: &str, key: &str| gs.get(schema, key);
     if let Some(v) = gsettings("org.gnome.desktop.peripherals.touchpad", "natural-scroll") {
         s.natural_scroll = v == "true";
     }
@@ -373,7 +433,8 @@ fn detect_gnome(s: &mut DesktopSettings) {
 // Pantheon (elementary OS): dconf through gsettings, Gala's keys
 // ---------------------------------------------------------------------------
 
-fn detect_pantheon(s: &mut DesktopSettings) {
+fn detect_pantheon(s: &mut DesktopSettings, gs: &Gsettings) {
+    let gsettings = |schema: &str, key: &str| gs.get(schema, key);
     if let Some(v) = gsettings("org.gnome.desktop.peripherals.touchpad", "natural-scroll") {
         s.natural_scroll = v == "true";
     }
@@ -695,6 +756,18 @@ mod tests {
         assert!(!supersedes(&pantheon, &pantheon));
         // Logging out does not turn a known desktop into an unknown one.
         assert!(!supersedes(&pantheon, &other));
+    }
+
+    #[test]
+    fn gsettings_is_asked_as_the_session_would() {
+        let environ = b"HOME=/home/u\0XDG_CURRENT_DESKTOP_X=no\0XDG_CURRENT_DESKTOP=Pantheon\0LANG=C\0";
+        assert_eq!(environ_var(environ, "XDG_CURRENT_DESKTOP").as_deref(), Some("Pantheon"));
+        assert_eq!(environ_var(b"XDG_CURRENT_DESKTOP=ubuntu:GNOME\0", "XDG_CURRENT_DESKTOP").as_deref(), Some("ubuntu:GNOME"));
+        assert_eq!(environ_var(b"XDG_CURRENT_DESKTOP=\0HOME=/\0", "XDG_CURRENT_DESKTOP"), None);
+        assert_eq!(environ_var(b"", "XDG_CURRENT_DESKTOP"), None);
+        assert_eq!(default_desktop_env(Desktop::Pantheon), Some("Pantheon"));
+        assert_eq!(default_desktop_env(Desktop::Gnome), Some("GNOME"));
+        assert_eq!(default_desktop_env(Desktop::Kde), None);
     }
 
     #[test]
