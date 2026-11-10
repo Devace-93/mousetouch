@@ -64,7 +64,8 @@ Commands:
                       e.g. key ctrl+kpplus  or  key 'ctrl+equal,ctrl+equal'
   fake-mouse [WHAT]   Create a fake Magic Mouse via uinput and play gestures
                       through it (testing). WHAT = all (swipe, pinch, 2-finger
-                      double tap) or double-tap-1 [N times]
+                      double tap), demo (the site video)
+                      or double-tap-1 [N times]
 
 Options:
   -c, --config PATH   Config file (default: ~/.config/mousetouch/config.toml)
@@ -609,6 +610,77 @@ fn fake_mouse(what: &str, repeat: usize) -> Result<()> {
         ])?;
         Ok(())
     };
+
+    if what == "demo" {
+        // The landing page video: slower, eased motions with pauses so the
+        // live view can be followed. Swipe to the next workspace, pinch in
+        // and out, double tap for the overview (twice: open and close), swipe
+        // back. Positions in device units (26 per mm).
+        let ease = |t: f64| if t < 0.5 { 2.0 * t * t } else { 1.0 - (-2.0 * t + 2.0).powi(2) / 2.0 };
+        // Two fingers from (a0, b0) to (a1, b1) on X, at slightly different
+        // heights like a real hand, over `steps` reports 12 ms apart.
+        let glide = |dev: &mut VirtualDevice, (a0, b0): (i32, i32), (a1, b1): (i32, i32), steps: i32| -> Result<()> {
+            dev.emit(&[
+                a(AbsoluteAxisCode::ABS_MT_SLOT, 0),
+                a(AbsoluteAxisCode::ABS_MT_TRACKING_ID, 10),
+                a(AbsoluteAxisCode::ABS_MT_POSITION_X, a0),
+                a(AbsoluteAxisCode::ABS_MT_POSITION_Y, 40),
+                a(AbsoluteAxisCode::ABS_MT_SLOT, 1),
+                a(AbsoluteAxisCode::ABS_MT_TRACKING_ID, 11),
+                a(AbsoluteAxisCode::ABS_MT_POSITION_X, b0),
+                a(AbsoluteAxisCode::ABS_MT_POSITION_Y, -60),
+                syn,
+            ])?;
+            thread::sleep(Duration::from_millis(60));
+            for s in 1..=steps {
+                thread::sleep(Duration::from_millis(12));
+                let k = ease(s as f64 / steps as f64);
+                let lerp = |p: i32, q: i32| p + ((q - p) as f64 * k).round() as i32;
+                dev.emit(&[
+                    a(AbsoluteAxisCode::ABS_MT_SLOT, 0),
+                    a(AbsoluteAxisCode::ABS_MT_POSITION_X, lerp(a0, a1)),
+                    a(AbsoluteAxisCode::ABS_MT_SLOT, 1),
+                    a(AbsoluteAxisCode::ABS_MT_POSITION_X, lerp(b0, b1)),
+                    syn,
+                ])?;
+            }
+            thread::sleep(Duration::from_millis(60));
+            lift(dev)
+        };
+        let pause = |ms: u64| thread::sleep(Duration::from_millis(ms));
+        pause(1000);
+        println!("swipe left");
+        glide(&mut dev, (420, 720), (-480, -180), 45)?;
+        pause(700);
+        // A small pointer nudge, so the window under the pointer on the new
+        // workspace gets pointer focus and receives the pinch.
+        for dx in [3, 3, -3, -3] {
+            dev.emit(&[InputEvent::new(EventType::RELATIVE.0, RelativeAxisCode::REL_X.0, dx), syn])?;
+            pause(20);
+        }
+        pause(600);
+        println!("pinch out");
+        glide(&mut dev, (60, 300), (-40, 400), 40)?;
+        pause(1100);
+        println!("pinch in");
+        glide(&mut dev, (-40, 400), (60, 300), 40)?;
+        pause(1300);
+        for label in ["double tap: overview", "double tap: back"] {
+            println!("{label}");
+            for _ in 0..2 {
+                land(&mut dev, 0)?;
+                pause(80);
+                lift(&mut dev)?;
+                pause(120);
+            }
+            pause(2200);
+        }
+        println!("swipe right");
+        glide(&mut dev, (-480, -180), (420, 720), 45)?;
+        pause(1500);
+        println!("done");
+        return Ok(());
+    }
 
     println!("2-finger swipe left, 30 mm");
     land(&mut dev, 400)?;
