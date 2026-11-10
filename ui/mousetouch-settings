@@ -180,10 +180,12 @@ CATALOG["es"] = {
     "Workspace swipe": "Cambio de escritorio", "Continuous swipe that follows your fingers using the desktop's native animation.": "Deslizamiento continuo que sigue tus dedos con la animación nativa del escritorio.",
     "Enabled": "Activado", "Fingers on the mouse": "Dedos sobre el mouse",
     "Natural: swipe left to go to the next workspace (macOS style)": "Natural: desliza a la izquierda para ir al siguiente escritorio (estilo macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Natural: desliza hacia arriba para ir al siguiente escritorio (estilo macOS)",
+    "Natural: content follows your fingers (macOS style)": "Natural: el contenido sigue a tus dedos (estilo macOS)",
     "Sensitivity": "Sensibilidad", "Higher = less finger travel per workspace": "Más alto = menos recorrido del dedo por escritorio",
     "Activation distance (mm)": "Distancia de activación (mm)", "Finger travel before a swipe starts": "Recorrido del dedo antes de que empiece el deslizamiento",
     "Desktop gesture fingers": "Dedos del gesto del escritorio", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Dedos que el escritorio espera para cambiar de escritorio: 4 en COSMIC, 3 en GNOME",
-    "Axis": "Eje", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Dirección en la que tu escritorio ordena los espacios de trabajo. Ambos: fija la primera dirección y deja decidir al escritorio (GNOME: vertical = vista general)",
+    "Axis": "Eje", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Dirección en la que tu escritorio cambia de espacio de trabajo. Autodetectar sigue al escritorio (ahora: {axis}). Ambos: fija la primera dirección y deja decidir al escritorio (GNOME, KDE: vertical = vista general)",
     "Desktop touchpad natural scrolling": "Scroll natural del touchpad del escritorio", "Leave on Auto unless the swipe goes the wrong way": "Déjalo en Auto salvo que el deslizamiento vaya al revés",
     "Pinch zoom": "Zoom con pellizco", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Dos dedos que se separan o se juntan se convierten en el gesto de pellizco nativo del escritorio.",
     "1.0 = same zoom as a touchpad": "1.0 = mismo zoom que un touchpad", "Change in finger distance before a pinch starts": "Cambio de distancia entre dedos antes de que empiece el pellizco",
@@ -275,10 +277,12 @@ CATALOG["fr"] = {
     "Workspace swipe": "Balayage entre bureaux", "Continuous swipe that follows your fingers using the desktop's native animation.": "Balayage continu qui suit vos doigts avec l'animation native du bureau.",
     "Enabled": "Activé", "Fingers on the mouse": "Doigts sur la souris",
     "Natural: swipe left to go to the next workspace (macOS style)": "Naturel : balayez vers la gauche pour passer au bureau suivant (style macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Naturel : balayez vers le haut pour passer au bureau suivant (style macOS)",
+    "Natural: content follows your fingers (macOS style)": "Naturel : le contenu suit vos doigts (style macOS)",
     "Sensitivity": "Sensibilité", "Higher = less finger travel per workspace": "Plus élevé = moins de déplacement du doigt par bureau",
     "Activation distance (mm)": "Distance d'activation (mm)", "Finger travel before a swipe starts": "Déplacement du doigt avant le début du balayage",
     "Desktop gesture fingers": "Doigts du geste du bureau", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Doigts attendus par le bureau pour changer de bureau : 4 pour COSMIC, 3 pour GNOME",
-    "Axis": "Axe", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Direction dans laquelle votre bureau range les espaces de travail. Les deux : verrouille la première direction et laisse le bureau décider (GNOME : vertical = vue d'ensemble)",
+    "Axis": "Axe", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Direction dans laquelle votre bureau change d'espace de travail. La détection automatique suit le bureau (actuellement : {axis}). Les deux : verrouille la première direction et laisse le bureau décider (GNOME, KDE : vertical = vue d'ensemble)",
     "Desktop touchpad natural scrolling": "Défilement naturel du pavé tactile du bureau", "Leave on Auto unless the swipe goes the wrong way": "Laissez sur Auto sauf si le balayage va dans le mauvais sens",
     "Pinch zoom": "Zoom par pincement", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Deux doigts qui s'écartent ou se rapprochent deviennent le geste de pincement natif du bureau.",
     "1.0 = same zoom as a touchpad": "1.0 = même zoom qu'un pavé tactile", "Change in finger distance before a pinch starts": "Variation de distance entre les doigts avant le début du pincement",
@@ -370,10 +374,12 @@ CATALOG["de"] = {
     "Workspace swipe": "Arbeitsflächen-Wischen", "Continuous swipe that follows your fingers using the desktop's native animation.": "Kontinuierliches Wischen, das den Fingern mit der nativen Animation des Desktops folgt.",
     "Enabled": "Aktiviert", "Fingers on the mouse": "Finger auf der Maus",
     "Natural: swipe left to go to the next workspace (macOS style)": "Natürlich: nach links wischen für die nächste Arbeitsfläche (wie macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Natürlich: nach oben wischen für die nächste Arbeitsfläche (wie macOS)",
+    "Natural: content follows your fingers (macOS style)": "Natürlich: der Inhalt folgt deinen Fingern (wie macOS)",
     "Sensitivity": "Empfindlichkeit", "Higher = less finger travel per workspace": "Höher = weniger Fingerweg pro Arbeitsfläche",
     "Activation distance (mm)": "Aktivierungsdistanz (mm)", "Finger travel before a swipe starts": "Fingerweg, bevor ein Wischen beginnt",
     "Desktop gesture fingers": "Finger der Desktop-Geste", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Finger, die der Desktop für einen Arbeitsflächen-Wisch erwartet: 4 bei COSMIC, 3 bei GNOME",
-    "Axis": "Achse", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Richtung, in der dein Desktop Arbeitsflächen anordnet. Beide: auf die erste Richtung festlegen und den Desktop entscheiden lassen (GNOME: vertikal = Übersicht)",
+    "Axis": "Achse", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Richtung, in der dein Desktop die Arbeitsfläche wechselt. Automatisch erkennen folgt dem Desktop (jetzt: {axis}). Beide: auf die erste Richtung festlegen und den Desktop entscheiden lassen (GNOME, KDE: vertikal = Übersicht)",
     "Desktop touchpad natural scrolling": "Natürliches Scrollen des Desktop-Touchpads", "Leave on Auto unless the swipe goes the wrong way": "Auf Auto lassen, außer das Wischen geht in die falsche Richtung",
     "Pinch zoom": "Pinch-Zoom", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Zwei Finger, die sich spreizen oder zusammenziehen, werden zur nativen Pinch-Geste des Desktops.",
     "1.0 = same zoom as a touchpad": "1.0 = gleicher Zoom wie ein Touchpad", "Change in finger distance before a pinch starts": "Änderung des Fingerabstands, bevor ein Pinch beginnt",
@@ -465,10 +471,12 @@ CATALOG["it"] = {
     "Workspace swipe": "Scorrimento tra spazi di lavoro", "Continuous swipe that follows your fingers using the desktop's native animation.": "Scorrimento continuo che segue le dita con l'animazione nativa del desktop.",
     "Enabled": "Attivo", "Fingers on the mouse": "Dita sul mouse",
     "Natural: swipe left to go to the next workspace (macOS style)": "Naturale: scorri a sinistra per passare allo spazio di lavoro successivo (stile macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Naturale: scorri in alto per passare allo spazio di lavoro successivo (stile macOS)",
+    "Natural: content follows your fingers (macOS style)": "Naturale: il contenuto segue le dita (stile macOS)",
     "Sensitivity": "Sensibilità", "Higher = less finger travel per workspace": "Più alto = meno spostamento del dito per spazio di lavoro",
     "Activation distance (mm)": "Distanza di attivazione (mm)", "Finger travel before a swipe starts": "Spostamento del dito prima che inizi lo scorrimento",
     "Desktop gesture fingers": "Dita del gesto del desktop", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Dita che il desktop si aspetta per cambiare spazio di lavoro: 4 per COSMIC, 3 per GNOME",
-    "Axis": "Asse", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Direzione in cui il desktop dispone gli spazi di lavoro. Entrambi: blocca la prima direzione e lascia decidere al desktop (GNOME: verticale = panoramica)",
+    "Axis": "Asse", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Direzione in cui il desktop cambia spazio di lavoro. Il rilevamento automatico segue il desktop (ora: {axis}). Entrambi: blocca la prima direzione e lascia decidere al desktop (GNOME, KDE: verticale = panoramica)",
     "Desktop touchpad natural scrolling": "Scorrimento naturale del touchpad del desktop", "Leave on Auto unless the swipe goes the wrong way": "Lascia su Auto a meno che lo scorrimento vada nel verso sbagliato",
     "Pinch zoom": "Zoom con pizzico", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Due dita che si allontanano o si avvicinano diventano il gesto di pizzico nativo del desktop.",
     "1.0 = same zoom as a touchpad": "1.0 = stesso zoom di un touchpad", "Change in finger distance before a pinch starts": "Variazione della distanza tra le dita prima che inizi il pizzico",
@@ -560,10 +568,12 @@ CATALOG["pt"] = {
     "Workspace swipe": "Deslize entre áreas de trabalho", "Continuous swipe that follows your fingers using the desktop's native animation.": "Deslize contínuo que segue seus dedos usando a animação nativa do desktop.",
     "Enabled": "Ativado", "Fingers on the mouse": "Dedos no mouse",
     "Natural: swipe left to go to the next workspace (macOS style)": "Natural: deslize para a esquerda para ir à próxima área de trabalho (estilo macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Natural: deslize para cima para ir à próxima área de trabalho (estilo macOS)",
+    "Natural: content follows your fingers (macOS style)": "Natural: o conteúdo acompanha os dedos (estilo macOS)",
     "Sensitivity": "Sensibilidade", "Higher = less finger travel per workspace": "Maior = menos percurso do dedo por área de trabalho",
     "Activation distance (mm)": "Distância de ativação (mm)", "Finger travel before a swipe starts": "Percurso do dedo antes de o deslize começar",
     "Desktop gesture fingers": "Dedos do gesto do desktop", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Dedos que o desktop espera para trocar de área de trabalho: 4 no COSMIC, 3 no GNOME",
-    "Axis": "Eixo", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Direção em que o desktop organiza as áreas de trabalho. Ambos: trava na primeira direção e deixa o desktop decidir (GNOME: vertical = visão geral)",
+    "Axis": "Eixo", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Direção em que o desktop troca de área de trabalho. Detectar automaticamente segue o desktop (agora: {axis}). Ambos: trava na primeira direção e deixa o desktop decidir (GNOME, KDE: vertical = visão geral)",
     "Desktop touchpad natural scrolling": "Rolagem natural do touchpad do desktop", "Leave on Auto unless the swipe goes the wrong way": "Deixe em Auto, a menos que o deslize vá para o lado errado",
     "Pinch zoom": "Zoom com pinça", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Dois dedos se afastando ou se juntando viram o gesto de pinça nativo do desktop.",
     "1.0 = same zoom as a touchpad": "1.0 = mesmo zoom de um touchpad", "Change in finger distance before a pinch starts": "Variação da distância entre os dedos antes de a pinça começar",
@@ -655,10 +665,12 @@ CATALOG["nl"] = {
     "Workspace swipe": "Werkbladveeg", "Continuous swipe that follows your fingers using the desktop's native animation.": "Doorlopende veeg die je vingers volgt met de eigen animatie van de desktop.",
     "Enabled": "Ingeschakeld", "Fingers on the mouse": "Vingers op de muis",
     "Natural: swipe left to go to the next workspace (macOS style)": "Natuurlijk: veeg naar links voor het volgende werkblad (macOS-stijl)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Natuurlijk: veeg omhoog voor het volgende werkblad (macOS-stijl)",
+    "Natural: content follows your fingers (macOS style)": "Natuurlijk: de inhoud volgt je vingers (macOS-stijl)",
     "Sensitivity": "Gevoeligheid", "Higher = less finger travel per workspace": "Hoger = minder vingerbeweging per werkblad",
     "Activation distance (mm)": "Activeringsafstand (mm)", "Finger travel before a swipe starts": "Vingerbeweging voordat een veeg begint",
     "Desktop gesture fingers": "Vingers voor het desktopgebaar", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Vingers die de desktop verwacht voor een werkbladveeg: 4 voor COSMIC, 3 voor GNOME",
-    "Axis": "As", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Richting waarin je desktop werkbladen rangschikt. Beide: vergrendel op de eerste richting en laat de desktop beslissen (GNOME: verticaal = overzicht)",
+    "Axis": "As", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Richting waarin je desktop van werkblad wisselt. Automatisch detecteren volgt de desktop (nu: {axis}). Beide: vergrendel op de eerste richting en laat de desktop beslissen (GNOME, KDE: verticaal = overzicht)",
     "Desktop touchpad natural scrolling": "Natuurlijk scrollen van het desktop-touchpad", "Leave on Auto unless the swipe goes the wrong way": "Laat op Auto staan tenzij de veeg de verkeerde kant op gaat",
     "Pinch zoom": "Knijpzoom", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Twee vingers die uit elkaar of naar elkaar bewegen worden het eigen knijpgebaar van de desktop.",
     "1.0 = same zoom as a touchpad": "1.0 = dezelfde zoom als een touchpad", "Change in finger distance before a pinch starts": "Verandering in vingerafstand voordat een knijpgebaar begint",
@@ -750,10 +762,12 @@ CATALOG["sv"] = {
     "Workspace swipe": "Svep mellan arbetsytor", "Continuous swipe that follows your fingers using the desktop's native animation.": "Kontinuerligt svep som följer fingrarna med skrivbordets egen animation.",
     "Enabled": "Aktiverad", "Fingers on the mouse": "Fingrar på musen",
     "Natural: swipe left to go to the next workspace (macOS style)": "Naturlig: svep vänster för nästa arbetsyta (som macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Naturlig: svep uppåt för nästa arbetsyta (som macOS)",
+    "Natural: content follows your fingers (macOS style)": "Naturlig: innehållet följer fingrarna (som macOS)",
     "Sensitivity": "Känslighet", "Higher = less finger travel per workspace": "Högre = kortare fingerrörelse per arbetsyta",
     "Activation distance (mm)": "Aktiveringsavstånd (mm)", "Finger travel before a swipe starts": "Fingerrörelse innan ett svep börjar",
     "Desktop gesture fingers": "Fingrar för skrivbordsgesten", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Fingrar som skrivbordet förväntar sig för ett arbetsytesvep: 4 för COSMIC, 3 för GNOME",
-    "Axis": "Axel", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Riktningen som skrivbordet ordnar arbetsytor i. Båda: lås till den första riktningen och låt skrivbordet avgöra (GNOME: vertikal = översikt)",
+    "Axis": "Axel", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Riktningen som skrivbordet byter arbetsyta i. Identifiera automatiskt följer skrivbordet (nu: {axis}). Båda: lås till den första riktningen och låt skrivbordet avgöra (GNOME, KDE: vertikal = översikt)",
     "Desktop touchpad natural scrolling": "Naturlig rullning för skrivbordets pekplatta", "Leave on Auto unless the swipe goes the wrong way": "Lämna på Auto om inte svepet går åt fel håll",
     "Pinch zoom": "Nypzoom", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Två fingrar som förs isär eller ihop blir skrivbordets egen nypgest.",
     "1.0 = same zoom as a touchpad": "1.0 = samma zoom som en pekplatta", "Change in finger distance before a pinch starts": "Ändring av fingeravstånd innan ett nyp börjar",
@@ -845,10 +859,12 @@ CATALOG["pl"] = {
     "Workspace swipe": "Przesuwanie obszarów roboczych", "Continuous swipe that follows your fingers using the desktop's native animation.": "Ciągłe przesunięcie podążające za palcami z natywną animacją pulpitu.",
     "Enabled": "Włączone", "Fingers on the mouse": "Palce na myszy",
     "Natural: swipe left to go to the next workspace (macOS style)": "Naturalny: przesuń w lewo, aby przejść do następnego obszaru (jak w macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Naturalny: przesuń w górę, aby przejść do następnego obszaru (jak w macOS)",
+    "Natural: content follows your fingers (macOS style)": "Naturalny: zawartość podąża za palcami (jak w macOS)",
     "Sensitivity": "Czułość", "Higher = less finger travel per workspace": "Wyżej = krótsza droga palca na obszar roboczy",
     "Activation distance (mm)": "Dystans aktywacji (mm)", "Finger travel before a swipe starts": "Droga palca przed rozpoczęciem przesunięcia",
     "Desktop gesture fingers": "Palce gestu pulpitu", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Liczba palców, jakiej pulpit oczekuje przy zmianie obszaru: 4 dla COSMIC, 3 dla GNOME",
-    "Axis": "Oś", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Kierunek, w jakim pulpit układa obszary robocze. Obie: zablokuj pierwszy kierunek i pozwól zdecydować pulpitowi (GNOME: pionowo = podgląd)",
+    "Axis": "Oś", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Kierunek, w jakim pulpit przełącza obszary robocze. Wykrywanie automatyczne podąża za pulpitem (teraz: {axis}). Obie: zablokuj pierwszy kierunek i pozwól zdecydować pulpitowi (GNOME, KDE: pionowo = podgląd)",
     "Desktop touchpad natural scrolling": "Naturalne przewijanie touchpada pulpitu", "Leave on Auto unless the swipe goes the wrong way": "Zostaw Auto, chyba że przesunięcie idzie w złą stronę",
     "Pinch zoom": "Zoom szczypaniem", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Dwa palce rozsuwane lub zsuwane stają się natywnym gestem szczypania pulpitu.",
     "1.0 = same zoom as a touchpad": "1.0 = taki sam zoom jak touchpad", "Change in finger distance before a pinch starts": "Zmiana odległości palców przed rozpoczęciem szczypania",
@@ -940,10 +956,12 @@ CATALOG["cs"] = {
     "Workspace swipe": "Přejíždění mezi plochami", "Continuous swipe that follows your fingers using the desktop's native animation.": "Plynulé přejetí, které sleduje prsty s nativní animací prostředí.",
     "Enabled": "Zapnuto", "Fingers on the mouse": "Prsty na myši",
     "Natural: swipe left to go to the next workspace (macOS style)": "Přirozený: přejetím vlevo na další plochu (jako macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Přirozený: přejetím nahoru na další plochu (jako macOS)",
+    "Natural: content follows your fingers (macOS style)": "Přirozený: obsah sleduje prsty (jako macOS)",
     "Sensitivity": "Citlivost", "Higher = less finger travel per workspace": "Vyšší = kratší dráha prstu na plochu",
     "Activation distance (mm)": "Aktivační vzdálenost (mm)", "Finger travel before a swipe starts": "Dráha prstu, než přejetí začne",
     "Desktop gesture fingers": "Prsty gesta prostředí", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Počet prstů, který prostředí očekává pro přepnutí plochy: 4 u COSMIC, 3 u GNOME",
-    "Axis": "Osa", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Směr, ve kterém prostředí řadí plochy. Obě: zamknout první směr a nechat rozhodnout prostředí (GNOME: svisle = přehled)",
+    "Axis": "Osa", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Směr, ve kterém prostředí přepíná plochy. Automatické zjištění se řídí prostředím (nyní: {axis}). Obě: zamknout první směr a nechat rozhodnout prostředí (GNOME, KDE: svisle = přehled)",
     "Desktop touchpad natural scrolling": "Přirozené posouvání touchpadu v prostředí", "Leave on Auto unless the swipe goes the wrong way": "Nechte Auto, pokud přejetí nejde opačným směrem",
     "Pinch zoom": "Zoom štípnutím", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Dva prsty rozevírané nebo svírané se stanou nativním gestem štípnutí prostředí.",
     "1.0 = same zoom as a touchpad": "1.0 = stejný zoom jako touchpad", "Change in finger distance before a pinch starts": "Změna vzdálenosti prstů, než štípnutí začne",
@@ -1035,10 +1053,12 @@ CATALOG["ro"] = {
     "Workspace swipe": "Glisare între spații de lucru", "Continuous swipe that follows your fingers using the desktop's native animation.": "Glisare continuă care urmărește degetele cu animația nativă a desktopului.",
     "Enabled": "Activat", "Fingers on the mouse": "Degete pe mouse",
     "Natural: swipe left to go to the next workspace (macOS style)": "Natural: glisează la stânga pentru spațiul următor (stil macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Natural: glisează în sus pentru spațiul următor (stil macOS)",
+    "Natural: content follows your fingers (macOS style)": "Natural: conținutul urmează degetele (stil macOS)",
     "Sensitivity": "Sensibilitate", "Higher = less finger travel per workspace": "Mai mare = mai puțină deplasare a degetului per spațiu de lucru",
     "Activation distance (mm)": "Distanță de activare (mm)", "Finger travel before a swipe starts": "Deplasarea degetului înainte ca glisarea să înceapă",
     "Desktop gesture fingers": "Degete pentru gestul desktopului", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Degetele pe care desktopul le așteaptă pentru o glisare între spații: 4 pentru COSMIC, 3 pentru GNOME",
-    "Axis": "Axă", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Direcția în care desktopul aranjează spațiile de lucru. Ambele: blochează prima direcție și lasă desktopul să decidă (GNOME: vertical = prezentare generală)",
+    "Axis": "Axă", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Direcția în care desktopul schimbă spațiile de lucru. Detectarea automată urmează desktopul (acum: {axis}). Ambele: blochează prima direcție și lasă desktopul să decidă (GNOME, KDE: vertical = prezentare generală)",
     "Desktop touchpad natural scrolling": "Derulare naturală a touchpadului desktopului", "Leave on Auto unless the swipe goes the wrong way": "Lasă pe Auto dacă glisarea nu merge în direcția greșită",
     "Pinch zoom": "Zoom prin ciupire", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Două degete care se depărtează sau se apropie devin gestul nativ de ciupire al desktopului.",
     "1.0 = same zoom as a touchpad": "1.0 = același zoom ca un touchpad", "Change in finger distance before a pinch starts": "Schimbarea distanței dintre degete înainte ca ciupirea să înceapă",
@@ -1130,10 +1150,12 @@ CATALOG["el"] = {
     "Workspace swipe": "Σάρωση χώρων εργασίας", "Continuous swipe that follows your fingers using the desktop's native animation.": "Συνεχής σάρωση που ακολουθεί τα δάχτυλα με το εγγενές εφέ κίνησης της επιφάνειας εργασίας.",
     "Enabled": "Ενεργό", "Fingers on the mouse": "Δάχτυλα στο ποντίκι",
     "Natural: swipe left to go to the next workspace (macOS style)": "Φυσική: σάρωση αριστερά για τον επόμενο χώρο εργασίας (όπως στο macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Φυσική: σάρωση προς τα πάνω για τον επόμενο χώρο εργασίας (όπως στο macOS)",
+    "Natural: content follows your fingers (macOS style)": "Φυσική: το περιεχόμενο ακολουθεί τα δάχτυλά σας (όπως στο macOS)",
     "Sensitivity": "Ευαισθησία", "Higher = less finger travel per workspace": "Υψηλότερη = μικρότερη διαδρομή δακτύλου ανά χώρο εργασίας",
     "Activation distance (mm)": "Απόσταση ενεργοποίησης (mm)", "Finger travel before a swipe starts": "Διαδρομή δακτύλου πριν ξεκινήσει η σάρωση",
     "Desktop gesture fingers": "Δάχτυλα χειρονομίας επιφάνειας εργασίας", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Δάχτυλα που περιμένει η επιφάνεια εργασίας για αλλαγή χώρου: 4 για COSMIC, 3 για GNOME",
-    "Axis": "Άξονας", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Κατεύθυνση στην οποία η επιφάνεια εργασίας διατάσσει τους χώρους. Και οι δύο: κλείδωμα στην πρώτη κατεύθυνση και απόφαση από την επιφάνεια εργασίας (GNOME: κάθετα = επισκόπηση)",
+    "Axis": "Άξονας", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Κατεύθυνση στην οποία η επιφάνεια εργασίας αλλάζει χώρο εργασίας. Η αυτόματη ανίχνευση ακολουθεί την επιφάνεια εργασίας (τώρα: {axis}). Και οι δύο: κλείδωμα στην πρώτη κατεύθυνση και απόφαση από την επιφάνεια εργασίας (GNOME, KDE: κάθετα = επισκόπηση)",
     "Desktop touchpad natural scrolling": "Φυσική κύλιση touchpad επιφάνειας εργασίας", "Leave on Auto unless the swipe goes the wrong way": "Αφήστε Αυτόματο εκτός αν η σάρωση πάει ανάποδα",
     "Pinch zoom": "Ζουμ με τσίμπημα", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Δύο δάχτυλα που απομακρύνονται ή πλησιάζουν γίνονται η εγγενής χειρονομία τσιμπήματος της επιφάνειας εργασίας.",
     "1.0 = same zoom as a touchpad": "1.0 = ίδιο ζουμ με touchpad", "Change in finger distance before a pinch starts": "Μεταβολή απόστασης δακτύλων πριν ξεκινήσει το τσίμπημα",
@@ -1225,10 +1247,12 @@ CATALOG["uk"] = {
     "Workspace swipe": "Гортання робочих просторів", "Continuous swipe that follows your fingers using the desktop's native animation.": "Безперервне гортання, що слідує за пальцями з рідною анімацією стільниці.",
     "Enabled": "Увімкнено", "Fingers on the mouse": "Пальців на миші",
     "Natural: swipe left to go to the next workspace (macOS style)": "Природний: гортання вліво переходить до наступного простору (як у macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Природний: гортання вгору переходить до наступного простору (як у macOS)",
+    "Natural: content follows your fingers (macOS style)": "Природний: вміст рухається за пальцями (як у macOS)",
     "Sensitivity": "Чутливість", "Higher = less finger travel per workspace": "Вище = менший шлях пальця на один простір",
     "Activation distance (mm)": "Відстань активації (мм)", "Finger travel before a swipe starts": "Шлях пальця до початку гортання",
     "Desktop gesture fingers": "Пальці жесту стільниці", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Скільки пальців стільниця очікує для гортання просторів: 4 для COSMIC, 3 для GNOME",
-    "Axis": "Вісь", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Напрямок, у якому стільниця розташовує простори. Обидві: зафіксувати перший напрямок і дати стільниці вирішити (GNOME: вертикально = огляд)",
+    "Axis": "Вісь", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Напрямок, у якому стільниця перемикає простори. Автовизначення слідує за стільницею (зараз: {axis}). Обидві: зафіксувати перший напрямок і дати стільниці вирішити (GNOME, KDE: вертикально = огляд)",
     "Desktop touchpad natural scrolling": "Природне прокручування тачпада стільниці", "Leave on Auto unless the swipe goes the wrong way": "Залиште Авто, якщо гортання не йде не в той бік",
     "Pinch zoom": "Масштабування щипком", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Два пальці, що розходяться чи сходяться, стають рідним жестом щипка стільниці.",
     "1.0 = same zoom as a touchpad": "1.0 = таке ж масштабування, як у тачпада", "Change in finger distance before a pinch starts": "Зміна відстані між пальцями до початку щипка",
@@ -1320,10 +1344,12 @@ CATALOG["ru"] = {
     "Workspace swipe": "Перелистывание рабочих столов", "Continuous swipe that follows your fingers using the desktop's native animation.": "Непрерывный свайп, следующий за пальцами с родной анимацией рабочего стола.",
     "Enabled": "Включено", "Fingers on the mouse": "Пальцев на мыши",
     "Natural: swipe left to go to the next workspace (macOS style)": "Естественное: свайп влево переходит к следующему рабочему столу (как в macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Естественное: свайп вверх переходит к следующему рабочему столу (как в macOS)",
+    "Natural: content follows your fingers (macOS style)": "Естественное: содержимое следует за пальцами (как в macOS)",
     "Sensitivity": "Чувствительность", "Higher = less finger travel per workspace": "Выше = меньший путь пальца на один рабочий стол",
     "Activation distance (mm)": "Расстояние активации (мм)", "Finger travel before a swipe starts": "Путь пальца до начала свайпа",
     "Desktop gesture fingers": "Пальцы жеста рабочего стола", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Сколько пальцев рабочий стол ожидает для свайпа между столами: 4 для COSMIC, 3 для GNOME",
-    "Axis": "Ось", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Направление, в котором рабочий стол располагает столы. Обе: зафиксировать первое направление и дать решать рабочему столу (GNOME: вертикально = обзор)",
+    "Axis": "Ось", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Направление, в котором рабочий стол переключает столы. Автоопределение следует за рабочим столом (сейчас: {axis}). Обе: зафиксировать первое направление и дать решать рабочему столу (GNOME, KDE: вертикально = обзор)",
     "Desktop touchpad natural scrolling": "Естественная прокрутка тачпада рабочего стола", "Leave on Auto unless the swipe goes the wrong way": "Оставьте Авто, если свайп не идёт не в ту сторону",
     "Pinch zoom": "Масштабирование щипком", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Два пальца, расходящиеся или сходящиеся, становятся родным жестом щипка рабочего стола.",
     "1.0 = same zoom as a touchpad": "1.0 = такой же зум, как у тачпада", "Change in finger distance before a pinch starts": "Изменение расстояния между пальцами до начала щипка",
@@ -1415,10 +1441,12 @@ CATALOG["tr"] = {
     "Workspace swipe": "Çalışma alanı kaydırma", "Continuous swipe that follows your fingers using the desktop's native animation.": "Masaüstünün yerel animasyonuyla parmaklarınızı izleyen sürekli kaydırma.",
     "Enabled": "Etkin", "Fingers on the mouse": "Faredeki parmak sayısı",
     "Natural: swipe left to go to the next workspace (macOS style)": "Doğal: sonraki çalışma alanı için sola kaydırın (macOS tarzı)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Doğal: sonraki çalışma alanı için yukarı kaydırın (macOS tarzı)",
+    "Natural: content follows your fingers (macOS style)": "Doğal: içerik parmaklarınızı izler (macOS tarzı)",
     "Sensitivity": "Hassasiyet", "Higher = less finger travel per workspace": "Yüksek = çalışma alanı başına daha az parmak hareketi",
     "Activation distance (mm)": "Etkinleşme mesafesi (mm)", "Finger travel before a swipe starts": "Kaydırma başlamadan önceki parmak hareketi",
     "Desktop gesture fingers": "Masaüstü hareketi parmak sayısı", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Masaüstünün çalışma alanı kaydırması için beklediği parmak sayısı: COSMIC için 4, GNOME için 3",
-    "Axis": "Eksen", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Masaüstünüzün çalışma alanlarını dizdiği yön. Her ikisi: ilk yöne kilitle ve kararı masaüstüne bırak (GNOME: dikey = genel bakış)",
+    "Axis": "Eksen", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Masaüstünüzün çalışma alanları arasında geçiş yaptığı yön. Otomatik algıla masaüstünü izler (şu an: {axis}). Her ikisi: ilk yöne kilitle ve kararı masaüstüne bırak (GNOME, KDE: dikey = genel bakış)",
     "Desktop touchpad natural scrolling": "Masaüstü dokunmatik yüzey doğal kaydırması", "Leave on Auto unless the swipe goes the wrong way": "Kaydırma ters yöne gitmiyorsa Otomatik'te bırakın",
     "Pinch zoom": "Sıkıştırarak yakınlaştırma", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Birbirinden uzaklaşan veya yaklaşan iki parmak masaüstünün yerel sıkıştırma hareketine dönüşür.",
     "1.0 = same zoom as a touchpad": "1.0 = dokunmatik yüzeyle aynı yakınlaştırma", "Change in finger distance before a pinch starts": "Sıkıştırma başlamadan önceki parmak mesafesi değişimi",
@@ -1510,10 +1538,12 @@ CATALOG["ar"] = {
     "Workspace swipe": "تمرير مساحات العمل", "Continuous swipe that follows your fingers using the desktop's native animation.": "تمرير متواصل يتبع أصابعك بحركة سطح المكتب الأصلية.",
     "Enabled": "مفعّل", "Fingers on the mouse": "الأصابع على الفأرة",
     "Natural: swipe left to go to the next workspace (macOS style)": "طبيعي: مرّر يسارًا للانتقال إلى مساحة العمل التالية (بأسلوب macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "طبيعي: مرّر للأعلى للانتقال إلى مساحة العمل التالية (بأسلوب macOS)",
+    "Natural: content follows your fingers (macOS style)": "طبيعي: يتبع المحتوى أصابعك (بأسلوب macOS)",
     "Sensitivity": "الحساسية", "Higher = less finger travel per workspace": "أعلى = مسافة إصبع أقل لكل مساحة عمل",
     "Activation distance (mm)": "مسافة التفعيل (مم)", "Finger travel before a swipe starts": "مسافة حركة الإصبع قبل بدء التمرير",
     "Desktop gesture fingers": "أصابع إيماءة سطح المكتب", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "عدد الأصابع الذي يتوقعه سطح المكتب لتمرير مساحات العمل: 4 لـ COSMIC و3 لـ GNOME",
-    "Axis": "المحور", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "الاتجاه الذي يرتّب به سطح المكتب مساحات العمل. كلاهما: تثبيت الاتجاه الأول وترك القرار لسطح المكتب (GNOME: عمودي = نظرة عامة)",
+    "Axis": "المحور", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "الاتجاه الذي ينتقل به سطح المكتب بين مساحات العمل. الاكتشاف التلقائي يتبع سطح المكتب (حاليًا: {axis}). كلاهما: تثبيت الاتجاه الأول وترك القرار لسطح المكتب (GNOME، KDE: عمودي = نظرة عامة)",
     "Desktop touchpad natural scrolling": "التمرير الطبيعي للوحة لمس سطح المكتب", "Leave on Auto unless the swipe goes the wrong way": "اتركه على تلقائي ما لم يذهب التمرير في الاتجاه الخاطئ",
     "Pinch zoom": "التكبير بالقرص", "Two fingers moving apart or together become the desktop's native pinch gesture.": "إصبعان يتباعدان أو يتقاربان يصبحان إيماءة القرص الأصلية لسطح المكتب.",
     "1.0 = same zoom as a touchpad": "1.0 = نفس تكبير لوحة اللمس", "Change in finger distance before a pinch starts": "تغيّر المسافة بين الإصبعين قبل بدء القرص",
@@ -1605,10 +1635,12 @@ CATALOG["hi"] = {
     "Workspace swipe": "वर्कस्पेस स्वाइप", "Continuous swipe that follows your fingers using the desktop's native animation.": "डेस्कटॉप के नेटिव एनिमेशन के साथ आपकी उंगलियों का पीछा करने वाला निरंतर स्वाइप।",
     "Enabled": "सक्षम", "Fingers on the mouse": "माउस पर उंगलियाँ",
     "Natural: swipe left to go to the next workspace (macOS style)": "नेचुरल: अगले वर्कस्पेस पर जाने के लिए बाएँ स्वाइप करें (macOS शैली)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "नेचुरल: अगले वर्कस्पेस पर जाने के लिए ऊपर स्वाइप करें (macOS शैली)",
+    "Natural: content follows your fingers (macOS style)": "नेचुरल: सामग्री आपकी उँगलियों के साथ चलती है (macOS शैली)",
     "Sensitivity": "संवेदनशीलता", "Higher = less finger travel per workspace": "अधिक = प्रति वर्कस्पेस उंगली की कम दूरी",
     "Activation distance (mm)": "सक्रियण दूरी (mm)", "Finger travel before a swipe starts": "स्वाइप शुरू होने से पहले उंगली की दूरी",
     "Desktop gesture fingers": "डेस्कटॉप जेस्चर की उंगलियाँ", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "वर्कस्पेस स्वाइप के लिए डेस्कटॉप जितनी उंगलियाँ चाहता है: COSMIC के लिए 4, GNOME के लिए 3",
-    "Axis": "अक्ष", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "वह दिशा जिसमें आपका डेस्कटॉप वर्कस्पेस सजाता है। दोनों: पहली दिशा पर लॉक करें और डेस्कटॉप को तय करने दें (GNOME: लंबवत = ओवरव्यू)",
+    "Axis": "अक्ष", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "वह दिशा जिसमें आपका डेस्कटॉप वर्कस्पेस बदलता है। स्वतः पहचान डेस्कटॉप का अनुसरण करती है (अभी: {axis})। दोनों: पहली दिशा पर लॉक करें और डेस्कटॉप को तय करने दें (GNOME, KDE: लंबवत = ओवरव्यू)",
     "Desktop touchpad natural scrolling": "डेस्कटॉप टचपैड नेचुरल स्क्रॉलिंग", "Leave on Auto unless the swipe goes the wrong way": "जब तक स्वाइप उल्टी दिशा में न जाए, ऑटो पर रखें",
     "Pinch zoom": "पिंच ज़ूम", "Two fingers moving apart or together become the desktop's native pinch gesture.": "दो उंगलियाँ दूर या पास होने पर डेस्कटॉप का नेटिव पिंच जेस्चर बन जाती हैं।",
     "1.0 = same zoom as a touchpad": "1.0 = टचपैड जितना ही ज़ूम", "Change in finger distance before a pinch starts": "पिंच शुरू होने से पहले उंगलियों की दूरी में बदलाव",
@@ -1700,10 +1732,12 @@ CATALOG["zh"] = {
     "Workspace swipe": "工作区滑动", "Continuous swipe that follows your fingers using the desktop's native animation.": "跟随手指的连续滑动，使用桌面的原生动画。",
     "Enabled": "启用", "Fingers on the mouse": "鼠标上的手指数",
     "Natural: swipe left to go to the next workspace (macOS style)": "自然：向左滑动前往下一个工作区（macOS 风格）",
+    "Natural: swipe up to go to the next workspace (macOS style)": "自然：向上滑动前往下一个工作区（macOS 风格）",
+    "Natural: content follows your fingers (macOS style)": "自然：内容跟随手指移动（macOS 风格）",
     "Sensitivity": "灵敏度", "Higher = less finger travel per workspace": "越高 = 每个工作区所需的手指移动越少",
     "Activation distance (mm)": "触发距离（mm）", "Finger travel before a swipe starts": "滑动开始前的手指移动距离",
     "Desktop gesture fingers": "桌面手势手指数", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "桌面切换工作区所需的手指数：COSMIC 为 4，GNOME 为 3",
-    "Axis": "轴", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "桌面排列工作区的方向。双轴：锁定首个方向并交由桌面决定（GNOME：垂直 = 概览）",
+    "Axis": "轴", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "桌面切换工作区的方向。自动检测跟随桌面设置（当前：{axis}）。双轴：锁定首个方向并交由桌面决定（GNOME、KDE：垂直 = 概览）",
     "Desktop touchpad natural scrolling": "桌面触控板自然滚动", "Leave on Auto unless the swipe goes the wrong way": "除非滑动方向相反，否则保持自动",
     "Pinch zoom": "捏合缩放", "Two fingers moving apart or together become the desktop's native pinch gesture.": "两指张开或合拢变成桌面的原生捏合手势。",
     "1.0 = same zoom as a touchpad": "1.0 = 与触控板相同的缩放", "Change in finger distance before a pinch starts": "捏合开始前的指间距离变化",
@@ -1795,10 +1829,12 @@ CATALOG["ja"] = {
     "Workspace swipe": "ワークスペーススワイプ", "Continuous swipe that follows your fingers using the desktop's native animation.": "デスクトップのネイティブアニメーションで指に追従する連続スワイプ。",
     "Enabled": "有効", "Fingers on the mouse": "マウス上の指の本数",
     "Natural: swipe left to go to the next workspace (macOS style)": "ナチュラル：左にスワイプで次のワークスペースへ（macOS 風）",
+    "Natural: swipe up to go to the next workspace (macOS style)": "ナチュラル：上にスワイプで次のワークスペースへ（macOS 風）",
+    "Natural: content follows your fingers (macOS style)": "ナチュラル：コンテンツが指の動きに追従します（macOS 風）",
     "Sensitivity": "感度", "Higher = less finger travel per workspace": "高いほどワークスペース 1 つあたりの指の移動が少なくなります",
     "Activation distance (mm)": "開始距離（mm）", "Finger travel before a swipe starts": "スワイプが始まるまでの指の移動量",
     "Desktop gesture fingers": "デスクトップジェスチャーの指の本数", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "ワークスペーススワイプにデスクトップが期待する本数：COSMIC は 4、GNOME は 3",
-    "Axis": "軸", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "デスクトップがワークスペースを並べる方向。両方：最初の方向に固定し、判断をデスクトップに任せます（GNOME：垂直 = オーバービュー）",
+    "Axis": "軸", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "デスクトップがワークスペースを切り替える方向。自動検出はデスクトップの設定に従います（現在：{axis}）。両方：最初の方向に固定し、判断をデスクトップに任せます（GNOME、KDE：垂直 = オーバービュー）",
     "Desktop touchpad natural scrolling": "デスクトップのタッチパッドのナチュラルスクロール", "Leave on Auto unless the swipe goes the wrong way": "スワイプが逆方向にならない限り「自動」のままに",
     "Pinch zoom": "ピンチズーム", "Two fingers moving apart or together become the desktop's native pinch gesture.": "2 本の指の開閉がデスクトップのネイティブなピンチジェスチャーになります。",
     "1.0 = same zoom as a touchpad": "1.0 = タッチパッドと同じズーム", "Change in finger distance before a pinch starts": "ピンチが始まるまでの指の間隔の変化",
@@ -1890,10 +1926,12 @@ CATALOG["ko"] = {
     "Workspace swipe": "작업 공간 스와이프", "Continuous swipe that follows your fingers using the desktop's native animation.": "데스크톱 고유 애니메이션으로 손가락을 따라가는 연속 스와이프입니다.",
     "Enabled": "사용", "Fingers on the mouse": "마우스 위 손가락 수",
     "Natural: swipe left to go to the next workspace (macOS style)": "자연스럽게: 왼쪽으로 스와이프하면 다음 작업 공간으로 (macOS 방식)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "자연스럽게: 위로 스와이프하면 다음 작업 공간으로 (macOS 방식)",
+    "Natural: content follows your fingers (macOS style)": "자연스럽게: 콘텐츠가 손가락을 따라 움직임 (macOS 방식)",
     "Sensitivity": "민감도", "Higher = less finger travel per workspace": "높을수록 작업 공간당 손가락 이동이 줄어듭니다",
     "Activation distance (mm)": "활성화 거리(mm)", "Finger travel before a swipe starts": "스와이프가 시작되기 전 손가락 이동 거리",
     "Desktop gesture fingers": "데스크톱 제스처 손가락 수", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "데스크톱이 작업 공간 스와이프에 기대하는 손가락 수: COSMIC은 4, GNOME은 3",
-    "Axis": "축", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "데스크톱이 작업 공간을 배치하는 방향. 양쪽: 첫 방향에 고정하고 데스크톱이 결정하게 함 (GNOME: 세로 = 개요)",
+    "Axis": "축", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "데스크톱이 작업 공간을 전환하는 방향. 자동 감지는 데스크톱 설정을 따름 (현재: {axis}). 양쪽: 첫 방향에 고정하고 데스크톱이 결정하게 함 (GNOME, KDE: 세로 = 개요)",
     "Desktop touchpad natural scrolling": "데스크톱 터치패드 자연 스크롤", "Leave on Auto unless the swipe goes the wrong way": "스와이프가 반대로 가지 않는 한 자동으로 두세요",
     "Pinch zoom": "핀치 줌", "Two fingers moving apart or together become the desktop's native pinch gesture.": "두 손가락을 벌리거나 모으면 데스크톱 고유의 핀치 제스처가 됩니다.",
     "1.0 = same zoom as a touchpad": "1.0 = 터치패드와 같은 줌", "Change in finger distance before a pinch starts": "핀치가 시작되기 전 손가락 간격 변화",
@@ -1985,10 +2023,12 @@ CATALOG["vi"] = {
     "Workspace swipe": "Vuốt không gian làm việc", "Continuous swipe that follows your fingers using the desktop's native animation.": "Vuốt liên tục theo ngón tay với hoạt ảnh gốc của máy tính.",
     "Enabled": "Bật", "Fingers on the mouse": "Số ngón trên chuột",
     "Natural: swipe left to go to the next workspace (macOS style)": "Tự nhiên: vuốt trái để sang không gian làm việc kế tiếp (kiểu macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Tự nhiên: vuốt lên để sang không gian làm việc kế tiếp (kiểu macOS)",
+    "Natural: content follows your fingers (macOS style)": "Tự nhiên: nội dung di chuyển theo ngón tay (kiểu macOS)",
     "Sensitivity": "Độ nhạy", "Higher = less finger travel per workspace": "Cao hơn = ngón tay di chuyển ít hơn cho mỗi không gian làm việc",
     "Activation distance (mm)": "Khoảng cách kích hoạt (mm)", "Finger travel before a swipe starts": "Quãng ngón tay di chuyển trước khi vuốt bắt đầu",
     "Desktop gesture fingers": "Số ngón của cử chỉ máy tính", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Số ngón máy tính mong đợi cho vuốt không gian làm việc: 4 với COSMIC, 3 với GNOME",
-    "Axis": "Trục", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Hướng máy tính sắp xếp không gian làm việc. Cả hai: khóa theo hướng đầu tiên và để máy tính quyết định (GNOME: dọc = tổng quan)",
+    "Axis": "Trục", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Hướng máy tính chuyển không gian làm việc. Tự phát hiện theo cài đặt của máy tính (hiện tại: {axis}). Cả hai: khóa theo hướng đầu tiên và để máy tính quyết định (GNOME, KDE: dọc = tổng quan)",
     "Desktop touchpad natural scrolling": "Cuộn tự nhiên bàn di chuột của máy tính", "Leave on Auto unless the swipe goes the wrong way": "Để Tự động trừ khi vuốt đi sai hướng",
     "Pinch zoom": "Thu phóng chụm", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Hai ngón tách ra hoặc chụm lại trở thành cử chỉ chụm gốc của máy tính.",
     "1.0 = same zoom as a touchpad": "1.0 = thu phóng như bàn di chuột", "Change in finger distance before a pinch starts": "Thay đổi khoảng cách ngón tay trước khi chụm bắt đầu",
@@ -2080,10 +2120,12 @@ CATALOG["id"] = {
     "Workspace swipe": "Geser ruang kerja", "Continuous swipe that follows your fingers using the desktop's native animation.": "Gesekan berkelanjutan yang mengikuti jari dengan animasi asli desktop.",
     "Enabled": "Aktif", "Fingers on the mouse": "Jari di mouse",
     "Natural: swipe left to go to the next workspace (macOS style)": "Alami: geser ke kiri untuk ke ruang kerja berikutnya (gaya macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "Alami: geser ke atas untuk ke ruang kerja berikutnya (gaya macOS)",
+    "Natural: content follows your fingers (macOS style)": "Alami: konten mengikuti jari Anda (gaya macOS)",
     "Sensitivity": "Sensitivitas", "Higher = less finger travel per workspace": "Lebih tinggi = jari bergerak lebih sedikit per ruang kerja",
     "Activation distance (mm)": "Jarak aktivasi (mm)", "Finger travel before a swipe starts": "Jarak gerak jari sebelum gesekan dimulai",
     "Desktop gesture fingers": "Jari gestur desktop", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "Jumlah jari yang diharapkan desktop untuk geser ruang kerja: 4 untuk COSMIC, 3 untuk GNOME",
-    "Axis": "Sumbu", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "Arah desktop menyusun ruang kerja. Keduanya: kunci ke arah pertama dan biarkan desktop memutuskan (GNOME: vertikal = ikhtisar)",
+    "Axis": "Sumbu", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "Arah desktop berpindah ruang kerja. Deteksi otomatis mengikuti desktop (sekarang: {axis}). Keduanya: kunci ke arah pertama dan biarkan desktop memutuskan (GNOME, KDE: vertikal = ikhtisar)",
     "Desktop touchpad natural scrolling": "Gulir alami touchpad desktop", "Leave on Auto unless the swipe goes the wrong way": "Biarkan Otomatis kecuali gesekan ke arah yang salah",
     "Pinch zoom": "Zoom cubit", "Two fingers moving apart or together become the desktop's native pinch gesture.": "Dua jari yang merenggang atau merapat menjadi gestur cubit asli desktop.",
     "1.0 = same zoom as a touchpad": "1.0 = zoom sama seperti touchpad", "Change in finger distance before a pinch starts": "Perubahan jarak jari sebelum cubitan dimulai",
@@ -2175,10 +2217,12 @@ CATALOG["th"] = {
     "Workspace swipe": "ปัดพื้นที่ทำงาน", "Continuous swipe that follows your fingers using the desktop's native animation.": "การปัดต่อเนื่องที่ตามนิ้วของคุณด้วยแอนิเมชันเนทีฟของเดสก์ท็อป",
     "Enabled": "เปิดใช้", "Fingers on the mouse": "จำนวนนิ้วบนเมาส์",
     "Natural: swipe left to go to the next workspace (macOS style)": "ธรรมชาติ: ปัดซ้ายเพื่อไปพื้นที่ทำงานถัดไป (แบบ macOS)",
+    "Natural: swipe up to go to the next workspace (macOS style)": "ธรรมชาติ: ปัดขึ้นเพื่อไปพื้นที่ทำงานถัดไป (แบบ macOS)",
+    "Natural: content follows your fingers (macOS style)": "ธรรมชาติ: เนื้อหาเคลื่อนตามนิ้วของคุณ (แบบ macOS)",
     "Sensitivity": "ความไว", "Higher = less finger travel per workspace": "ยิ่งสูง = นิ้วเคลื่อนน้อยลงต่อหนึ่งพื้นที่ทำงาน",
     "Activation distance (mm)": "ระยะเริ่มทำงาน (มม.)", "Finger travel before a swipe starts": "ระยะที่นิ้วเคลื่อนก่อนการปัดเริ่ม",
     "Desktop gesture fingers": "จำนวนนิ้วของท่าทางเดสก์ท็อป", "Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME": "จำนวนนิ้วที่เดสก์ท็อปต้องการสำหรับปัดพื้นที่ทำงาน: 4 สำหรับ COSMIC, 3 สำหรับ GNOME",
-    "Axis": "แกน", "Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)": "ทิศทางที่เดสก์ท็อปจัดเรียงพื้นที่ทำงาน ทั้งสอง: ล็อกตามทิศทางแรกแล้วให้เดสก์ท็อปตัดสิน (GNOME: แนวตั้ง = ภาพรวม)",
+    "Axis": "แกน", "Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)": "ทิศทางที่เดสก์ท็อปสลับพื้นที่ทำงาน การตรวจหาอัตโนมัติจะตามการตั้งค่าของเดสก์ท็อป (ตอนนี้: {axis}) ทั้งสอง: ล็อกตามทิศทางแรกแล้วให้เดสก์ท็อปตัดสิน (GNOME, KDE: แนวตั้ง = ภาพรวม)",
     "Desktop touchpad natural scrolling": "การเลื่อนธรรมชาติของทัชแพดเดสก์ท็อป", "Leave on Auto unless the swipe goes the wrong way": "ปล่อยเป็นอัตโนมัติ เว้นแต่การปัดไปผิดทาง",
     "Pinch zoom": "ซูมบีบนิ้ว", "Two fingers moving apart or together become the desktop's native pinch gesture.": "สองนิ้วที่กางออกหรือหุบเข้ากลายเป็นท่าทางบีบนิ้วเนทีฟของเดสก์ท็อป",
     "1.0 = same zoom as a touchpad": "1.0 = ซูมเท่ากับทัชแพด", "Change in finger distance before a pinch starts": "ระยะห่างนิ้วที่เปลี่ยนก่อนการบีบเริ่ม",
@@ -2240,7 +2284,7 @@ DEFAULTS = {
         "sensitivity": 0.4,
         # synthetic_fingers absent = auto (3 on GNOME, 4 elsewhere)
         "activation_mm": 2.0,
-        "axis": "horizontal",
+        "axis": "auto",
         # compositor_natural_scroll absent = auto
     },
     "pinch": {"enabled": True, "fingers": 2, "sensitivity": 1.5, "activation_mm": 3.0},
@@ -2288,6 +2332,34 @@ def desktop_settings() -> dict:
     return _DESKTOP_CACHE["value"]
 
 
+def effective_axis(cfg_axis: str) -> str:
+    """The axis swipes are replayed on: the configured one, or for "auto"
+    what the daemon detected (a daemon before 0.1.13 does not say)."""
+    if cfg_axis != "auto":
+        return cfg_axis
+    return desktop_settings().get("workspace_axis") or "horizontal"
+
+
+def axis_label(axis: str) -> str:
+    return {"horizontal": _("Horizontal"), "vertical": _("Vertical"), "both": _("Both")}.get(axis, axis)
+
+
+def direction_hint(axis: str) -> str:
+    """What "Natural" means on the axis in use."""
+    if axis == "vertical":
+        return _("Natural: swipe up to go to the next workspace (macOS style)")
+    if axis == "both":
+        return _("Natural: content follows your fingers (macOS style)")
+    return _("Natural: swipe left to go to the next workspace (macOS style)")
+
+
+def axis_hint() -> str:
+    detected = desktop_settings().get("workspace_axis")
+    return _("Direction your desktop switches workspaces in. Auto-detect follows the desktop (now: {axis}). Both: lock "
+             "to the first direction and let the desktop decide (GNOME, KDE: vertical = overview)").format(
+        axis=axis_label(detected) if detected else "?")
+
+
 def desktop_action_hint(t: str) -> str:
     combo = desktop_settings().get({"workspaces": "workspaces_combo", "apps": "apps_combo"}[t], "?")
     return _("Follows the shortcut in your desktop settings (now {combo})").format(combo=combo)
@@ -2307,6 +2379,10 @@ def ACTION_HINT(t):
 # TOML I/O (hand-rolled writer; tomllib has no dumper)
 # ---------------------------------------------------------------------------
 
+# Format version written here and by the daemon (src/config.rs CONFIG_VERSION).
+CONFIG_VERSION = 2
+
+
 def load_config() -> dict:
     cfg = {k: (dict(v) if isinstance(v, dict) else [dict(g) for g in v]) for k, v in DEFAULTS.items()}
     try:
@@ -2319,6 +2395,10 @@ def load_config() -> dict:
             cfg[section].update(data[section])
     if isinstance(data.get("gesture"), list):
         cfg["gesture"] = [dict(g) for g in data["gesture"]]
+    # Same migration as the daemon's config::migrate: up to 0.1.12 every
+    # file got axis = "horizontal" (no version key), the old default.
+    if data.get("version", 0) < CONFIG_VERSION and cfg["workspace_swipe"].get("axis") == "horizontal":
+        cfg["workspace_swipe"]["axis"] = "auto"
     return cfg
 
 
@@ -2337,6 +2417,8 @@ def dump_config(cfg: dict) -> str:
     out = [
         "# mousetouch configuration",
         "# Edit by hand or with `mousetouch-settings`. The daemon reloads on save.",
+        "",
+        f"version = {CONFIG_VERSION}",
         "",
     ]
     if not cfg["gesture"]:
@@ -2431,7 +2513,7 @@ def setting_choices() -> dict:
     return {
         ("workspace_swipe", "direction"): {"natural": _("Natural"), "inverted": _("Inverted")},
         ("workspace_swipe", "synthetic_fingers"): {None: _("Auto-detect"), 4: _("4 (COSMIC, KDE)"), 3: _("3 (GNOME)")},
-        ("workspace_swipe", "axis"): {"horizontal": _("Horizontal"), "vertical": _("Vertical"), "both": _("Both")},
+        ("workspace_swipe", "axis"): {"auto": _("Auto-detect"), "horizontal": _("Horizontal"), "vertical": _("Vertical"), "both": _("Both")},
         ("workspace_swipe", "compositor_natural_scroll"): {None: _("Auto-detect"), True: _("On"), False: _("Off")},
         ("scroll", "mode"): {"notches": _("Whole notches"), "smooth": _("Smooth steps")},
     }
@@ -2715,6 +2797,10 @@ class EventClient:
     def _emit(self, ev):
         t = ev.get("t")
         dev = ev.get("dev")
+        if t == "desktop" and isinstance(ev.get("settings"), dict):
+            # The daemon re-sends this whenever the desktop changes (e.g.
+            # COSMIC switched to vertical workspaces).
+            _DESKTOP_CACHE["value"] = ev["settings"]
         if t == "device":
             self.devices[dev] = ev
             self.names[dev] = ev.get("name", "")
@@ -3699,9 +3785,10 @@ class Window(Adw.ApplicationWindow):
                                    description=_("Continuous swipe that follows your fingers using the desktop's native animation."))
         grp.add(switch_row(_("Enabled"), None, ws["enabled"], lambda v: self._set("workspace_swipe", "enabled", v)))
         grp.add(spin_row(_("Fingers on the mouse"), None, ws["fingers"], 1, 4, 1, 0, lambda v: self._set("workspace_swipe", "fingers", v)))
-        grp.add(combo_row(_("Direction"), _("Natural: swipe left to go to the next workspace (macOS style)"),
-                          [("natural", _("Natural")), ("inverted", _("Inverted"))], ws["direction"],
-                          lambda v: self._set("workspace_swipe", "direction", v)))
+        self.direction_row = combo_row(_("Direction"), direction_hint(effective_axis(ws["axis"])),
+                                       [("natural", _("Natural")), ("inverted", _("Inverted"))], ws["direction"],
+                                       lambda v: self._set("workspace_swipe", "direction", v))
+        grp.add(self.direction_row)
         grp.add(spin_row(_("Sensitivity"), _("Higher = less finger travel per workspace"), ws["sensitivity"], 0.05, 3.0, 0.05, 2,
                          lambda v: self._set("workspace_swipe", "sensitivity", v)))
         grp.add(spin_row(_("Activation distance (mm)"), _("Finger travel before a swipe starts"), ws["activation_mm"], 0.5, 15.0, 0.5, 1,
@@ -3710,9 +3797,14 @@ class Window(Adw.ApplicationWindow):
         grp.add(combo_row(_("Desktop gesture fingers"), _("Fingers the desktop expects for a workspace swipe: 4 for COSMIC, 3 for GNOME"),
                           [("auto", _("Auto-detect")), ("4", _("4 (COSMIC, KDE)")), ("3", _("3 (GNOME)"))], "auto" if sf is None else str(sf),
                           lambda v: self._set("workspace_swipe", "synthetic_fingers", None if v == "auto" else int(v))))
-        grp.add(combo_row(_("Axis"), _("Direction your desktop arranges workspaces in. Both: lock to the first direction and let the desktop decide (GNOME: vertical = overview)"),
-                          [("horizontal", _("Horizontal")), ("vertical", _("Vertical")), ("both", _("Both"))], ws["axis"],
-                          lambda v: self._set("workspace_swipe", "axis", v)))
+        self.axis_row = combo_row(_("Axis"), axis_hint(),
+                                  [("auto", _("Auto-detect")), ("horizontal", _("Horizontal")), ("vertical", _("Vertical")), ("both", _("Both"))],
+                                  ws["axis"], self._set_axis)
+        grp.add(self.axis_row)
+        # Follow the desktop live: the daemon re-sends what it detects when
+        # it changes, e.g. COSMIC switched between horizontal and vertical.
+        app.events.add_listener(self._on_desktop_event)
+        self.connect("close-request", lambda *_a: app.events.remove_listener(self._on_desktop_event) or False)
         cns = ws.get("compositor_natural_scroll")
         grp.add(combo_row(_("Desktop touchpad natural scrolling"), _("Leave on Auto unless the swipe goes the wrong way"),
                           [("auto", _("Auto-detect")), ("true", _("On")), ("false", _("Off"))],
@@ -3904,6 +3996,18 @@ class Window(Adw.ApplicationWindow):
         new.toast.add_toast(Adw.Toast(title=_("Settings reset to defaults")))
 
     # -- state -----------------------------------------------------------
+    def _set_axis(self, value):
+        self._set("workspace_swipe", "axis", value)
+        self._refresh_axis_hints()
+
+    def _refresh_axis_hints(self):
+        self.axis_row.set_subtitle(axis_hint())
+        self.direction_row.set_subtitle(direction_hint(effective_axis(self.cfg["workspace_swipe"].get("axis", "auto"))))
+
+    def _on_desktop_event(self, ev: dict):
+        if ev.get("t") == "desktop":
+            self._refresh_axis_hints()
+
     def _set(self, section, key, value):
         if value is None:
             self.cfg[section].pop(key, None)

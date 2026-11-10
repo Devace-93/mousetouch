@@ -38,6 +38,10 @@ pub enum Event {
     Device { name: String, w_mm: f64, h_mm: f64, source: &'static str },
     /// The mouse went away.
     DeviceLost,
+    /// What the daemon detected about the desktop (also replayed to every
+    /// new client): sent again whenever it changes, e.g. the user switched
+    /// COSMIC between horizontal and vertical workspaces.
+    Desktop { settings: crate::desktop_settings::DesktopSettings },
     /// The complete set of contacts right now, plus what the engine makes of
     /// them. `state`: idle | armed | workspace | pinch | done. `pad_dx/dy` is
     /// the travel forwarded to the virtual touchpad so far (mm); `scale` the
@@ -95,6 +99,8 @@ struct Inner {
     /// The `Device` line of every attached mouse, by `dev`, replayed to
     /// clients that connect later.
     devices: Mutex<Vec<(u32, String)>>,
+    /// The latest `Desktop` line, replayed the same way.
+    desktop: Mutex<Option<String>>,
     epoch: Instant,
 }
 
@@ -120,6 +126,7 @@ impl Monitor {
                 clients: Mutex::new(Vec::new()),
                 has_clients: AtomicBool::new(false),
                 devices: Mutex::new(Vec::new()),
+                desktop: Mutex::new(None),
                 epoch: Instant::now(),
             }),
             dev: 0,
@@ -160,6 +167,9 @@ impl Monitor {
                             let mut stream = stream;
                             if let Ok(hello) = serde_json::to_string(&Event::Hello { version: env!("CARGO_PKG_VERSION") }) {
                                 let _ = stream.write_all((hello + "\n").as_bytes());
+                            }
+                            if let Some(line) = inner.desktop.lock().unwrap().as_ref() {
+                                let _ = stream.write_all(line.as_bytes());
                             }
                             for (_, line) in inner.devices.lock().unwrap().iter() {
                                 let _ = stream.write_all(line.as_bytes());
@@ -211,6 +221,14 @@ impl Monitor {
             Some(ev) => self.send(&ev),
             None => self.send(&Event::DeviceLost),
         }
+    }
+
+    /// Remember the desktop settings for clients that connect later and
+    /// announce them to the current ones.
+    pub fn set_desktop(&self, settings: &crate::desktop_settings::DesktopSettings) {
+        let ev = Event::Desktop { settings: settings.clone() };
+        *self.inner.desktop.lock().unwrap() = self.line(&ev);
+        self.send(&ev);
     }
 
     pub fn send(&self, ev: &Event) {

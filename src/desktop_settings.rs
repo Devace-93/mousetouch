@@ -4,6 +4,8 @@
 //! the application library. GNOME keeps them in dconf, COSMIC in RON files,
 //! KDE in INI files; each is watched, so a shortcut changed in the desktop's
 //! settings applies to the next gesture without a restart.
+//! The axis workspaces are laid out on is detected the same way (COSMIC
+//! lets the user switch between a horizontal and a vertical layout).
 
 use std::collections::HashMap;
 use std::path::PathBuf;
@@ -13,6 +15,7 @@ use std::time::{Duration, SystemTime};
 
 use serde::Serialize;
 
+use crate::config::Axis;
 use crate::virt::parse_combo;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
@@ -36,16 +39,22 @@ pub struct DesktopSettings {
     pub workspaces_combo: String,
     /// Shortcut that shows every installed application.
     pub apps_combo: String,
+    /// Direction(s) the desktop's own touchpad swipe understands: COSMIC
+    /// follows its workspace layout setting; GNOME and KDE switch workspaces
+    /// horizontally and open the overview vertically (`both`).
+    pub workspace_axis: Axis,
 }
 
 pub type Shared = Arc<RwLock<DesktopSettings>>;
 
 impl DesktopSettings {
     pub fn fallback(desktop: Desktop) -> Self {
-        let (synthetic_fingers, workspaces_combo, apps_combo) = match desktop {
-            Desktop::Gnome => (3, "super", "super+a"),
-            Desktop::Kde => (4, "super+w", "super"),
-            Desktop::Cosmic | Desktop::Other => (4, "super+w", "super+a"),
+        let (synthetic_fingers, workspaces_combo, apps_combo, workspace_axis) = match desktop {
+            Desktop::Gnome => (3, "super", "super+a", Axis::Both),
+            Desktop::Kde => (4, "super+w", "super", Axis::Both),
+            // cosmic-comp's default layout when no setting is stored.
+            Desktop::Cosmic => (4, "super+w", "super+a", Axis::Vertical),
+            Desktop::Other => (4, "super+w", "super+a", Axis::Horizontal),
         };
         Self {
             desktop,
@@ -53,6 +62,7 @@ impl DesktopSettings {
             natural_scroll: false,
             workspaces_combo: workspaces_combo.into(),
             apps_combo: apps_combo.into(),
+            workspace_axis,
         }
     }
 }
@@ -119,6 +129,7 @@ fn watched_files(desktop: Desktop) -> Vec<PathBuf> {
         Desktop::Cosmic => vec![
             cfg.join("cosmic/com.system76.CosmicSettings.Shortcuts/v1/custom"),
             cfg.join("cosmic/com.system76.CosmicComp/v1/input_touchpad"),
+            cfg.join("cosmic/com.system76.CosmicComp/v1/workspaces"),
         ],
         Desktop::Kde => vec![cfg.join("kglobalshortcutsrc"), cfg.join("kcminputrc")],
         Desktop::Other => Vec::new(),
@@ -137,13 +148,17 @@ pub fn detect() -> DesktopSettings {
     s
 }
 
-/// Detect now and keep the result current in the background.
-pub fn watch() -> Shared {
+/// Detect now and keep the result current in the background. `on_change`
+/// runs with the first result and after every change (the settings app
+/// follows it through the event stream).
+pub fn watch(on_change: impl Fn(&DesktopSettings) + Send + 'static) -> Shared {
     let settings = detect();
     log::info!(
-        "desktop: {:?}, swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}'",
-        settings.desktop, settings.synthetic_fingers, settings.natural_scroll, settings.workspaces_combo, settings.apps_combo
+        "desktop: {:?}, swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}",
+        settings.desktop, settings.synthetic_fingers, settings.natural_scroll, settings.workspaces_combo, settings.apps_combo,
+        settings.workspace_axis
     );
+    on_change(&settings);
     let shared = Arc::new(RwLock::new(settings));
     let files = watched_files(shared.read().unwrap().desktop);
     if files.is_empty() {
@@ -167,10 +182,12 @@ pub fn watch() -> Shared {
                 let mut cur = out.write().unwrap();
                 if *cur != fresh {
                     log::info!(
-                        "desktop settings changed: swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}'",
-                        fresh.synthetic_fingers, fresh.natural_scroll, fresh.workspaces_combo, fresh.apps_combo
+                        "desktop settings changed: swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}",
+                        fresh.synthetic_fingers, fresh.natural_scroll, fresh.workspaces_combo, fresh.apps_combo, fresh.workspace_axis
                     );
-                    *cur = fresh;
+                    *cur = fresh.clone();
+                    drop(cur);
+                    on_change(&fresh);
                 }
             }
         })
@@ -281,6 +298,9 @@ fn detect_gnome(s: &mut DesktopSettings) {
 
 fn detect_cosmic(s: &mut DesktopSettings) {
     s.natural_scroll = cosmic_natural_scroll();
+    if let Some(axis) = cosmic_workspace_axis() {
+        s.workspace_axis = axis;
+    }
     let shortcuts = cosmic_shortcuts();
     accept(shortcuts.get("System(WorkspaceOverview)").cloned(), &mut s.workspaces_combo);
     accept(shortcuts.get("System(AppLibrary)").cloned(), &mut s.apps_combo);
@@ -302,6 +322,28 @@ fn cosmic_natural_scroll() -> bool {
         }
     }
     false
+}
+
+/// COSMIC's workspace layout: the user's `workspaces` entry, else the
+/// shipped default. `None` when neither says (cosmic-comp then uses its
+/// built-in default, vertical, which `fallback` already holds).
+fn cosmic_workspace_axis() -> Option<Axis> {
+    let rel = "cosmic/com.system76.CosmicComp/v1/workspaces";
+    let mut candidates = vec![config_home().join(rel)];
+    candidates.extend(data_dirs().into_iter().map(|d| d.join(rel)));
+    candidates.iter().find_map(|p| parse_cosmic_workspace_layout(&std::fs::read_to_string(p).ok()?))
+}
+
+/// `workspace_layout: Horizontal` in a RON `WorkspaceConfig`.
+pub fn parse_cosmic_workspace_layout(text: &str) -> Option<Axis> {
+    let compact: String = text.chars().filter(|c| !c.is_whitespace()).collect();
+    if compact.contains("workspace_layout:Horizontal") {
+        Some(Axis::Horizontal)
+    } else if compact.contains("workspace_layout:Vertical") {
+        Some(Axis::Vertical)
+    } else {
+        None
+    }
 }
 
 /// Action -> combo, from the shipped defaults with the user's `custom` file
@@ -482,6 +524,18 @@ mod tests {
         assert_eq!(combo_from_kde_key("Meta+W").as_deref(), Some("super+w"));
         assert_eq!(combo_from_kde_key("Meta").as_deref(), Some("super"));
         assert_eq!(combo_from_kde_key("Ctrl+Alt+PgUp").as_deref(), Some("ctrl+alt+pageup"));
+    }
+
+    #[test]
+    fn cosmic_workspace_layout() {
+        let ron = "(\n    workspace_mode: OutputBound,\n    workspace_layout: Horizontal,\n    workspace_wraparound: true,\n)";
+        assert_eq!(parse_cosmic_workspace_layout(ron), Some(Axis::Horizontal));
+        assert_eq!(parse_cosmic_workspace_layout("(workspace_layout: Vertical)"), Some(Axis::Vertical));
+        // An entry without the key (older cosmic-comp) says nothing.
+        assert_eq!(parse_cosmic_workspace_layout("(workspace_mode: Global)"), None);
+        assert_eq!(DesktopSettings::fallback(Desktop::Cosmic).workspace_axis, Axis::Vertical);
+        assert_eq!(DesktopSettings::fallback(Desktop::Gnome).workspace_axis, Axis::Both);
+        assert_eq!(DesktopSettings::fallback(Desktop::Other).workspace_axis, Axis::Horizontal);
     }
 
     #[test]
