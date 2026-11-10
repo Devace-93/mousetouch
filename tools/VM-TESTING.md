@@ -134,6 +134,23 @@ high-resolution steps that `notches` collapses.
       `purge.sh` reports nothing left.
 - [ ] Revert the VM to `fresh`.
 
+## Recording the site demo
+
+`site/demo.webm` / `site/demo.gif` were recorded in a Pop!_OS 24.04 VM
+(COSMIC) with no real mouse: `mousetouch fake-mouse demo` creates an
+emulated Magic Mouse and plays a slow, eased sequence through the running
+daemon (swipe to the next workspace, pinch out and in, double tap twice,
+swipe back), so the settings app's live view and the desktop react exactly
+as with the real device.
+
+Scene: the detached live view (Live view → pop-out button) made *sticky*
+(window menu → Sticky window) on the right, a file manager on one
+workspace and Firefox on the next one (pinch zoom needs an app that
+handles touchpad pinch; the pointer sits over the page). Frames come from
+QEMU's QMP `screendump` (~30 fps, written to `/dev/shm` and shrunk to JPEG
+as they arrive), then resampled to 30 fps VP9 and a 12 fps GIF, cropped
+above the dock.
+
 ## Recording results
 
 One row per VM in the PR or issue that triggered the run:
