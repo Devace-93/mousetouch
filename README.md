@@ -15,8 +15,8 @@ Out of the box:
 |----------------------------|---------------------------------------------------------------|
 | 2-finger swipe             | Switch workspace, animated and following your fingers: left/right, or up/down when the desktop stacks workspaces vertically (COSMIC's default) |
 | 2-finger pinch             | Native pinch zoom in apps that support it (browsers, viewers) |
-| 2-finger double tap        | Show the workspaces (`Super+W` on COSMIC, `Super` on GNOME)   |
-| 3-finger tap               | Show all applications (`Super+A` app library / app grid)      |
+| 2-finger double tap        | Show the workspaces (`Super+W` on COSMIC, `Super` on GNOME, `Super+Down` multitasking view on Pantheon) |
+| 3-finger tap               | Show all applications (`Super+A` app library / app grid, `Super+Space` applications menu on Pantheon) |
 | 1-finger scroll, clicks    | Unchanged, except the backwards jump a scroll often starts with is filtered out |
 
 Extra taps and swipes (3 fingers, vertical swipes, ...) can be mapped to
@@ -62,7 +62,10 @@ daemon:
 
 Nothing is patched in the kernel or the compositor, so it survives updates
 and works on any compositor with libinput touchpad gestures (COSMIC, GNOME,
-KDE, niri, ...).
+KDE, niri, ...). On elementary OS (Pantheon) the X11 session is covered too:
+there Touchégg reads the same virtual touchpad for Gala, and the daemon
+stretches the swipe so that a normal swipe on the mouse travels far enough
+for Gala to keep the new workspace.
 
 ## Install
 
@@ -199,12 +202,13 @@ The same options exist in the TOML file:
   horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force it.
 - **Sensitivity** — finger travel per workspace.
 - **Desktop gesture fingers** — *Auto-detect* follows the running desktop
-  (3 on GNOME, 4 on COSMIC/KDE); 3 or 4 force it.
+  (3 on GNOME, 4 on COSMIC/KDE, and on Pantheon whichever of 3 or 4 fingers
+  is set to switch workspaces in System Settings); 3 or 4 force it.
 - **Gestures** — add rows like *Tap · 3 fingers → Click middle* or
   *Swipe · 2 fingers · up → super+w*. The two default rows, *Workspaces
   overview (auto)* and *App library (auto)*, press whatever shortcut your
   desktop has for those: the daemon reads it from the desktop's settings
-  (GNOME, COSMIC, KDE) and picks up changes as you make them.
+  (GNOME, COSMIC, KDE, Pantheon) and picks up changes as you make them.
 
 ```toml
 [workspace_swipe]
@@ -381,6 +385,7 @@ Rows marked *reported* come from users and have not been reproduced yet.
 |------------------------------------------|---------------------|---------------------|------------------------------------------------------|----------------------------------------|----------|
 | Pop!_OS 24.04 LTS                        | COSMIC · Wayland    | 6.17.9 · 5.72       | Qualcomm QCA61x4 (USB) · Lenovo IdeaPad Gaming 3     | one-line (.deb), Homebrew, `install.sh` | works    |
 | Zorin OS 17                              | GNOME · Wayland     | —                   | built-in · iMac (2017)                               | one-line (.deb)                        | reported |
+| elementary OS 7.1                        | Pantheon · X11      | 6.8.0 · 5.64        | Qualcomm QCA61x4 (USB) · Lenovo IdeaPad Gaming 3     | built from source                      | works    |
 
 Tested somewhere else? Open an issue with the mouse ids (`mousetouch probe`),
 distro, desktop, `uname -r`, `bluetoothctl --version` and how you installed.

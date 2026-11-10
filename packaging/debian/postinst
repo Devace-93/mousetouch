@@ -8,7 +8,10 @@ case "$1" in
         modprobe uinput 2>/dev/null || true
         if command -v udevadm >/dev/null 2>&1; then
             udevadm control --reload-rules || true
-            udevadm trigger --subsystem-match=input --subsystem-match=misc || true
+            udevadm trigger --subsystem-match=input --subsystem-match=hidraw --subsystem-match=misc || true
+            # The service starts below: let the new permissions land first, or
+            # the daemon finds the hidraw node closed and falls back to evdev.
+            udevadm settle --timeout=5 || true
         fi
         if command -v systemctl >/dev/null 2>&1; then
             systemctl --global enable mousetouch.service >/dev/null 2>&1 || true

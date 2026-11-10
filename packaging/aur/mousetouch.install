@@ -1,7 +1,7 @@
 post_install() {
   modprobe uinput 2>/dev/null || true
   udevadm control --reload-rules 2>/dev/null || true
-  udevadm trigger --subsystem-match=input --subsystem-match=misc 2>/dev/null || true
+  udevadm trigger --subsystem-match=input --subsystem-match=hidraw --subsystem-match=misc 2>/dev/null || true
   echo ">> Enable the daemon for your user:  systemctl --user enable --now mousetouch"
 }
 

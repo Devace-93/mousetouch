@@ -565,7 +565,7 @@ impl Engine {
             SwipeState::Workspace { sign, axis } => {
                 let dx = c.0 - session.last_centroid.0;
                 let dy = (c.1 - session.last_centroid.1) * self.swipe_gain_y;
-                let sens = self.cfg.read().unwrap().workspace_swipe.sensitivity;
+                let sens = self.cfg.read().unwrap().workspace_swipe.sensitivity * self.desktop.read().unwrap().swipe_gain as f64;
                 let (vx, vy) = match axis {
                     Axis::Horizontal => (dx * sens * sign, 0.0),
                     Axis::Vertical => (0.0, dy * sens * sign),
@@ -638,9 +638,10 @@ impl Engine {
                         };
                         let mut sh = self.shared.lock().unwrap();
                         sh.touchpad.begin(ws.synthetic_fingers.unwrap_or(desktop.synthetic_fingers) as usize)?;
+                        let sens = ws.sensitivity * desktop.swipe_gain as f64;
                         let (vx, vy) = match axis {
-                            Axis::Horizontal => (dx * ws.sensitivity * sign, 0.0),
-                            _ => (0.0, dy * ws.sensitivity * sign),
+                            Axis::Horizontal => (dx * sens * sign, 0.0),
+                            _ => (0.0, dy * sens * sign),
                         };
                         sh.touchpad.move_by(vx, vy)?;
                         drop(sh);

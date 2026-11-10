@@ -3,7 +3,8 @@
 //! natural scrolling, and the shortcuts that open the workspaces overview and
 //! the application library. GNOME keeps them in dconf, COSMIC in RON files,
 //! KDE in INI files; each is watched, so a shortcut changed in the desktop's
-//! settings applies to the next gesture without a restart.
+//! settings applies to the next gesture without a restart. Pantheon
+//! (elementary OS) keeps them in dconf like GNOME, under Gala's own keys.
 //! The axis workspaces are laid out on is detected the same way (COSMIC
 //! lets the user switch between a horizontal and a vertical layout).
 
@@ -24,6 +25,7 @@ pub enum Desktop {
     Cosmic,
     Gnome,
     Kde,
+    Pantheon,
     Other,
 }
 
@@ -44,7 +46,19 @@ pub struct DesktopSettings {
     /// KDE also open the overview with a vertical swipe, but `both` is left
     /// to an explicit choice until that is tested on real installs.
     pub workspace_axis: Axis,
+    /// Multiplier on the workspace swipe's travel on the virtual touchpad.
+    /// 1 where the compositor reads libinput's gesture deltas itself. On
+    /// Pantheon's X11 session Touchégg recognises the swipe and measures it
+    /// against the size of the touchpad, and Gala undoes a switch that ends
+    /// under 20 % of that: on our large virtual pad a normal swipe on the
+    /// mouse never got there, so the workspace changed and came back.
+    pub swipe_gain: u8,
 }
+
+/// `swipe_gain` when Touchégg drives the gesture: with the default
+/// sensitivity (0.4) a 25 mm swipe on the mouse becomes 40 mm on the pad,
+/// the shortest travel Gala kept in testing (elementary OS 7.1, Touchégg 2.0.14).
+const TOUCHEGG_SWIPE_GAIN: u8 = 4;
 
 pub type Shared = Arc<RwLock<DesktopSettings>>;
 
@@ -55,6 +69,8 @@ impl DesktopSettings {
             Desktop::Kde => (4, "super+w", "super", Axis::Horizontal),
             // cosmic-comp's default layout when no setting is stored.
             Desktop::Cosmic => (4, "super+w", "super+a", Axis::Vertical),
+            // Gala: multitasking view and the applications menu.
+            Desktop::Pantheon => (4, "super+down", "super+space", Axis::Horizontal),
             Desktop::Other => (4, "super+w", "super+a", Axis::Horizontal),
         };
         Self {
@@ -64,6 +80,7 @@ impl DesktopSettings {
             workspaces_combo: workspaces_combo.into(),
             apps_combo: apps_combo.into(),
             workspace_axis,
+            swipe_gain: 1,
         }
     }
 }
@@ -82,6 +99,9 @@ pub fn current_desktop() -> Desktop {
 fn classify(name: &str) -> Desktop {
     if name.contains("cosmic") {
         Desktop::Cosmic
+    } else if name.contains("pantheon") {
+        // Before GNOME: some sessions announce `Pantheon:GNOME`.
+        Desktop::Pantheon
     } else if name.contains("gnome") || name.contains("ubuntu") {
         Desktop::Gnome
     } else if name.contains("kde") || name.contains("plasma") {
@@ -100,10 +120,19 @@ fn desktop_from_processes() -> Desktop {
             "cosmic-comp" => return Desktop::Cosmic,
             "gnome-shell" => return Desktop::Gnome,
             "kwin_wayland" | "kwin_x11" => return Desktop::Kde,
+            "gala" => return Desktop::Pantheon,
             _ => {}
         }
     }
     Desktop::Other
+}
+
+/// Is a process with this `comm` running?
+fn process_running(name: &str) -> bool {
+    let Ok(procs) = std::fs::read_dir("/proc") else { return false };
+    procs
+        .flatten()
+        .any(|entry| std::fs::read_to_string(entry.path().join("comm")).map_or(false, |comm| comm.trim() == name))
 }
 
 fn home() -> PathBuf {
@@ -126,7 +155,7 @@ fn data_dirs() -> Vec<PathBuf> {
 fn watched_files(desktop: Desktop) -> Vec<PathBuf> {
     let cfg = config_home();
     match desktop {
-        Desktop::Gnome => vec![cfg.join("dconf/user")],
+        Desktop::Gnome | Desktop::Pantheon => vec![cfg.join("dconf/user")],
         Desktop::Cosmic => vec![
             cfg.join("cosmic/com.system76.CosmicSettings.Shortcuts/v1/custom"),
             cfg.join("cosmic/com.system76.CosmicComp/v1/input_touchpad"),
@@ -144,6 +173,7 @@ pub fn detect() -> DesktopSettings {
         Desktop::Gnome => detect_gnome(&mut s),
         Desktop::Cosmic => detect_cosmic(&mut s),
         Desktop::Kde => detect_kde(&mut s),
+        Desktop::Pantheon => detect_pantheon(&mut s),
         Desktop::Other => {}
     }
     s
@@ -155,9 +185,9 @@ pub fn detect() -> DesktopSettings {
 pub fn watch(on_change: impl Fn(&DesktopSettings) + Send + 'static) -> Shared {
     let settings = detect();
     log::info!(
-        "desktop: {:?}, swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}",
+        "desktop: {:?}, swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}, swipe gain {}",
         settings.desktop, settings.synthetic_fingers, settings.natural_scroll, settings.workspaces_combo, settings.apps_combo,
-        settings.workspace_axis
+        settings.workspace_axis, settings.swipe_gain
     );
     on_change(&settings);
     let shared = Arc::new(RwLock::new(settings));
@@ -291,6 +321,49 @@ fn detect_gnome(s: &mut DesktopSettings) {
         .and_then(|v| first_quoted(&v))
         .and_then(|a| combo_from_gtk_accel(&a));
     accept(apps, &mut s.apps_combo);
+}
+
+// ---------------------------------------------------------------------------
+// Pantheon (elementary OS): dconf through gsettings, Gala's keys
+// ---------------------------------------------------------------------------
+
+fn detect_pantheon(s: &mut DesktopSettings) {
+    if let Some(v) = gsettings("org.gnome.desktop.peripherals.touchpad", "natural-scroll") {
+        s.natural_scroll = v == "true";
+    }
+    // Gala reuses mutter's `show-desktop` for its multitasking view and
+    // `panel-main-menu` for the applications menu.
+    let binding = |key: &str| {
+        gsettings("org.gnome.desktop.wm.keybindings", key).and_then(|v| first_quoted(&v)).and_then(|a| combo_from_gtk_accel(&a))
+    };
+    accept(binding("show-desktop"), &mut s.workspaces_combo);
+    accept(binding("panel-main-menu"), &mut s.apps_combo);
+    let gesture = |key: &str| gsettings("io.elementary.desktop.wm.gestures", key);
+    if let Some(n) = pantheon_swipe_fingers(
+        gesture("three-finger-swipe-horizontal").as_deref(),
+        gesture("four-finger-swipe-horizontal").as_deref(),
+    ) {
+        s.synthetic_fingers = n;
+    }
+    // The X11 session: Touchégg recognises touchpad gestures for Gala.
+    if process_running("touchegg") {
+        s.swipe_gain = TOUCHEGG_SWIPE_GAIN;
+    }
+}
+
+/// Contacts that switch workspaces, from the two `*-finger-swipe-horizontal`
+/// values of `io.elementary.desktop.wm.gestures` (`'switch-to-workspace'` or
+/// `'none'`). Four when both do: three fingers also maximise with a swipe up.
+/// `None` when neither is set to it or the schema is missing.
+pub fn pantheon_swipe_fingers(three: Option<&str>, four: Option<&str>) -> Option<u8> {
+    let switches = |v: Option<&str>| v.map_or(false, |v| v.trim().trim_matches('\'') == "switch-to-workspace");
+    if switches(four) {
+        Some(4)
+    } else if switches(three) {
+        Some(3)
+    } else {
+        None
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -537,6 +610,24 @@ mod tests {
         assert_eq!(DesktopSettings::fallback(Desktop::Cosmic).workspace_axis, Axis::Vertical);
         assert_eq!(DesktopSettings::fallback(Desktop::Gnome).workspace_axis, Axis::Horizontal);
         assert_eq!(DesktopSettings::fallback(Desktop::Other).workspace_axis, Axis::Horizontal);
+    }
+
+    #[test]
+    fn pantheon() {
+        assert_eq!(classify("pantheon"), Desktop::Pantheon);
+        assert_eq!(classify("pantheon:gnome"), Desktop::Pantheon);
+        assert_eq!(classify("ubuntu:gnome"), Desktop::Gnome);
+        let s = DesktopSettings::fallback(Desktop::Pantheon);
+        assert_eq!((s.synthetic_fingers, s.workspaces_combo.as_str(), s.apps_combo.as_str()), (4, "super+down", "super+space"));
+        assert_eq!((s.workspace_axis, s.swipe_gain), (Axis::Horizontal, 1));
+        assert!(parse_combo(&s.workspaces_combo).is_ok() && parse_combo(&s.apps_combo).is_ok());
+        // Gala's defaults as gsettings prints them.
+        assert_eq!(combo_from_gtk_accel(&first_quoted("['<Super>Down', '<Super>s']").unwrap()).as_deref(), Some("super+down"));
+        assert_eq!(combo_from_gtk_accel(&first_quoted("['<Super>space', '<Alt>F2']").unwrap()).as_deref(), Some("super+space"));
+        assert_eq!(pantheon_swipe_fingers(Some("'switch-to-workspace'"), Some("'switch-to-workspace'")), Some(4));
+        assert_eq!(pantheon_swipe_fingers(Some("'switch-to-workspace'"), Some("'none'")), Some(3));
+        assert_eq!(pantheon_swipe_fingers(Some("'none'"), Some("'none'")), None);
+        assert_eq!(pantheon_swipe_fingers(None, None), None);
     }
 
     #[test]

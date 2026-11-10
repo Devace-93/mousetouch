@@ -25,7 +25,7 @@ sudo install -Dm644 packaging/mousetouch.conf /etc/modules-load.d/mousetouch.con
 sudo install -Dm644 packaging/mousetouch.service /etc/systemd/user/mousetouch.service
 sudo modprobe uinput || true
 sudo udevadm control --reload-rules
-sudo udevadm trigger --subsystem-match=input --subsystem-match=misc
+sudo udevadm trigger --subsystem-match=input --subsystem-match=hidraw --subsystem-match=misc
 command -v update-desktop-database >/dev/null && sudo update-desktop-database "$PREFIX/share/applications" || true
 command -v gtk-update-icon-cache >/dev/null && sudo gtk-update-icon-cache -q "$PREFIX/share/icons/hicolor" || true
 
