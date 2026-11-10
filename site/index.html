@@ -148,11 +148,17 @@ sudo dnf install ./mousetouch-0.1.16-1.x86_64.rpm
         <p data-i18n-html="rpmDeps">Settings app dependencies on Fedora: <code>python3-gobject gtk4 libadwaita</code>.</p>
       </div>
       <div class="panel-tab" data-tab="brew">
-        <p data-i18n="brewP">Homebrew on Linux. The formula ships the binaries; follow the printed caveats to install the udev rule once (needs sudo), then start the service.</p>
+        <p data-i18n="brewP">Homebrew on Linux. Install, or upgrade an existing install:</p>
         <pre><code>brew trust Devace-93/tap   # once; recent Homebrew asks this for third-party taps
 brew install Devace-93/tap/mousetouch
-brew services start mousetouch
-brew upgrade mousetouch      # the running daemon restarts itself (0.1.10+)</code></pre>
+# or, to update an existing install:
+brew upgrade mousetouch</code></pre>
+        <p data-i18n="brewP2">After installing or upgrading: install the udev rule (needs sudo) and (re)start the service. Running it again is harmless; it also fixes an install whose log says Permission denied for /dev/hidraw.</p>
+        <pre><code>share="$(brew --prefix)/opt/mousetouch/share/mousetouch"
+sudo install -Dm644 "$share/60-mousetouch.rules" /etc/udev/rules.d/60-mousetouch.rules
+sudo install -Dm644 "$share/mousetouch.conf" /etc/modules-load.d/mousetouch.conf
+sudo modprobe uinput &amp;&amp; sudo udevadm control --reload-rules &amp;&amp; sudo udevadm trigger
+brew services restart mousetouch   # starts it, or restarts it so it reopens the mouse</code></pre>
       </div>
       <div class="panel-tab" data-tab="nix">
         <p data-i18n="nixP1">Imperative install into your profile:</p>
