@@ -59,15 +59,15 @@ pub enum Direction {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Axis {
-    /// Follow the desktop: COSMIC's workspace layout setting (live), both
-    /// axes on GNOME and KDE, horizontal elsewhere. See
+    /// Follow the desktop: COSMIC's workspace layout setting (live),
+    /// horizontal elsewhere. See
     /// `desktop_settings::DesktopSettings::workspace_axis`.
     Auto,
     Horizontal,
     Vertical,
     /// Lock to whichever direction the fingers take first; the compositor
     /// decides what each means (GNOME: horizontal = workspaces, vertical =
-    /// overview; KDE: vertical = overview / desktop grid).
+    /// overview).
     Both,
 }
 

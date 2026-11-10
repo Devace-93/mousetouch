@@ -147,10 +147,8 @@ the daemon never reads.
   desktop's touchpad natural-scroll setting automatically.
 - **Axis** — *Auto-detect* (default) follows the desktop: COSMIC's
   horizontal/vertical workspace layout, read live, so switching it in COSMIC
-  Settings applies to the next swipe and the settings window updates; both
-  axes on GNOME and KDE (horizontal switches workspaces, vertical opens the
-  overview); horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force
-  it.
+  Settings applies to the next swipe and the settings window updates;
+  horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force it.
 - **Sensitivity** — finger travel per workspace.
 - **Desktop gesture fingers** — 4 for COSMIC/KDE, 3 for GNOME.
 - **Pinch zoom** — on/off and zoom aggressiveness.
@@ -197,10 +195,8 @@ The same options exist in the TOML file:
   desktop's touchpad natural-scroll setting automatically.
 - **Axis** — *Auto-detect* (default) follows the desktop: COSMIC's
   horizontal/vertical workspace layout, read live, so switching it in COSMIC
-  Settings applies to the next swipe and the settings window updates; both
-  axes on GNOME and KDE (horizontal switches workspaces, vertical opens the
-  overview); horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force
-  it.
+  Settings applies to the next swipe and the settings window updates;
+  horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force it.
 - **Sensitivity** — finger travel per workspace.
 - **Desktop gesture fingers** — *Auto-detect* follows the running desktop
   (3 on GNOME, 4 on COSMIC/KDE); 3 or 4 force it.
@@ -287,10 +283,9 @@ app = "firefox"
 action = { type = "key", combo = "alt+right" }
 ```
 
-With `axis = "auto"` GNOME and KDE get both axes: a horizontal 2-finger
+On GNOME set `axis = "both"` under `[workspace_swipe]`: a horizontal 2-finger
 swipe switches workspaces and a vertical one opens the overview, both with
-the desktop's own animation. Set `axis = "horizontal"` to keep vertical
-2-finger strokes free. Files written by 0.1.12 or older say
+GNOME's own animation. Files written by 0.1.12 or older say
 `axis = "horizontal"` because that was the default then; it is read as
 `auto` (the file has no `version` key), and saving from the settings app
 records the change.

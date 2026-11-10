@@ -40,8 +40,9 @@ pub struct DesktopSettings {
     /// Shortcut that shows every installed application.
     pub apps_combo: String,
     /// Direction(s) the desktop's own touchpad swipe understands: COSMIC
-    /// follows its workspace layout setting; GNOME and KDE switch workspaces
-    /// horizontally and open the overview vertically (`both`).
+    /// follows its workspace layout setting; horizontal elsewhere. GNOME and
+    /// KDE also open the overview with a vertical swipe, but `both` is left
+    /// to an explicit choice until that is tested on real installs.
     pub workspace_axis: Axis,
 }
 
@@ -50,8 +51,8 @@ pub type Shared = Arc<RwLock<DesktopSettings>>;
 impl DesktopSettings {
     pub fn fallback(desktop: Desktop) -> Self {
         let (synthetic_fingers, workspaces_combo, apps_combo, workspace_axis) = match desktop {
-            Desktop::Gnome => (3, "super", "super+a", Axis::Both),
-            Desktop::Kde => (4, "super+w", "super", Axis::Both),
+            Desktop::Gnome => (3, "super", "super+a", Axis::Horizontal),
+            Desktop::Kde => (4, "super+w", "super", Axis::Horizontal),
             // cosmic-comp's default layout when no setting is stored.
             Desktop::Cosmic => (4, "super+w", "super+a", Axis::Vertical),
             Desktop::Other => (4, "super+w", "super+a", Axis::Horizontal),
@@ -534,7 +535,7 @@ mod tests {
         // An entry without the key (older cosmic-comp) says nothing.
         assert_eq!(parse_cosmic_workspace_layout("(workspace_mode: Global)"), None);
         assert_eq!(DesktopSettings::fallback(Desktop::Cosmic).workspace_axis, Axis::Vertical);
-        assert_eq!(DesktopSettings::fallback(Desktop::Gnome).workspace_axis, Axis::Both);
+        assert_eq!(DesktopSettings::fallback(Desktop::Gnome).workspace_axis, Axis::Horizontal);
         assert_eq!(DesktopSettings::fallback(Desktop::Other).workspace_axis, Axis::Horizontal);
     }
 
