@@ -6,9 +6,16 @@ use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::{Path, PathBuf};
 
+/// Version written by this build. 1 (or missing) = up to 0.1.12, when
+/// `workspace_swipe.axis` had no `auto` and every file got "horizontal".
+pub const CONFIG_VERSION: u32 = 2;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(default)]
 pub struct Config {
+    /// Format version (see `CONFIG_VERSION`); a missing key reads as 0.
+    #[serde(default)]
+    pub version: u32,
     pub general: General,
     pub workspace_swipe: WorkspaceSwipe,
     pub pinch: Pinch,
@@ -42,21 +49,37 @@ impl Default for General {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Direction {
-    /// Content follows the fingers (macOS style): swipe left -> next workspace.
+    /// Content follows the fingers (macOS style): swipe left (or up, with
+    /// vertical workspaces) -> next workspace.
     Natural,
-    /// Swipe left -> previous workspace.
+    /// Swipe left (or up) -> previous workspace.
     Inverted,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Axis {
+    /// Follow the desktop: COSMIC's workspace layout setting (live),
+    /// horizontal elsewhere. See
+    /// `desktop_settings::DesktopSettings::workspace_axis`.
+    Auto,
     Horizontal,
     Vertical,
     /// Lock to whichever direction the fingers take first; the compositor
     /// decides what each means (GNOME: horizontal = workspaces, vertical =
     /// overview).
     Both,
+}
+
+impl Axis {
+    /// The axis to replay on: `Auto` resolved with the desktop's.
+    pub fn resolve(self, desktop: Axis) -> Axis {
+        match (self, desktop) {
+            (Axis::Auto, Axis::Auto) => Axis::Horizontal,
+            (Axis::Auto, d) => d,
+            (a, _) => a,
+        }
+    }
 }
 
 /// Continuous, compositor-animated workspace switching. Implemented by
@@ -78,7 +101,7 @@ pub struct WorkspaceSwipe {
     pub synthetic_fingers: Option<u8>,
     /// Millimetres the fingers must travel before a swipe starts.
     pub activation_mm: f64,
-    /// Axis the compositor uses for workspace swipes.
+    /// Axis the compositor uses for workspace swipes (`auto` = detect).
     pub axis: Axis,
     /// Whether the compositor's touchpad "natural scrolling" is on. `None`
     /// means auto-detect (COSMIC / GNOME) and fall back to `false`.
@@ -94,7 +117,7 @@ impl Default for WorkspaceSwipe {
             sensitivity: 0.4,
             synthetic_fingers: None,
             activation_mm: 2.0,
-            axis: Axis::Horizontal,
+            axis: Axis::Auto,
             compositor_natural_scroll: None,
         }
     }
@@ -271,6 +294,7 @@ fn default_true() -> bool {
 impl Default for Config {
     fn default() -> Self {
         Self {
+            version: CONFIG_VERSION,
             general: General::default(),
             workspace_swipe: WorkspaceSwipe::default(),
             pinch: Pinch::default(),
@@ -311,8 +335,22 @@ pub fn default_path() -> PathBuf {
 
 pub fn load(path: &Path) -> Result<Config> {
     let text = fs::read_to_string(path).with_context(|| format!("reading {}", path.display()))?;
-    let cfg: Config = toml::from_str(&text).with_context(|| format!("parsing {}", path.display()))?;
+    let mut cfg: Config = toml::from_str(&text).with_context(|| format!("parsing {}", path.display()))?;
+    migrate(&mut cfg);
     Ok(cfg)
+}
+
+/// Bring a config written by an older version up to date (in memory; the
+/// file is rewritten only when the settings app saves).
+pub fn migrate(cfg: &mut Config) {
+    if cfg.version < 2 && cfg.workspace_swipe.axis == Axis::Horizontal {
+        // Up to 0.1.12 every new file got "horizontal", so it is the old
+        // default rather than a choice: detect instead. Where the desktop is
+        // horizontal nothing changes; with COSMIC's vertical layout the
+        // swipe could never have worked.
+        cfg.workspace_swipe.axis = Axis::Auto;
+    }
+    cfg.version = CONFIG_VERSION;
 }
 
 /// Load the config, writing a commented default file if none exists.
@@ -352,6 +390,28 @@ mod tests {
         assert_eq!(back.workspace_swipe.synthetic_fingers, None);
         let old: Config = toml::from_str("[workspace_swipe]\nsynthetic_fingers = 3\n").unwrap();
         assert_eq!(old.workspace_swipe.synthetic_fingers, Some(3));
+    }
+
+    #[test]
+    fn axis_defaults_to_auto_and_old_horizontal_migrates() {
+        let text = to_toml(&Config::default()).unwrap();
+        assert!(text.contains("version = 2"), "{text}");
+        assert!(text.contains("axis = \"auto\""), "{text}");
+        // 0.1.12 wrote no version and axis = "horizontal" by default.
+        let mut old: Config = toml::from_str("[workspace_swipe]\naxis = \"horizontal\"\n").unwrap();
+        assert_eq!(old.version, 0);
+        migrate(&mut old);
+        assert_eq!(old.workspace_swipe.axis, Axis::Auto);
+        // Choices other than the old default are kept...
+        let mut vertical: Config = toml::from_str("[workspace_swipe]\naxis = \"vertical\"\n").unwrap();
+        migrate(&mut vertical);
+        assert_eq!(vertical.workspace_swipe.axis, Axis::Vertical);
+        // ...and so is "horizontal" picked in a current file.
+        let mut picked: Config = toml::from_str("version = 2\n[workspace_swipe]\naxis = \"horizontal\"\n").unwrap();
+        migrate(&mut picked);
+        assert_eq!(picked.workspace_swipe.axis, Axis::Horizontal);
+        assert_eq!(Axis::Auto.resolve(Axis::Vertical), Axis::Vertical);
+        assert_eq!(Axis::Horizontal.resolve(Axis::Vertical), Axis::Horizontal);
     }
 
     #[test]

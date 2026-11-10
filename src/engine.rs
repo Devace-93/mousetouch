@@ -30,6 +30,24 @@ impl AxisInfo {
     fn to_mm(&self, v: i32) -> f64 {
         (v - self.min) as f64 / self.res
     }
+
+    /// Size of the axis in millimetres, as the driver calibrates it.
+    fn span_mm(&self) -> f64 {
+        (self.max - self.min) as f64 / self.res
+    }
+}
+
+/// hid-magicmouse sizes the Magic Mouse's touch area as 90.56 mm along X and
+/// 51.52 mm along Y, but X runs across the mouse (it is ~57 mm wide) and Y
+/// along it: the two sizes are swapped. Millimetres derived from it make a
+/// vertical stroke read ~3x shorter than the same horizontal one, so a
+/// vertical workspace swipe needed an abrupt flick. Swipes scale Y by this
+/// factor, `(span_x / span_y)^2` with that calibration (1 for any other),
+/// and leave X alone so sensitivities tuned on horizontal swipes keep their
+/// feel.
+pub fn vertical_swipe_gain(ax: &AxisInfo, ay: &AxisInfo) -> f64 {
+    let (x, y) = (ax.span_mm(), ay.span_mm());
+    if (x - 90.56).abs() < 2.0 && (y - 51.52).abs() < 2.0 { (x / y).powi(2) } else { 1.0 }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -100,6 +118,8 @@ pub struct Engine {
     mouse: VirtualMouse,
     ax: AxisInfo,
     ay: AxisInfo,
+    /// See `vertical_swipe_gain`.
+    swipe_gain_y: f64,
     slots: [Option<Touch>; MAX_SLOTS],
     /// Last position reported in each slot. The kernel suppresses ABS events
     /// whose value equals the slot's cached value, so a new contact may land
@@ -147,6 +167,7 @@ impl Engine {
             cfg,
             shared,
             mouse,
+            swipe_gain_y: vertical_swipe_gain(&ax, &ay),
             ax,
             ay,
             slots: [None; MAX_SLOTS],
@@ -543,12 +564,13 @@ impl Engine {
         match session.swipe {
             SwipeState::Workspace { sign, axis } => {
                 let dx = c.0 - session.last_centroid.0;
-                let dy = c.1 - session.last_centroid.1;
+                let dy = (c.1 - session.last_centroid.1) * self.swipe_gain_y;
                 let sens = self.cfg.read().unwrap().workspace_swipe.sensitivity;
                 let (vx, vy) = match axis {
                     Axis::Horizontal => (dx * sens * sign, 0.0),
                     Axis::Vertical => (0.0, dy * sens * sign),
-                    Axis::Both => (dx * sens * sign, dy * sens * sign),
+                    // `Auto` is resolved when the swipe starts; never stored.
+                    Axis::Both | Axis::Auto => (dx * sens * sign, dy * sens * sign),
                 };
                 if vx != 0.0 || vy != 0.0 {
                     self.shared.lock().unwrap().touchpad.move_by(vx, vy)?;
@@ -564,7 +586,10 @@ impl Engine {
             }
             SwipeState::Armed => {
                 let dx = c.0 - session.anchor.0;
-                let dy = c.1 - session.anchor.1;
+                // Vertical travel corrected like the swipe itself, so the
+                // direction (and when the swipe starts) is judged on equal
+                // footing for both axes.
+                let dy = (c.1 - session.anchor.1) * self.swipe_gain_y;
                 let dist = (dx * dx + dy * dy).sqrt();
                 let (ws, pinch) = {
                     let cfg = self.cfg.read().unwrap();
@@ -593,19 +618,20 @@ impl Engine {
                     } else {
                         SwipeDir::Up
                     };
+                    let desktop = self.desktop.read().unwrap().clone();
+                    let ws_axis = ws.axis.resolve(desktop.workspace_axis);
                     if self.fire_rule(GestureKind::Swipe, n, Some(dir))? {
                         session.gestured = true;
                         session.swipe = SwipeState::Done;
-                    } else if ws.enabled && ws.fingers as usize == n && axis_matches(ws.axis, dir) {
+                    } else if ws.enabled && ws.fingers as usize == n && axis_matches(ws_axis, dir) {
                         session.gestured = true;
                         let natural = ws.direction == Direction::Natural;
-                        let desktop = self.desktop.read().unwrap().clone();
                         let compositor_natural = ws.compositor_natural_scroll.unwrap_or(desktop.natural_scroll);
                         // The compositor already follows the fingers when its
                         // own natural scrolling is on; otherwise flip.
                         let sign = if natural != compositor_natural { -1.0 } else { 1.0 };
                         // With `both`, lock to the direction the fingers took first.
-                        let axis = match ws.axis {
+                        let axis = match ws_axis {
                             Axis::Both if matches!(dir, SwipeDir::Up | SwipeDir::Down) => Axis::Vertical,
                             Axis::Both => Axis::Horizontal,
                             a => a,
@@ -842,6 +868,8 @@ fn axis_matches(axis: Axis, dir: SwipeDir) -> bool {
         Axis::Horizontal => matches!(dir, SwipeDir::Left | SwipeDir::Right),
         Axis::Vertical => matches!(dir, SwipeDir::Up | SwipeDir::Down),
         Axis::Both => true,
+        // Resolved before this is called.
+        Axis::Auto => false,
     }
 }
 
@@ -888,6 +916,19 @@ mod tests {
         let ax = AxisInfo { min: -1100, max: 1258, res: 26.0 };
         let ay = AxisInfo { min: -1589, max: 2047, res: 70.0 };
         Engine::new(cfg, shared, mouse, ax, ay, Arc::new(RwLock::new(desktop_settings::DesktopSettings::fallback(desktop_settings::Desktop::Other))), Arc::new(Mutex::new(None)), Monitor::disabled())
+    }
+
+    #[test]
+    fn magic_mouse_vertical_travel_is_corrected() {
+        // hid-magicmouse's calibration (90.7 x 51.9 mm, swapped).
+        let ax = AxisInfo { min: -1100, max: 1258, res: 26.0 };
+        let ay = AxisInfo { min: -1589, max: 2047, res: 70.0 };
+        let g = vertical_swipe_gain(&ax, &ay);
+        assert!((g - 3.05).abs() < 0.05, "{g}");
+        // Any other device is left alone.
+        let pad = AxisInfo { min: 0, max: 3000, res: 30.0 };
+        assert_eq!(vertical_swipe_gain(&pad, &pad), 1.0);
+        assert!((engine().swipe_gain_y - g).abs() < 1e-9);
     }
 
     #[test]

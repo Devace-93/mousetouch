@@ -97,7 +97,7 @@
       <h2 data-i18n="gesturesTitle">Out of the box</h2>
       <p class="sub" data-i18n="gesturesSub">Defaults you get right after installing. Every tap and swipe can be remapped to a shortcut, a mouse button or a command, globally or per application.</p>
       <div class="grid">
-        <div class="card"><div class="g" data-i18n="g1k">2 fingers · swipe left/right</div><div class="r" data-i18n="g1r">Switch workspace</div><div class="n" data-i18n="g1n">Animated, follows your fingers, settles with release velocity.</div></div>
+        <div class="card"><div class="g" data-i18n="g1k">2 fingers · swipe left/right or up/down</div><div class="r" data-i18n="g1r">Switch workspace</div><div class="n" data-i18n="g1n">Animated, follows your fingers, settles with release velocity.</div></div>
         <div class="card"><div class="g" data-i18n="g2k">2 fingers · pinch</div><div class="r" data-i18n="g2r">Native pinch zoom</div><div class="n" data-i18n="g2n">In apps that support it: browsers, image and document viewers.</div></div>
         <div class="card"><div class="g" data-i18n="g3k">2 fingers · double tap</div><div class="r" data-i18n="g3r">Show workspaces</div><div class="n" data-i18n-html="g3n"><code>Super+W</code> on COSMIC, <code>Super</code> on GNOME.</div></div>
         <div class="card"><div class="g" data-i18n="g4k">3 fingers · tap</div><div class="r" data-i18n="g4r">Show all applications</div><div class="n" data-i18n-html="g4n">App library / app grid (<code>Super+A</code>).</div></div>
@@ -196,7 +196,7 @@ cd mousetouch
           <ol class="steps">
             <li data-i18n-html="after1">If the mouse was already paired, re-pair it or run <code>sudo udevadm trigger</code> so the udev rule applies.</li>
             <li data-i18n-html="after2">Check the daemon: <code>systemctl --user status mousetouch</code>.</li>
-            <li data-i18n="after3">Swipe left/right with two fingers. Done.</li>
+            <li data-i18n="after3">Swipe with two fingers: left/right, or up/down if your workspaces are stacked vertically. Done.</li>
           </ol>
           <div class="note" data-i18n-html="afterNote">Methods that do not run a package hook (tarball, Homebrew, cargo) print the one-off <code>systemctl --user enable --now mousetouch</code> step.</div>
           <div class="note" data-i18n-html="dkmsNote"><strong>About DKMS drivers.</strong> MouseTouch only needs the <code>hid-magicmouse</code> driver that ships inside the Linux kernel (5.15 or newer; the 2024 USB-C mouse needs 6.16 or newer). Third-party DKMS builds of that driver (<code>hid-magicmouse-dkms</code>, <code>magicmouse-hid</code>, …) are recompiled on every kernel update and replace the built-in module. The common <code>4.18+magicmouse2</code> build reports every finger in slot 0 and does not know the USB-C model, so that mouse lands on <code>hid-generic</code> with no gestures at all. If you installed one for an older kernel, remove it (<code>sudo dkms remove hid-magicmouse-dkms/4.18+magicmouse2 --all &amp;&amp; sudo depmod -a</code>) and reconnect the mouse.</div>
@@ -217,7 +217,7 @@ cd mousetouch
         <div>
           <h3 style="margin-top:0" data-i18n="whatTitle">What you can change</h3>
           <ul class="plain">
-            <li data-i18n="w1">Workspace swipe: direction, sensitivity, 3 or 4 synthetic fingers, horizontal or both axes (GNOME).</li>
+            <li data-i18n="w1">Workspace swipe: direction, sensitivity, 3 or 4 synthetic fingers, axis detected from the desktop (follows COSMIC's horizontal or vertical layout live) or set by hand.</li>
             <li data-i18n="w2">Pinch zoom on/off and aggressiveness.</li>
             <li data-i18n="w3">One-finger scroll: smooth steps, acceleration and macOS-style momentum.</li>
             <li data-i18n="w4">Tap timing and lift-speed detection.</li>
@@ -238,7 +238,7 @@ cd mousetouch
       <div class="grid">
         <div class="card"><div class="g">1</div><div class="r" data-i18n="h1r">Grab &amp; re-emit</div><div class="n" data-i18n="h1n">Takes the mouse's evdev node and re-emits motion, buttons and wheel through a virtual mouse, so everything keeps working.</div></div>
         <div class="card"><div class="g">2</div><div class="r" data-i18n="h2r">Decode fingers</div><div class="n" data-i18n-html="h2n">Reads finger positions from the raw HID reports (<code>/dev/hidrawN</code>), with an evdev multitouch fallback.</div></div>
-        <div class="card"><div class="g">3</div><div class="r" data-i18n="h3r">Replay as a touchpad</div><div class="n" data-i18n="h3n">Two fingers sideways become a 4-finger touchpad swipe; spreading fingers become a pinch. The compositor runs its own animation.</div></div>
+        <div class="card"><div class="g">3</div><div class="r" data-i18n="h3r">Replay as a touchpad</div><div class="n" data-i18n="h3n">Two fingers moving along the workspace axis become a 4-finger touchpad swipe; spreading fingers become a pinch. The compositor runs its own animation.</div></div>
         <div class="card"><div class="g">4</div><div class="r" data-i18n="h4r">Fire actions</div><div class="n" data-i18n="h4n">Taps and discrete swipes trigger keys, buttons or commands, optionally scoped to the focused app.</div></div>
       </div>
     </div>

@@ -165,9 +165,12 @@ fn run(config_path: &Path) -> Result<()> {
         keyboard: VirtualKeyboard::new()?,
         toggles: HashMap::new(),
     }));
-    let desktop = desktop_settings::watch();
-    let focus = focus::spawn();
     let monitor = monitor::Monitor::start();
+    let desktop = {
+        let monitor = monitor.clone();
+        desktop_settings::watch(move |s| monitor.set_desktop(s))
+    };
+    let focus = focus::spawn();
     // Homebrew installs are outside the desktop's search path; add the
     // settings app to the app menu from here (no-op elsewhere).
     desktop::ensure_app_menu_entry();

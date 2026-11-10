@@ -13,7 +13,7 @@ Out of the box:
 
 | Gesture on the mouse       | Result                                                        |
 |----------------------------|---------------------------------------------------------------|
-| 2-finger swipe left/right  | Switch workspace, animated and following your fingers         |
+| 2-finger swipe             | Switch workspace, animated and following your fingers: left/right, or up/down when the desktop stacks workspaces vertically (COSMIC's default) |
 | 2-finger pinch             | Native pinch zoom in apps that support it (browsers, viewers) |
 | 2-finger double tap        | Show the workspaces (`Super+W` on COSMIC, `Super` on GNOME)   |
 | 3-finger tap               | Show all applications (`Super+A` app library / app grid)      |
@@ -44,7 +44,8 @@ daemon:
    multitouch events when hidraw is not accessible; note that the popular DKMS
    build of `hid-magicmouse` (4.18+magicmouse2) reports every finger in slot 0,
    so the hidraw path is what makes gestures reliable there.
-3. Tracks the fingers on the surface. When two fingers travel sideways it puts
+3. Tracks the fingers on the surface. When two fingers travel along the axis
+   the desktop switches workspaces on (detected, see *Axis* below) it puts
    **four synthetic fingers** on a virtual touchpad and replays the motion.
    The compositor sees an ordinary 4-finger touchpad swipe and runs its own
    workspace animation: it follows the fingers, pauses when they pause, goes
@@ -141,9 +142,13 @@ can be overridden in its *Appearance* group (34 locales, the same list as the
 3m4.net pages); the choice is stored in `~/.config/mousetouch/ui.toml`, which
 the daemon never reads.
 
-- **Direction** — *Natural* (macOS-like, swipe left = next workspace) or
-  *Inverted*. The daemon accounts for your desktop's touchpad natural-scroll
-  setting automatically.
+- **Direction** — *Natural* (macOS-like: swipe left, or up with vertical
+  workspaces, = next workspace) or *Inverted*. The daemon accounts for your
+  desktop's touchpad natural-scroll setting automatically.
+- **Axis** — *Auto-detect* (default) follows the desktop: COSMIC's
+  horizontal/vertical workspace layout, read live, so switching it in COSMIC
+  Settings applies to the next swipe and the settings window updates;
+  horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force it.
 - **Sensitivity** — finger travel per workspace.
 - **Desktop gesture fingers** — 4 for COSMIC/KDE, 3 for GNOME.
 - **Pinch zoom** — on/off and zoom aggressiveness.
@@ -185,9 +190,13 @@ a daemon that is still on the old version when it is not run as a service).
 The same options exist in the TOML file:
 
 
-- **Direction** — *Natural* (macOS-like, swipe left = next workspace) or
-  *Inverted*. The daemon accounts for your desktop's touchpad natural-scroll
-  setting automatically.
+- **Direction** — *Natural* (macOS-like: swipe left, or up with vertical
+  workspaces, = next workspace) or *Inverted*. The daemon accounts for your
+  desktop's touchpad natural-scroll setting automatically.
+- **Axis** — *Auto-detect* (default) follows the desktop: COSMIC's
+  horizontal/vertical workspace layout, read live, so switching it in COSMIC
+  Settings applies to the next swipe and the settings window updates;
+  horizontal elsewhere. *Horizontal*, *Vertical* or *Both* force it.
 - **Sensitivity** — finger travel per workspace.
 - **Desktop gesture fingers** — *Auto-detect* follows the running desktop
   (3 on GNOME, 4 on COSMIC/KDE); 3 or 4 force it.
@@ -204,7 +213,7 @@ fingers = 2
 direction = "natural"   # or "inverted"
 sensitivity = 0.4
 # synthetic_fingers = 3 # contacts the desktop expects; absent = auto-detect
-axis = "horizontal"
+axis = "auto"           # or "horizontal" | "vertical" | "both"
 
 [[gesture]]
 kind = "double_tap"     # swipe | tap | double_tap
@@ -276,13 +285,16 @@ action = { type = "key", combo = "alt+right" }
 
 On GNOME set `axis = "both"` under `[workspace_swipe]`: a horizontal 2-finger
 swipe switches workspaces and a vertical one opens the overview, both with
-GNOME's own animation.
+GNOME's own animation. Files written by 0.1.12 or older say
+`axis = "horizontal"` because that was the default then; it is read as
+`auto` (the file has no `version` key), and saving from the settings app
+records the change.
 
 ## Troubleshooting
 
 ```sh
 mousetouch probe          # is the mouse seen, with touch axes?
-mousetouch desktop        # what the daemon detected: swipe fingers, natural scroll, shortcuts
+mousetouch desktop        # what the daemon detected: swipe fingers, natural scroll, shortcuts, workspace axis
 mousetouch watch          # live finger positions (daemon stopped)
 mousetouch events         # the running daemon's event stream as JSON lines
 mousetouch demo-swipe left 40   # replay a synthetic 4-finger swipe
