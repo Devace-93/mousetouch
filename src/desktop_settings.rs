@@ -12,7 +12,7 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::{Arc, RwLock};
 use std::thread;
-use std::time::{Duration, SystemTime};
+use std::time::{Duration, Instant, SystemTime};
 
 use serde::Serialize;
 
@@ -179,47 +179,93 @@ pub fn detect() -> DesktopSettings {
     s
 }
 
+/// How long after the daemon starts the session may still be coming up.
+const PROBE_SETTLE: Duration = Duration::from_secs(60);
+/// An unknown desktop is looked for this often meanwhile (a scan of /proc),
+const PROBE_UNKNOWN_EARLY: Duration = Duration::from_secs(2);
+/// and this often afterwards.
+const PROBE_UNKNOWN_LATE: Duration = Duration::from_secs(15);
+/// A known desktop's settings are read again this often meanwhile (several
+/// `gsettings` calls on GNOME and Pantheon, so not every second).
+const PROBE_KNOWN_EARLY: Duration = Duration::from_secs(10);
+
+/// Time until the desktop is detected again without a settings file having
+/// changed, or `None` when there is no reason to. The user service starts
+/// with the user manager, which at login can be a few seconds before the
+/// compositor: the first detection then finds no desktop (and no Touchégg),
+/// and nothing would ever correct it.
+fn probe_interval(desktop: Desktop, uptime: Duration) -> Option<Duration> {
+    let settling = uptime < PROBE_SETTLE;
+    match (desktop, settling) {
+        (Desktop::Other, true) => Some(PROBE_UNKNOWN_EARLY),
+        (Desktop::Other, false) => Some(PROBE_UNKNOWN_LATE),
+        (_, true) => Some(PROBE_KNOWN_EARLY),
+        (_, false) => None,
+    }
+}
+
+/// Whether a new detection replaces the current one. A known desktop is not
+/// given up for an unknown one: the compositor going away (logout) says
+/// nothing about the next session.
+fn supersedes(cur: &DesktopSettings, fresh: &DesktopSettings) -> bool {
+    cur != fresh && !(fresh.desktop == Desktop::Other && cur.desktop != Desktop::Other)
+}
+
+fn log_settings(prefix: &str, s: &DesktopSettings) {
+    log::info!(
+        "{prefix}: {:?}, swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}, swipe gain {}",
+        s.desktop, s.synthetic_fingers, s.natural_scroll, s.workspaces_combo, s.apps_combo, s.workspace_axis, s.swipe_gain
+    );
+}
+
 /// Detect now and keep the result current in the background. `on_change`
 /// runs with the first result and after every change (the settings app
 /// follows it through the event stream).
 pub fn watch(on_change: impl Fn(&DesktopSettings) + Send + 'static) -> Shared {
     let settings = detect();
-    log::info!(
-        "desktop: {:?}, swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}, swipe gain {}",
-        settings.desktop, settings.synthetic_fingers, settings.natural_scroll, settings.workspaces_combo, settings.apps_combo,
-        settings.workspace_axis, settings.swipe_gain
-    );
+    log_settings("desktop", &settings);
     on_change(&settings);
+    let mut files = watched_files(settings.desktop);
     let shared = Arc::new(RwLock::new(settings));
-    let files = watched_files(shared.read().unwrap().desktop);
-    if files.is_empty() {
-        return shared;
-    }
     let out = shared.clone();
     thread::Builder::new()
         .name("desktop-settings".into())
         .spawn(move || {
+            let started = Instant::now();
             let mut last = mtimes(&files);
+            let mut last_probe = started;
             loop {
                 thread::sleep(Duration::from_secs(1));
+                let desktop = out.read().unwrap().desktop;
                 let now = mtimes(&files);
-                if now == last {
+                let files_changed = now != last;
+                let probe = probe_interval(desktop, started.elapsed()).map_or(false, |every| last_probe.elapsed() >= every);
+                if !files_changed && !probe {
                     continue;
                 }
-                last = now;
-                // Settings apps write several keys in a row.
-                thread::sleep(Duration::from_millis(300));
+                last_probe = Instant::now();
+                if files_changed {
+                    last = now;
+                    // Settings apps write several keys in a row.
+                    thread::sleep(Duration::from_millis(300));
+                } else if desktop == Desktop::Other && current_desktop() == Desktop::Other {
+                    continue;
+                }
                 let fresh = detect();
                 let mut cur = out.write().unwrap();
-                if *cur != fresh {
-                    log::info!(
-                        "desktop settings changed: swipe contacts {}, natural scroll {}, workspaces '{}', apps '{}', axis {:?}",
-                        fresh.synthetic_fingers, fresh.natural_scroll, fresh.workspaces_combo, fresh.apps_combo, fresh.workspace_axis
-                    );
-                    *cur = fresh.clone();
-                    drop(cur);
-                    on_change(&fresh);
+                if !supersedes(&cur, &fresh) {
+                    continue;
                 }
+                if fresh.desktop != cur.desktop {
+                    log_settings("desktop detected", &fresh);
+                    files = watched_files(fresh.desktop);
+                    last = mtimes(&files);
+                } else {
+                    log_settings("desktop settings changed", &fresh);
+                }
+                *cur = fresh.clone();
+                drop(cur);
+                on_change(&fresh);
             }
         })
         .expect("spawning desktop settings watcher");
@@ -628,6 +674,27 @@ mod tests {
         assert_eq!(pantheon_swipe_fingers(Some("'switch-to-workspace'"), Some("'none'")), Some(3));
         assert_eq!(pantheon_swipe_fingers(Some("'none'"), Some("'none'")), None);
         assert_eq!(pantheon_swipe_fingers(None, None), None);
+    }
+
+    #[test]
+    fn a_desktop_missed_at_start_is_looked_for_again() {
+        // At login the service can start before the compositor.
+        assert_eq!(probe_interval(Desktop::Other, Duration::from_secs(3)), Some(PROBE_UNKNOWN_EARLY));
+        assert_eq!(probe_interval(Desktop::Other, Duration::from_secs(3600)), Some(PROBE_UNKNOWN_LATE));
+        // A known desktop is rechecked while the session settles (Touchégg
+        // may start after Gala), then only when its settings change.
+        assert_eq!(probe_interval(Desktop::Pantheon, Duration::from_secs(3)), Some(PROBE_KNOWN_EARLY));
+        assert_eq!(probe_interval(Desktop::Pantheon, PROBE_SETTLE), None);
+
+        let other = DesktopSettings::fallback(Desktop::Other);
+        let pantheon = DesktopSettings::fallback(Desktop::Pantheon);
+        let mut with_gain = pantheon.clone();
+        with_gain.swipe_gain = TOUCHEGG_SWIPE_GAIN;
+        assert!(supersedes(&other, &pantheon));
+        assert!(supersedes(&pantheon, &with_gain));
+        assert!(!supersedes(&pantheon, &pantheon));
+        // Logging out does not turn a known desktop into an unknown one.
+        assert!(!supersedes(&pantheon, &other));
     }
 
     #[test]
