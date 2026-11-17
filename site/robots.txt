@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mouse.3m4.net/sitemap.xml
