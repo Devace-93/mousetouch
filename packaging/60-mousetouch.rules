@@ -11,3 +11,8 @@ SUBSYSTEM=="input", KERNEL=="event*", ATTRS{id/vendor}=="004c|05ac", ATTRS{id/pr
 SUBSYSTEM=="hidraw", KERNELS=="000[35]:0[05][4A]C:0269.*", TAG+="uaccess"
 SUBSYSTEM=="hidraw", KERNELS=="000[35]:0[05][4A]C:030D.*", TAG+="uaccess"
 SUBSYSTEM=="hidraw", KERNELS=="000[35]:0[05][4A]C:0323.*", TAG+="uaccess"
+# MouseTouch Bridge (Raspberry Pi Pico 2 W, vendor 2e8a): let the user open its
+# USB-CDC serial, and tell ModemManager to leave it alone (otherwise MM probes
+# the port with AT commands and the bridge commands get lost).
+SUBSYSTEM=="tty", ATTRS{idVendor}=="2e8a", TAG+="uaccess", ENV{ID_MM_DEVICE_IGNORE}="1"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="2e8a", ENV{ID_MM_DEVICE_IGNORE}="1", ENV{MTP_NO_PROBE}="1"

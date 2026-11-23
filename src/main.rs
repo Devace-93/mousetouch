@@ -8,6 +8,7 @@
 //! map to keyboard shortcuts, buttons or commands.
 
 mod bluetooth;
+mod bridge;
 mod config;
 mod desktop;
 mod desktop_settings;
@@ -54,6 +55,18 @@ Commands:
   bt-pair ADDR [SECONDS]
                       Remove whatever BlueZ knows about that mouse, then pair,
                       trust and connect it (what Settings > Nearby mice runs)
+  bridge-status       Is a MouseTouch Bridge card plugged in? Print its state as
+                      JSON (present, version, mode, connected mouse, bootsel)
+  bridge-scan [SECONDS]
+                      Ask the bridge card to inquire for mice; same JSON lines
+                      as bt-scan, with \"via\":\"bridge\"
+  bridge-pair ADDR [SECONDS]
+                      Pair ADDR through the bridge card (works on any OS); same
+                      step:/ok: progress as bt-pair
+  bridge-mode ptp|raw Switch the card between native-touchpad (ptp) and
+                      raw-fingers-over-serial (raw, for the Linux engine)
+  bridge-profile-get ADDR / bridge-profile-set ADDR HEX
+                      Read or write the card-side per-mouse calibration blob
   demo-swipe DIR [MM] Replay a synthetic swipe on the virtual touchpad
                       (DIR = left|right|up|down, MM = travel, default 40)
   print-config        Print the effective configuration as TOML
@@ -124,6 +137,25 @@ fn main() -> Result<()> {
             let Some(addr) = rest.first() else { anyhow::bail!("bt-pair needs the mouse's Bluetooth address (see bt-scan)") };
             let secs = rest.get(1).and_then(|s| s.parse().ok()).unwrap_or(60);
             bluetooth::pair(addr, Duration::from_secs(secs))
+        }
+        // ---- MouseTouch Bridge (Pico card over USB serial) ----
+        "bridge-status" => bridge::status_cmd(),
+        "bridge-scan" => bridge::scan_cmd(rest.first().and_then(|s| s.parse().ok()).unwrap_or(6)),
+        "bridge-pair" => {
+            let Some(addr) = rest.first() else { anyhow::bail!("bridge-pair needs the mouse's Bluetooth address (see bridge-scan)") };
+            let secs = rest.get(1).and_then(|s| s.parse().ok()).unwrap_or(60);
+            bridge::pair(addr, Duration::from_secs(secs))
+        }
+        "bridge-mode" => bridge::mode_cmd(rest.first().map(String::as_str).unwrap_or("")),
+        "bridge-profile-get" => {
+            let Some(addr) = rest.first() else { anyhow::bail!("bridge-profile-get needs a Bluetooth address") };
+            bridge::profile_get_cmd(addr)
+        }
+        "bridge-profile-set" => {
+            let (Some(addr), Some(hex)) = (rest.first(), rest.get(1)) else {
+                anyhow::bail!("bridge-profile-set needs ADDR and a hex blob")
+            };
+            bridge::profile_set_cmd(addr, hex)
         }
         "demo-swipe" => demo_swipe(&rest),
         "fake-mouse" => fake_mouse(
